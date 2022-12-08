@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ChatsController } from './chats/chats.controller';
-import { UsersController } from './users/users.controller';
-import { MessagesController } from './messages/messages.controller';
 
+import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
+
+// TODO include postgreSQL in the future
 @Module({
-  imports: [],
-  controllers: [AppController, ChatsController, UsersController, MessagesController],
-  providers: [AppService],
+  imports: [MessagesModule, ChatsModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
