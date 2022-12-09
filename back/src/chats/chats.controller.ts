@@ -1,28 +1,24 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Next,
-  Param,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common';
-import { NextFunction } from 'express';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import { NewChatDTO } from './types';
+import { Chat, NewChatDTO } from './types';
+import { ChatsService } from './chats.service';
 
 @Controller('chats')
 export class ChatsController {
-  @Get(':userId')
-  // we can access to express req res and next function
-  receiveUserChat(
-    @Param('userId') userId: string,
-    @Req() req: Request,
-    @Res() res: Response,
-    @Next() next: NextFunction,
-  ) {}
+  constructor(private readonly chatsService: ChatsService) {}
+
+  @Get(':chatId')
+  getChat(@Param('chatId') chatId: string): Chat | undefined {
+    return this.chatsService.getChat(+chatId);
+  }
+
+  @Get('/user/:userId')
+  getChats(@Param('userId') userId: string): Chat[] {
+    return this.chatsService.getChats(+userId);
+  }
 
   @Post()
-  createChat(@Body() body: NewChatDTO) {}
+  createChat(@Body() body: NewChatDTO): number {
+    return this.chatsService.createChat(body);
+  }
 }
