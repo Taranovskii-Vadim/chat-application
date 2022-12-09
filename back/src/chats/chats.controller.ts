@@ -3,7 +3,8 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Chat, NewChatDTO } from './types';
 import { ChatsService } from './chats.service';
 
-@Controller('chats')
+// TODO think how to solve base andpoint /api
+@Controller('/api/chats')
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 
