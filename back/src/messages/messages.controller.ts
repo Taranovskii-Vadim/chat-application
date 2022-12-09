@@ -1,14 +1,18 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 
-import { NewMessageDTO } from './types';
+import { Message, NewMessageDTO } from './types';
 import { MessagesService } from './messages.service';
 
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
+  @Get(':chatId')
+  getMessages(@Param('chatId') chatId: string): Message[] {
+    return this.messagesService.getMessages(+chatId);
+  }
+
   @Post()
-  @HttpCode(HttpStatus.CREATED)
   createMessage(@Body() body: NewMessageDTO): number {
     return this.messagesService.createMessage(body);
   }
