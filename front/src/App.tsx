@@ -1,22 +1,14 @@
-import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
 
-import { chatsState } from './store/chats';
+import Sidebar from './components/Sidebar';
 
-const App = (): JSX.Element => {
-  const chats = useRecoilValue(chatsState);
-
-  return (
-    <Grid container>
-      <Grid item xs={4}>
-        sidebar
-      </Grid>
-      {/* TODO this is sep page */}
-      <Grid item xs={8}>
-        maincontent
-      </Grid>
+const App = (): JSX.Element => (
+  <Grid container sx={{ height: '100vh' }}>
+    <Sidebar />
+    <Grid item xs={9.5}>
+      maincontent
     </Grid>
-  );
-};
+  </Grid>
+);
 
 export default App;

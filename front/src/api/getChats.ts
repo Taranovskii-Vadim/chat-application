@@ -1,4 +1,5 @@
 import { Method, Route } from './types';
+import { Chat } from '../store/chats/types';
 
 interface ResponseDTO {
   id: number;
@@ -12,7 +13,7 @@ class GetChats implements Route {
     return `/chats/user/${id}`;
   }
 
-  getData(data: ResponseDTO[]): ResponseDTO[] {
+  getData(data: ResponseDTO[]): Chat[] {
     return data;
   }
 }

@@ -8,7 +8,7 @@ export class ChatsService {
 
   getChats(userId: number): Chat[] {
     const result = this.chats.filter(({ members }) => members.includes(userId));
-
+    // TODO make side req and expand opponent info
     return result;
   }
 
