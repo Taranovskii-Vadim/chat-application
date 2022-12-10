@@ -8,7 +8,7 @@ export class ChatsService {
 
   getChats(userId: number): Chat[] {
     const result = this.chats.filter(({ members }) => members.includes(userId));
-    // TODO make side req and expand opponent info
+
     return result;
   }
 
@@ -19,6 +19,7 @@ export class ChatsService {
   createChat({ senderId, receiverId }: NewChatDTO): number {
     const id = this.chats.length + 1;
 
+    // TODO put here not id but full short user info
     this.chats.push({ id, members: [senderId, receiverId] });
 
     return id;

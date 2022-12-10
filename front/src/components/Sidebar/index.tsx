@@ -16,6 +16,7 @@ const Sidebar = (): JSX.Element => {
       {chats.map(({ id }) => (
         <Grid
           container
+          key={id}
           onClick={() => navigate(`/${id}`)}
           sx={{ p: 2, cursor: 'pointer', maxHeight: '72px', alignItems: 'center' }}
         >
@@ -23,7 +24,7 @@ const Sidebar = (): JSX.Element => {
             <Avatar {...stringAvatar('Тарановский Вадим')} />
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="h3">Тарановский Вадим</Typography>
+            <Typography variant="h3">{id}</Typography>
           </Grid>
         </Grid>
       ))}
