@@ -4,8 +4,10 @@ import { Message, NewMessageDTO } from './types';
 @Injectable()
 export class MessagesService {
   private messages: Message[] = [
-    { id: 1, chatId: 1, senderId: 1, text: 'hello user 1' },
-    { id: 2, chatId: 1, senderId: 2, text: 'hello user 2' },
+    { id: 1, chatId: 1, senderId: 1, text: 'hello user 2' },
+    { id: 2, chatId: 1, senderId: 2, text: 'hello user 1' },
+    { id: 3, chatId: 1, senderId: 1, text: 'how are you?' },
+    { id: 4, chatId: 1, senderId: 2, text: 'good what about you?' },
   ];
 
   getMessages(id: number): Message[] {

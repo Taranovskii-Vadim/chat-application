@@ -3,7 +3,7 @@ import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { Message, NewMessageDTO } from './types';
 import { MessagesService } from './messages.service';
 
-@Controller('messages')
+@Controller('/api/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
