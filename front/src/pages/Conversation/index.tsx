@@ -14,6 +14,7 @@ const Conversation = (): JSX.Element => {
       <Box sx={{ backgroundColor: 'blue', flex: 1, overflowY: 'scroll' }}>
         {data.map(({ id, senderId, text }) => {
           return (
+            // TODO instead of 1 use real userId
             <Typography key={id} sx={{ textAlign: senderId === 1 ? 'right' : 'left' }}>
               {text}
             </Typography>
