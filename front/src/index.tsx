@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
-import { RecoilRoot } from 'recoil';
 import { createRoot } from 'react-dom/client';
 
 import { theme } from './style';
@@ -14,11 +13,9 @@ const root = createRoot(node);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <RecoilRoot>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );
