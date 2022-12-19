@@ -1,19 +1,31 @@
-import { useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Avatar, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
-import { chatsState } from '../../store/chats';
+import { api } from '../../api';
+import getChats from '../../api/getChats';
 
 import { stringAvatar } from './helpers';
 
+// TODO include store library maybe redux toolkit or just redux with sagas
 const Sidebar = (): JSX.Element => {
   const navigate = useNavigate();
-  const chats = useRecoilValue(chatsState);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await api(getChats, undefined, 1);
+
+      setData(response);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Grid item xs={2.5} sx={{ borderRight: `1px solid ${grey['300']}` }}>
-      {chats.map(({ id }) => (
+      {data.map(({ id }) => (
         <Grid
           container
           key={id}

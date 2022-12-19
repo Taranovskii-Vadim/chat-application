@@ -1,24 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { Box, TextField, Typography } from '@mui/material';
 
-import { currentChatId, currentMessages } from '../../store/messages';
+import { api } from '../../api';
+import getMessages from '../../api/getMessages';
 
 const Conversation = (): JSX.Element => {
   const socket = useRef();
   const { id } = useParams<{ id: string }>();
-  const setChatId = useSetRecoilState(currentChatId);
-  const data = useRecoilValue(currentMessages);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      setChatId(+id);
-    }
-  }, [id]);
+    const fetchData = async () => {
+      const response = await api(getMessages, undefined, 1);
 
-  useEffect(() => {
+      setMessages(response);
+    };
+
+    fetchData();
+
     socket.current = io('http://localhost:8080');
 
     socket.current.emit('newUserAdd', 1);
@@ -32,7 +33,7 @@ const Conversation = (): JSX.Element => {
     <>
       <Box sx={{ p: '12px 16px' }}>{id}</Box>
       <Box sx={{ backgroundColor: 'blue', flex: 1, overflowY: 'scroll' }}>
-        {data.map(({ id, senderId, text }) => {
+        {messages.map(({ id, senderId, text }) => {
           return (
             // TODO instead of 1 use real userId
             <Typography key={id} sx={{ textAlign: senderId === 1 ? 'right' : 'left' }}>
