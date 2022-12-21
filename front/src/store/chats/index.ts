@@ -1,13 +1,39 @@
-import { selectorFamily } from 'recoil';
+import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
 import getChats from '../../api/getChats';
 
-export const chatsSelector = selectorFamily({
-  key: 'chatsSelector',
-  get: (userId) => async () => {
-    const response = await api(getChats, undefined, Number(userId));
+import { Chat } from './types';
 
-    return response;
-  },
-});
+// TODO add types for stores
+class ChatsStore {
+  data: Chat[] = [];
+
+  isLoading = true;
+
+  constructor() {
+    makeObservable(this, {
+      isLoading: observable,
+
+      setIsLoading: action,
+    });
+  }
+
+  setIsLoading = (value: boolean): void => {
+    this.isLoading = value;
+  };
+
+  fetchData = async (userId: string): Promise<void> => {
+    try {
+      this.setIsLoading(true);
+
+      const result = await api(getChats, undefined, Number(userId));
+
+      this.data = result;
+    } finally {
+      this.setIsLoading(false);
+    }
+  };
+}
+
+export default ChatsStore;

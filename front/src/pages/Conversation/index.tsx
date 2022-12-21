@@ -1,15 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
 import { io, Socket } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import { Box, TextField, Typography } from '@mui/material';
 
-import { messagesSelector } from '../../store/messages';
-
 const Conversation = (): JSX.Element => {
   const socket = useRef<Socket<any, any>>();
   const { id } = useParams<{ id: string }>();
-  const data = useRecoilValue(messagesSelector(1));
 
   // const [sendMessage, setSendMessage] = useState(null);
   // const [receivedMessage, setReceivedMessage] = useState(null);
