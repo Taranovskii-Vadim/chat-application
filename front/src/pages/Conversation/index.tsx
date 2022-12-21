@@ -1,9 +1,16 @@
 import { useEffect, useRef } from 'react';
+import { observer } from 'mobx-react-lite';
 import { io, Socket } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
+
+import MessagesStore from '../../store/messages';
+
+const store = new MessagesStore();
 
 const Conversation = (): JSX.Element => {
+  // TODO fix any later
+  const inputRef = useRef<any>();
   const socket = useRef<Socket<any, any>>();
   const { id } = useParams<{ id: string }>();
 
@@ -11,6 +18,8 @@ const Conversation = (): JSX.Element => {
   // const [receivedMessage, setReceivedMessage] = useState(null);
 
   useEffect(() => {
+    store.fetchData(id);
+
     socket.current = io('http://localhost:8080');
 
     socket.current.emit('newUserAdd', 1);
@@ -37,11 +46,15 @@ const Conversation = (): JSX.Element => {
   //   setMessages((prev) => [...prev, { id, senderId: 1, text }]);
   // };
 
+  if (store.isLoading) {
+    return <div>loading...</div>;
+  }
+
   return (
     <>
       <Box sx={{ p: '12px 16px' }}>{id}</Box>
       <Box sx={{ backgroundColor: 'blue', flex: 1, overflowY: 'scroll' }}>
-        {data.map(({ id, senderId, text }) => {
+        {store.data.map(({ id, senderId, text }) => {
           return (
             // TODO instead of 1 use real userId
             <Typography key={id} sx={{ textAlign: senderId === 1 ? 'right' : 'left' }}>
@@ -50,19 +63,14 @@ const Conversation = (): JSX.Element => {
           );
         })}
       </Box>
-      <Box sx={{ p: '12px 16px' }}>
-        <TextField
-          fullWidth
-          size="small"
-          onKeyUp={({ target, key }) => {
-            if (key === 'Enter') {
-              // handleAddMessage(target.value);
-            }
-          }}
-        />
+      <Box sx={{ display: 'flex', p: '12px 16px' }}>
+        <TextField inputRef={inputRef} fullWidth size="small" />
+        <Button disabled={store.isFormLoading} onClick={() => store.addMessage(inputRef.current.value)}>
+          Send
+        </Button>
       </Box>
     </>
   );
 };
 
-export default Conversation;
+export default observer(Conversation);
