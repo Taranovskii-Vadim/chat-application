@@ -3,27 +3,33 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from '../../api';
 import postLogin from '../../api/postLogin';
 
-class AuthStore {
-  //   data: UserRole = undefined;
+// TODO check variant when Login is page not component
 
-  isLoginForm = !document.cookie.includes('token');
+class AuthStore {
+  isLogged = !!localStorage.getItem('token');
 
   constructor() {
     makeObservable(this, {
-      //   data: observable,
-      isLoginForm: observable,
+      isLogged: observable,
 
-      changeLoginForm: action,
+      changeIsLogged: action,
     });
   }
 
-  changeLoginForm = (value: boolean): void => {
-    this.isLoginForm = value;
+  changeIsLogged = (value: boolean): void => {
+    this.isLogged = value;
+  };
+
+  logout = (): void => {
+    window.location.href = '/';
+    localStorage.clear();
+    this.isLogged = false;
   };
 
   signIn = async (payload: any): Promise<void> => {
-    await api(postLogin, payload);
-    this.changeLoginForm(!document.cookie.includes('token'));
+    const result = await api(postLogin, payload);
+
+    this.changeIsLogged(!!result);
   };
 }
 

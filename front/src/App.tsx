@@ -4,12 +4,12 @@ import { Routes, Route } from 'react-router-dom';
 
 import auth from './store/auth';
 
-import Login from './components/Login';
+import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import Conversation from './pages/Conversation';
 
 const App = (): JSX.Element => {
-  if (auth.isLoginForm) {
+  if (!auth.isLogged) {
     return <Login />;
   }
 
