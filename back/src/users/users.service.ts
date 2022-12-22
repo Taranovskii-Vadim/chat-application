@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { User } from './types';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
+  private readonly users: User[] = [
     {
       id: 1,
       username: 'admin',
