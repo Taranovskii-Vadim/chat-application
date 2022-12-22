@@ -7,7 +7,7 @@ import auth from '../../store/auth';
 
 const Login = (): JSX.Element => {
   const { control, handleSubmit } = useForm({
-    defaultValues: { login: '' },
+    defaultValues: { username: '', password: '' },
   });
 
   const onSubmit: SubmitHandler<any> = (data) => auth.signIn(data);
@@ -15,7 +15,12 @@ const Login = (): JSX.Element => {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        name="login"
+        name="username"
+        control={control}
+        render={({ field }) => <TextField placeholder="Введите логин" {...field} />}
+      />
+      <Controller
+        name="password"
         control={control}
         render={({ field }) => <TextField placeholder="Введите логин" {...field} />}
       />

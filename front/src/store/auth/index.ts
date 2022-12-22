@@ -21,8 +21,8 @@ class AuthStore {
     this.isLoginForm = value;
   };
 
-  signIn = async ({ login }: any): Promise<void> => {
-    await api(postLogin, { login });
+  signIn = async (payload: any): Promise<void> => {
+    await api(postLogin, payload);
     this.changeLoginForm(!document.cookie.includes('token'));
   };
 }
