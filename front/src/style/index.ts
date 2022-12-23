@@ -1,5 +1,8 @@
 import { createTheme } from '@mui/material';
 
+// TODO create color pallete
+// TODO choose font for project
+
 export const theme = createTheme({
   palette: {
     primary: {

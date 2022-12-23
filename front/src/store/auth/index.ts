@@ -2,10 +2,11 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
 import postLogin from '../../api/postLogin';
+import { LoginPayload, Store } from './types';
 
 // TODO check variant when Login is page not component
 
-class AuthStore {
+class AuthStore implements Store {
   isLogged = !!localStorage.getItem('token');
 
   constructor() {
@@ -26,7 +27,7 @@ class AuthStore {
     this.isLogged = false;
   };
 
-  signIn = async (payload: any): Promise<void> => {
+  signIn = async (payload: LoginPayload): Promise<void> => {
     const result = await api(postLogin, payload);
 
     this.changeIsLogged(!!result);
