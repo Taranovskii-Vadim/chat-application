@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Avatar, Typography } from '@mui/material';
+import { Grid, Avatar, Typography, Box, TextField } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 import ChatsStore from '../../store/chats';
@@ -21,6 +21,9 @@ const Sidebar = (): JSX.Element => {
 
   return (
     <Grid item xs={2.5} sx={{ borderRight: `1px solid ${grey['300']}` }}>
+      <Box sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
+        <TextField size="small" label="uniq user login to chat" fullWidth />
+      </Box>
       {!isLoading ? (
         data.map(({ id }) => (
           <Grid
@@ -33,7 +36,7 @@ const Sidebar = (): JSX.Element => {
               <Avatar {...stringAvatar('Тарановский Вадим')} />
             </Grid>
             <Grid item xs={9}>
-              <Typography variant="h3">{id}</Typography>
+              <Typography variant="h6">{id}</Typography>
             </Grid>
           </Grid>
         ))

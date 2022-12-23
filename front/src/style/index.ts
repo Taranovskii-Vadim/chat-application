@@ -10,6 +10,8 @@ export const theme = createTheme({
     },
   },
   typography: {
-    h3: { fontSize: '14px', fontWeight: 600 },
+    body1: { fontSize: '14px', fontWeight: 400 },
+    h6: { fontSize: '14px', fontWeight: 600 },
+    subtitle1: { fontSize: '11px', fontWeight: 400 },
   },
 });
