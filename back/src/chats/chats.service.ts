@@ -16,6 +16,8 @@ export class ChatsService {
 
   constructor(private usersService: UsersService) {}
 
+  // TODO create chat title method
+
   getChats(userId: number): ExpandedChat[] {
     const filtered = this.chats.filter(({ members }) =>
       members.includes(userId),

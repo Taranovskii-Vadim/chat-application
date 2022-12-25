@@ -27,7 +27,7 @@ const Pages = (): JSX.Element => {
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         <Routes>
-          <Route path="/:id" element={<Conversation />} />
+          <Route path="/:id" element={<Conversation user={store.data} />} />
         </Routes>
       </Grid>
     </Grid>

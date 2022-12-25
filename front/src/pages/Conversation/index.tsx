@@ -7,24 +7,34 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { grey } from '@mui/material/colors';
 
+import { User } from '../../store/user/types';
 import MessagesStore from '../../store/messages';
 
 import Flexbox from '../../components/Flexbox';
 
 const store = new MessagesStore();
 
-const Conversation = (): JSX.Element => {
+interface Props {
+  user: User;
+}
+
+// TODO we must create chut store first and then messages
+const Conversation = ({ user }: Props): JSX.Element => {
   // TODO fix any later
   const inputRef = useRef<any>();
   const socket = useRef<Socket<any, any>>();
   const { id } = useParams<{ id: string }>();
+
+  // console.log(id);
 
   // const [sendMessage, setSendMessage] = useState(null);
   // const [receivedMessage, setReceivedMessage] = useState(null);
 
   useEffect(() => {
     store.fetchData(id);
+  }, [id]);
 
+  useEffect(() => {
     socket.current = io('http://localhost:8080');
 
     socket.current.emit('newUserAdd', 1);
@@ -76,8 +86,7 @@ const Conversation = (): JSX.Element => {
       <Box sx={{ flex: 1, overflowY: 'scroll' }}>
         {store.data.map(({ id, senderId, text }) => {
           return (
-            // TODO instead of 1 use real userId
-            <Typography key={id} sx={{ textAlign: senderId === 1 ? 'right' : 'left' }}>
+            <Typography key={id} sx={{ textAlign: senderId === user.id ? 'right' : 'left' }}>
               {text}
             </Typography>
           );
