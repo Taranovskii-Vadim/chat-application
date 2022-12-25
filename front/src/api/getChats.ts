@@ -4,7 +4,7 @@ import { Method, Route } from './types';
 
 interface ResponseDTO {
   id: number;
-  members: string[];
+  title: string;
   unReadCount: number;
 }
 

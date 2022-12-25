@@ -7,6 +7,8 @@ import { grey } from '@mui/material/colors';
 import ChatsStore from '../../store/chats';
 import { User } from '../../store/user/types';
 
+import Flexbox from '../Flexbox';
+
 import { stringAvatar } from './helpers';
 
 const store = new ChatsStore();
@@ -30,7 +32,7 @@ const Sidebar = ({ user: { id } }: Props): JSX.Element => {
         <TextField size="small" label="uniq user login to chat" fullWidth />
       </Box>
       {!isLoading ? (
-        data.map(({ id, members, unReadCount }) => (
+        data.map(({ id, title, unReadCount }) => (
           <Grid
             container
             key={id}
@@ -38,10 +40,17 @@ const Sidebar = ({ user: { id } }: Props): JSX.Element => {
             sx={{ p: 2, cursor: 'pointer', maxHeight: '72px', alignItems: 'center' }}
           >
             <Grid item xs={3}>
-              <Avatar {...stringAvatar(members[0])} />
+              <Avatar {...stringAvatar(title)} />
             </Grid>
             <Grid item xs={9}>
-              <Typography variant="h6">{members[0]}</Typography>
+              <Flexbox>
+                <Typography variant="h6">{title}</Typography>
+                {/* <Typography>11:00</Typography> */}
+              </Flexbox>
+              <Flexbox>
+                {/* <Typography>Hello</Typography> */}
+                {/* <Chip size="small" color="primary" label={unReadCount} /> */}
+              </Flexbox>
             </Grid>
           </Grid>
         ))

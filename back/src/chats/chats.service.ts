@@ -24,16 +24,18 @@ export class ChatsService {
     const result = filtered.map(({ members, ...other }) => {
       const otherMembers = members.filter((id) => id !== userId);
 
-      const result = otherMembers.map((id) => {
-        const user = this.usersService.findById(id) as User;
+      const title = otherMembers
+        .map((id) => {
+          const user = this.usersService.findById(id) as User;
 
-        const name = capitalizeString(user.name);
-        const lastname = capitalizeString(user.lastname);
+          const name = capitalizeString(user.name);
+          const lastname = capitalizeString(user.lastname);
 
-        return `${name} ${lastname}`;
-      });
+          return `${name} ${lastname}`;
+        })
+        .join(', ');
 
-      return { members: result, ...other };
+      return { title, ...other };
     });
 
     return result;

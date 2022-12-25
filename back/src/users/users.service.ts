@@ -22,7 +22,7 @@ export class UsersService {
     {
       id: 3,
       login: 'teste',
-      name: 'ella',
+      name: 'kruella',
       lastname: 'winter',
       password: 'qwerty',
     },

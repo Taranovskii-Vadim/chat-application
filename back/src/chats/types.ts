@@ -11,7 +11,7 @@ export type Chat = CommonChat & {
 };
 
 export type ExpandedChat = CommonChat & {
-  members: string[];
+  title: string;
 };
 
 export type NewChatDTO = {
