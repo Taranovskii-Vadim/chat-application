@@ -1,13 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
-import getChats from '../../api/getChats';
+import getProfile from '../../api/getProfile';
 
-import { Chat } from './types';
+import { Store, User } from './types';
 
-// TODO add types for stores
-class ChatsStore {
-  data: Chat[] = [];
+class UserStore implements Store {
+  data: User | undefined = undefined;
 
   isLoading = true;
 
@@ -23,11 +22,9 @@ class ChatsStore {
     this.isLoading = value;
   };
 
-  fetchData = async (userId: number): Promise<void> => {
+  fetchData = async (): Promise<void> => {
     try {
-      this.setIsLoading(true);
-
-      const result = await api(getChats, undefined, userId);
+      const result = await api(getProfile);
 
       this.data = result;
     } finally {
@@ -36,4 +33,4 @@ class ChatsStore {
   };
 }
 
-export default ChatsStore;
+export default UserStore;

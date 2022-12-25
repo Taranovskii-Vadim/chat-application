@@ -8,7 +8,7 @@ import { LoginPayload } from '../../store/auth/types';
 
 const Login = (): JSX.Element => {
   const { control, handleSubmit } = useForm<LoginPayload>({
-    defaultValues: { username: '', password: '' },
+    defaultValues: { login: '', password: '' },
   });
 
   const onSubmit: SubmitHandler<LoginPayload> = (data) => auth.signIn(data);
@@ -20,7 +20,7 @@ const Login = (): JSX.Element => {
       sx={{ width: '650px', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}
     >
       <Controller
-        name="username"
+        name="login"
         control={control}
         render={({ field }) => <TextField fullWidth sx={{ mb: 3 }} label="Логин" {...field} />}
       />

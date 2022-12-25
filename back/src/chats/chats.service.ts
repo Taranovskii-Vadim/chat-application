@@ -1,13 +1,40 @@
 import { Injectable } from '@nestjs/common';
 
-import { Chat, NewChatDTO } from './types';
+import { User } from 'src/users/types';
+import { UsersService } from 'src/users/users.service';
+
+import { capitalizeString } from './helpers';
+import { Chat, ExpandedChat, NewChatDTO } from './types';
 
 @Injectable()
 export class ChatsService {
-  private chats: Chat[] = [{ id: 1, members: [1, 2] }];
+  private chats: Chat[] = [
+    { id: 1, members: [1, 2], unReadCount: 0 },
+    { id: 2, members: [1, 3], unReadCount: 14 },
+    { id: 3, members: [2, 3], unReadCount: 6 },
+  ];
 
-  getChats(userId: number): Chat[] {
-    const result = this.chats.filter(({ members }) => members.includes(userId));
+  constructor(private usersService: UsersService) {}
+
+  getChats(userId: number): ExpandedChat[] {
+    const filtered = this.chats.filter(({ members }) =>
+      members.includes(userId),
+    );
+
+    const result = filtered.map(({ members, ...other }) => {
+      const otherMembers = members.filter((id) => id !== userId);
+
+      const result = otherMembers.map((id) => {
+        const user = this.usersService.findById(id) as User;
+
+        const name = capitalizeString(user.name);
+        const lastname = capitalizeString(user.lastname);
+
+        return `${name} ${lastname}`;
+      });
+
+      return { members: result, ...other };
+    });
 
     return result;
   }
@@ -20,7 +47,7 @@ export class ChatsService {
     const id = this.chats.length + 1;
 
     // TODO put here not id but full short user info
-    this.chats.push({ id, members: [senderId, receiverId] });
+    // this.chats.push({ id, members: [senderId, receiverId] });
 
     return id;
   }

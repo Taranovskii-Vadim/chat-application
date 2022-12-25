@@ -4,7 +4,8 @@ import { Method, Route } from './types';
 
 interface ResponseDTO {
   id: number;
-  members: number[];
+  members: string[];
+  unReadCount: number;
 }
 
 class GetChats implements Route {

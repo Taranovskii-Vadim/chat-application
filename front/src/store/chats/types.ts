@@ -1,4 +1,5 @@
 export type Chat = {
   id: number;
-  members: number[];
+  members: string[];
+  unReadCount: number;
 };

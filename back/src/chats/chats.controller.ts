@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { ChatsService } from './chats.service';
 
-import { Chat, NewChatDTO } from './types';
+import { Chat, ExpandedChat, NewChatDTO } from './types';
 
 // TODO think how to solve base andpoint /api
 @Controller('/api/chats')
@@ -19,7 +19,7 @@ export class ChatsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/user/:userId')
-  getChats(@Param('userId') userId: string): Chat[] {
+  getChats(@Param('userId') userId: string): ExpandedChat[] {
     return this.chatsService.getChats(+userId);
   }
 

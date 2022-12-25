@@ -2,6 +2,7 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
 import postLogin from '../../api/postLogin';
+
 import { LoginPayload, Store } from './types';
 
 // TODO check variant when Login is page not component
