@@ -26,13 +26,13 @@ const Conversation = ({ user }: Props): JSX.Element => {
   const socket = useRef<Socket<any, any>>();
   const { id } = useParams<{ id: string }>();
 
-  // console.log(id);
-
   // const [sendMessage, setSendMessage] = useState(null);
   // const [receivedMessage, setReceivedMessage] = useState(null);
 
   useEffect(() => {
-    store.fetchData(id);
+    if (id) {
+      store.fetchData(+id);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -66,6 +66,10 @@ const Conversation = ({ user }: Props): JSX.Element => {
     return <Loader height="100vh" />;
   }
 
+  const handleSendMessage = (): void => {
+    store.addMessage(user.id, inputRef.current.value);
+  };
+
   return (
     <>
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
@@ -84,21 +88,19 @@ const Conversation = ({ user }: Props): JSX.Element => {
           </IconButton>
         </Box>
       </Flexbox>
-      {/* <Box sx={{ flex: 1, overflowY: 'scroll' }}>
-        {store.data.map(({ id, senderId, text }) => {
-          return (
-            <Typography key={id} sx={{ textAlign: senderId === user.id ? 'right' : 'left' }}>
-              {text}
-            </Typography>
-          );
-        })}
-      </Box> */}
-      {/* <Box sx={{ display: 'flex', p: '12px 16px' }}>
+      <Box sx={{ flex: 1, overflowY: 'scroll' }}>
+        {store.messages.map(({ id, senderId, text }) => (
+          <Typography key={id} sx={{ textAlign: senderId === user.id ? 'right' : 'left' }}>
+            {text}
+          </Typography>
+        ))}
+      </Box>
+      <Box sx={{ display: 'flex', p: '12px 16px' }}>
         <TextField inputRef={inputRef} fullWidth size="small" />
-        <Button disabled={store.isFormLoading} onClick={() => store.addMessage(inputRef.current.value)}>
+        <Button disabled={store.isFormLoading} onClick={handleSendMessage}>
           Send
         </Button>
-      </Box> */}
+      </Box>
     </>
   );
 };
