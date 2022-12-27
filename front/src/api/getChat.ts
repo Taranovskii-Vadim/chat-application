@@ -2,16 +2,16 @@ import { Chat } from '../store/types';
 
 import { CommonChatDTO, Method, Route } from './types';
 
-class GetChats implements Route {
+class GetChat implements Route {
   method: Method = 'GET';
 
   getUrl(id?: number): string {
-    return `/chats/user/${id}`;
+    return `/chats/${id}`;
   }
 
-  getData(data: CommonChatDTO[]): Chat[] {
+  getData(data: CommonChatDTO): Chat {
     return data;
   }
 }
 
-export default new GetChats();
+export default new GetChat();

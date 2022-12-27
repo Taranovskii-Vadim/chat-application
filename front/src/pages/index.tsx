@@ -8,7 +8,7 @@ import UserStore from '../store/user';
 import Sidebar from '../components/Sidebar';
 import Loader from '../components/ui/Loader';
 
-import Conversation from './Conversation';
+import Chat from './Chat';
 
 const store = new UserStore();
 
@@ -28,7 +28,7 @@ const Pages = (): JSX.Element => {
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
         <Routes>
-          <Route path="/:id" element={<Conversation user={store.data} />} />
+          <Route path="/:id" element={<Chat user={store.data} />} />
         </Routes>
       </Grid>
     </Grid>

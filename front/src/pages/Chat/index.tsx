@@ -8,12 +8,12 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { grey } from '@mui/material/colors';
 
 import { User } from '../../store/user/types';
-import MessagesStore from '../../store/messages';
+import ChatStore from '../../store/chat';
 
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
 
-const store = new MessagesStore();
+const store = new ChatStore();
 
 interface Props {
   user: User;
@@ -62,18 +62,18 @@ const Conversation = ({ user }: Props): JSX.Element => {
   //   setMessages((prev) => [...prev, { id, senderId: 1, text }]);
   // };
 
-  if (store.isLoading) {
-    return <Loader />;
+  if (store.isLoading || !store.data) {
+    return <Loader height="100vh" />;
   }
 
   return (
     <>
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
         <Box>
-          <Typography variant="h6">Eva Summer</Typography>
-          <Typography color="primary" variant="subtitle1">
+          <Typography variant="h6">{store.data.title}</Typography>
+          {/* <Typography color="primary" variant="subtitle1">
             online
-          </Typography>
+          </Typography> */}
         </Box>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>
@@ -84,7 +84,7 @@ const Conversation = ({ user }: Props): JSX.Element => {
           </IconButton>
         </Box>
       </Flexbox>
-      <Box sx={{ flex: 1, overflowY: 'scroll' }}>
+      {/* <Box sx={{ flex: 1, overflowY: 'scroll' }}>
         {store.data.map(({ id, senderId, text }) => {
           return (
             <Typography key={id} sx={{ textAlign: senderId === user.id ? 'right' : 'left' }}>
@@ -92,13 +92,13 @@ const Conversation = ({ user }: Props): JSX.Element => {
             </Typography>
           );
         })}
-      </Box>
-      <Box sx={{ display: 'flex', p: '12px 16px' }}>
+      </Box> */}
+      {/* <Box sx={{ display: 'flex', p: '12px 16px' }}>
         <TextField inputRef={inputRef} fullWidth size="small" />
         <Button disabled={store.isFormLoading} onClick={() => store.addMessage(inputRef.current.value)}>
           Send
         </Button>
-      </Box>
+      </Box> */}
     </>
   );
 };

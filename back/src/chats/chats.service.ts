@@ -16,7 +16,18 @@ export class ChatsService {
 
   constructor(private usersService: UsersService) {}
 
-  // TODO create chat title method
+  private getChatTitle(membersId: number[]): string {
+    const result = membersId.map((id) => {
+      const user = this.usersService.findById(id) as User;
+
+      const name = capitalizeString(user.name);
+      const lastname = capitalizeString(user.lastname);
+
+      return `${name} ${lastname}`;
+    });
+
+    return result.join(', ');
+  }
 
   getChats(userId: number): ExpandedChat[] {
     const filtered = this.chats.filter(({ members }) =>
@@ -26,16 +37,7 @@ export class ChatsService {
     const result = filtered.map(({ members, ...other }) => {
       const otherMembers = members.filter((id) => id !== userId);
 
-      const title = otherMembers
-        .map((id) => {
-          const user = this.usersService.findById(id) as User;
-
-          const name = capitalizeString(user.name);
-          const lastname = capitalizeString(user.lastname);
-
-          return `${name} ${lastname}`;
-        })
-        .join(', ');
+      const title = this.getChatTitle(otherMembers);
 
       return { title, ...other };
     });
@@ -43,8 +45,15 @@ export class ChatsService {
     return result;
   }
 
-  getChat(chatId: number): Chat | undefined {
-    return this.chats.find(({ id }) => id === chatId);
+  getChat(userId: number, chatId: number): ExpandedChat | undefined {
+    const result = this.chats.find(({ id }) => id === chatId);
+
+    if (!result) return undefined;
+
+    const filtered = result.members.filter((id) => id !== userId);
+    const title = this.getChatTitle(filtered);
+
+    return { id: result.id, unReadCount: result.unReadCount, title };
   }
 
   createChat({ senderId, receiverId }: NewChatDTO): number {

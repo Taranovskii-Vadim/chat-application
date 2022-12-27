@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from '../../api';
 import getChats from '../../api/getChats';
 
-import { Chat } from './types';
+import { Chat } from '../types';
 
 // TODO add types for stores
 class ChatsStore {

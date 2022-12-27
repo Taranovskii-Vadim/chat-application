@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import auth from './store/auth';
 
 import Pages from './pages';
-import Login from './pages/Login';
+import Login from './components/Login';
 
 const App = (): JSX.Element => {
   if (!auth.isLogged) {

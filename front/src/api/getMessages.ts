@@ -1,4 +1,4 @@
-import { Message } from '../store/messages/types';
+import { Message } from '../store/chat/types';
 import { Method, Route } from './types';
 
 interface ResponseDTO {

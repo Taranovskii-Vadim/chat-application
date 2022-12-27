@@ -1,10 +1,18 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+  Controller,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { ChatsService } from './chats.service';
 
-import { Chat, ExpandedChat, NewChatDTO } from './types';
+import { ExpandedChat, NewChatDTO } from './types';
 
 // TODO think how to solve base andpoint /api
 @Controller('/api/chats')
@@ -13,8 +21,11 @@ export class ChatsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatId')
-  getChat(@Param('chatId') chatId: string): Chat | undefined {
-    return this.chatsService.getChat(+chatId);
+  getChat(
+    @Param('chatId') chatId: string,
+    @Req() req: any,
+  ): ExpandedChat | undefined {
+    return this.chatsService.getChat(req.user.id, +chatId);
   }
 
   @UseGuards(JwtAuthGuard)
