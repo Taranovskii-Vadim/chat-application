@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import UserStore from '../store/user';
 
 import Sidebar from '../components/Sidebar';
+import Loader from '../components/ui/Loader';
 
 import Conversation from './Conversation';
 
@@ -17,8 +18,7 @@ const Pages = (): JSX.Element => {
   }, []);
 
   if (store.isLoading || !store.data) {
-    // TODO add loader component
-    return <div>loading...</div>;
+    return <Loader height="100vh" />;
   }
 
   return (
@@ -26,6 +26,7 @@ const Pages = (): JSX.Element => {
       <Sidebar user={store.data} />
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
+        {/* TODO add lazy loading maybe */}
         <Routes>
           <Route path="/:id" element={<Conversation user={store.data} />} />
         </Routes>

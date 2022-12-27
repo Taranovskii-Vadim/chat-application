@@ -6,6 +6,7 @@ import { grey } from '@mui/material/colors';
 import ChatsStore from '../../store/chats';
 import { User } from '../../store/user/types';
 
+import Loader from '../ui/Loader';
 import Navigation from './components/Navigation';
 
 const store = new ChatsStore();
@@ -24,12 +25,7 @@ const Sidebar = ({ user: { id } }: Props): JSX.Element => {
       <Box sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
         <TextField size="small" label="uniq user login to chat" fullWidth />
       </Box>
-      {!store.isLoading ? (
-        <Navigation store={store} />
-      ) : (
-        // TODO add loader
-        <div>loading...</div>
-      )}
+      {store.isLoading ? <Loader height="90vh" /> : <Navigation store={store} />}
     </Grid>
   );
 };

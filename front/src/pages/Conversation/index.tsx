@@ -11,6 +11,7 @@ import { User } from '../../store/user/types';
 import MessagesStore from '../../store/messages';
 
 import Flexbox from '../../components/Flexbox';
+import Loader from '../../components/ui/Loader';
 
 const store = new MessagesStore();
 
@@ -62,7 +63,7 @@ const Conversation = ({ user }: Props): JSX.Element => {
   // };
 
   if (store.isLoading) {
-    return <div>loading...</div>;
+    return <Loader />;
   }
 
   return (
