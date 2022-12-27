@@ -29,6 +29,8 @@ const Conversation = ({ user }: Props): JSX.Element => {
   // const [sendMessage, setSendMessage] = useState(null);
   // const [receivedMessage, setReceivedMessage] = useState(null);
 
+  console.log(store.data);
+
   useEffect(() => {
     if (id) {
       store.fetchData(+id);
@@ -37,16 +39,17 @@ const Conversation = ({ user }: Props): JSX.Element => {
 
   useEffect(() => {
     socket.current = io('http://localhost:8080');
-
-    socket.current.emit('newUserAdd', 1);
+    socket.current.emit('addNewUser', user.id);
 
     socket.current.on('getUsers', (users: any) => {
+      // TODO here we must set online users
       console.log(users);
     });
 
-    // socket.current.on('receiveMessage', (data: any) => {
-    //   setReceivedMessage(data);
-    // });
+    socket.current.on('receiveMessage', (data: any) => {
+      console.log(data);
+      // setReceivedMessage(data);
+    });
   }, []);
 
   // useEffect(() => {
@@ -55,19 +58,17 @@ const Conversation = ({ user }: Props): JSX.Element => {
   //   }
   // }, [sendMessage]);
 
-  // const handleAddMessage = async (text: string): Promise<void> => {
-  //   const payload = { chatId: 1, senderId: 1, text };
-  //   const id = await api(postMessage, payload);
-
-  //   setMessages((prev) => [...prev, { id, senderId: 1, text }]);
-  // };
-
   if (store.isLoading || !store.data) {
     return <Loader height="100vh" />;
   }
 
-  const handleSendMessage = (): void => {
-    store.addMessage(user.id, inputRef.current.value);
+  const handleAddMessage = (): void => {
+    if (socket.current) {
+      const text = inputRef.current.value;
+      store.addMessage(user.id, text);
+      // TODO here we must provide receiverId and text
+      socket.current.emit('sendMessage', text);
+    }
   };
 
   return (
@@ -97,7 +98,7 @@ const Conversation = ({ user }: Props): JSX.Element => {
       </Box>
       <Box sx={{ display: 'flex', p: '12px 16px' }}>
         <TextField inputRef={inputRef} fullWidth size="small" />
-        <Button disabled={store.isFormLoading} onClick={handleSendMessage}>
+        <Button disabled={store.isFormLoading} onClick={handleAddMessage}>
           Send
         </Button>
       </Box>
