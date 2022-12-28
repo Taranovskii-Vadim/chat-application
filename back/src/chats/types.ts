@@ -6,12 +6,21 @@ type CommonChat = {
   unReadCount: number;
 };
 
-export type Chat = CommonChat & {
+export type ChatDB = CommonChat & {
   members: number[];
 };
 
-export type ExpandedChat = CommonChat & {
+export type ChatWithTitle = CommonChat & {
+  id: number;
+  unReadCount: number;
   title: string;
+};
+
+export type Chat = CommonChat & {
+  id: number;
+  title: string;
+  members: number[];
+  unReadCount: number;
 };
 
 export type NewChatDTO = {

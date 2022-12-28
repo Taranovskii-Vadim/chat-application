@@ -3,12 +3,10 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from '../../api';
 import getChat from '../../api/getChat';
 
-import { Chat } from '../types';
-
 import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
 
-import { Message, MessagePayload } from './types';
+import { Message, MessagePayload, Chat } from './types';
 
 class ChatStore {
   data: Chat | undefined = undefined;
@@ -21,16 +19,23 @@ class ChatStore {
 
   constructor() {
     makeObservable(this, {
+      messages: observable,
       isLoading: observable,
       isFormLoading: observable,
 
       setIsLoading: action,
+      setLastMessage: action,
       setIsFormLoading: action,
     });
   }
 
   setIsLoading = (value: boolean): void => {
     this.isLoading = value;
+  };
+
+  setLastMessage = (senderId: number, text: string): void => {
+    const id = this.messages[this.messages.length - 1].id + 1;
+    this.messages.push({ id, senderId, text });
   };
 
   setIsFormLoading = (value: boolean): void => {

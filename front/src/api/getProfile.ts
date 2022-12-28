@@ -1,5 +1,4 @@
-import { User } from '../store/auth/types';
-
+import { User } from '../store/user/types';
 import { Method, Route } from './types';
 
 interface ResponseDTO {

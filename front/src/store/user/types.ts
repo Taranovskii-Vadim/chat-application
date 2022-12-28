@@ -1,6 +1,6 @@
 export type User = {
   id: number;
-  login: string;
+  // login: string;
   // TODO maybe in future we add fields avatar
 };
 

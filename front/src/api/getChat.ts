@@ -1,6 +1,10 @@
-import { Chat } from '../store/types';
+import { Chat } from '../store/chat/types';
 
 import { CommonChatDTO, Method, Route } from './types';
+
+interface ResponseDTO extends CommonChatDTO {
+  members: number[];
+}
 
 class GetChat implements Route {
   method: Method = 'GET';
@@ -9,7 +13,7 @@ class GetChat implements Route {
     return `/chats/${id}`;
   }
 
-  getData(data: CommonChatDTO): Chat {
+  getData(data: ResponseDTO): Chat {
     return data;
   }
 }

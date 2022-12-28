@@ -16,11 +16,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    const { receiverId } = data;
-    const user = activeUsers.find((user) => user.userId === receiverId);
-    console.log(user);
+    const { receiverId, text, senderId } = data;
+    const user = activeUsers.find((user) => user.id === receiverId);
+
     if (user) {
-      io.to(user.socketId).emit("receiveMessage", data);
+      io.to(user.socketId).emit("receiveMessage", { text, senderId });
     }
   });
 

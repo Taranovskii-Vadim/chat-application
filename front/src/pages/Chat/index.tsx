@@ -26,11 +26,6 @@ const Conversation = ({ user }: Props): JSX.Element => {
   const socket = useRef<Socket<any, any>>();
   const { id } = useParams<{ id: string }>();
 
-  // const [sendMessage, setSendMessage] = useState(null);
-  // const [receivedMessage, setReceivedMessage] = useState(null);
-
-  console.log(store.data);
-
   useEffect(() => {
     if (id) {
       store.fetchData(+id);
@@ -46,28 +41,20 @@ const Conversation = ({ user }: Props): JSX.Element => {
       console.log(users);
     });
 
-    socket.current.on('receiveMessage', (data: any) => {
-      console.log(data);
-      // setReceivedMessage(data);
+    socket.current.on('receiveMessage', (data: { senderId: number; text: string }) => {
+      store.setLastMessage(data.senderId, data.text);
     });
   }, []);
-
-  // useEffect(() => {
-  //   if (sendMessage !== null) {
-  //     socket.current.emit('sendMessage', sendMessage);
-  //   }
-  // }, [sendMessage]);
 
   if (store.isLoading || !store.data) {
     return <Loader height="100vh" />;
   }
 
   const handleAddMessage = (): void => {
-    if (socket.current) {
+    if (socket.current && store.data) {
       const text = inputRef.current.value;
       store.addMessage(user.id, text);
-      // TODO here we must provide receiverId and text
-      socket.current.emit('sendMessage', text);
+      socket.current.emit('sendMessage', { senderId: user.id, receiverId: store.data.members[0], text });
     }
   };
 

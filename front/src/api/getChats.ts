@@ -1,4 +1,4 @@
-import { Chat } from '../store/types';
+import { CommonChat } from '../store/types';
 
 import { CommonChatDTO, Method, Route } from './types';
 
@@ -9,7 +9,7 @@ class GetChats implements Route {
     return `/chats/user/${id}`;
   }
 
-  getData(data: CommonChatDTO[]): Chat[] {
+  getData(data: CommonChatDTO[]): CommonChat[] {
     return data;
   }
 }
