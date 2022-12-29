@@ -19,7 +19,6 @@ interface Props {
   user: User;
 }
 
-// TODO we must create chut store first and then messages
 const Conversation = ({ user }: Props): JSX.Element => {
   // TODO fix any later
   const inputRef = useRef<any>();
@@ -36,12 +35,13 @@ const Conversation = ({ user }: Props): JSX.Element => {
     socket.current = io('http://localhost:8080');
     socket.current.emit('addNewUser', user.id);
 
-    socket.current.on('getUsers', (users: any) => {
-      // TODO here we must set online users
-      console.log(users);
+    socket.current.on('getUsers', (users: { id: number }[]) => {
+      const isOnline = !!users.find((item) => item.id === store.data.members[0]);
+
+      store.setIsUserOnline(isOnline);
     });
 
-    socket.current.on('receiveMessage', (data: { senderId: number; text: string }) => {
+    socket.current.on('receiveMessage', (data: any) => {
       store.setLastMessage(data.senderId, data.text);
     });
   }, []);
@@ -54,6 +54,7 @@ const Conversation = ({ user }: Props): JSX.Element => {
     if (socket.current && store.data) {
       const text = inputRef.current.value;
       store.addMessage(user.id, text);
+      // TODO maybe we should await addMessage get messageId from api and provide it to socket
       socket.current.emit('sendMessage', { senderId: user.id, receiverId: store.data.members[0], text });
     }
   };
@@ -63,9 +64,11 @@ const Conversation = ({ user }: Props): JSX.Element => {
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
         <Box>
           <Typography variant="h6">{store.data.title}</Typography>
-          {/* <Typography color="primary" variant="subtitle1">
-            online
-          </Typography> */}
+          {store.isUserOnline ? (
+            <Typography color="primary" variant="subtitle1">
+              online
+            </Typography>
+          ) : null}
         </Box>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>

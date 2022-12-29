@@ -15,6 +15,8 @@ class ChatStore {
 
   isFormLoading = false;
 
+  isUserOnline = false;
+
   messages: Message[] = [];
 
   constructor() {
@@ -22,12 +24,18 @@ class ChatStore {
       messages: observable,
       isLoading: observable,
       isFormLoading: observable,
+      isUserOnline: observable,
 
       setIsLoading: action,
       setLastMessage: action,
+      setIsUserOnline: action,
       setIsFormLoading: action,
     });
   }
+
+  setIsUserOnline = (value: boolean): void => {
+    this.isUserOnline = value;
+  };
 
   setIsLoading = (value: boolean): void => {
     this.isLoading = value;

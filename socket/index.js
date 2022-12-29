@@ -10,8 +10,6 @@ io.on("connection", (socket) => {
       activeUsers.push({ id, socketId: socket.id });
     }
 
-    console.log("activeUsers", activeUsers);
-
     io.emit("getUsers", activeUsers);
   });
 
