@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { Routes, Route } from 'react-router-dom';
+import grey from '@mui/material/colors/grey';
 
-import UserStore from '../store/user';
+import UserStore from 'src/store/user';
 
-import Sidebar from '../components/Sidebar';
-import Loader from '../components/ui/Loader';
+import Sidebar from 'src/components/Sidebar';
+import Loader from 'src/components/ui/Loader';
 
 import Chat from './Chat';
 
@@ -24,7 +25,11 @@ const Pages = (): JSX.Element => {
   return (
     <Grid container sx={{ height: '100vh' }}>
       <Sidebar user={store.data} />
-      <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
+      <Grid
+        item
+        xs={9.5}
+        sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%', borderLeft: `1px solid ${grey['300']}` }}
+      >
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
         <Routes>

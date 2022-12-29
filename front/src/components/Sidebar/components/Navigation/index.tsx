@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, Grid, Typography } from '@mui/material';
 
 import ChatsStore from '../../../../store/chats';
+import { palette } from '../../../../style/palette';
 
+import { STYLES } from './constants';
 import { stringAvatar } from './helpers';
 
 interface Props {
@@ -12,20 +14,20 @@ interface Props {
 
 const Navigation = ({ store: { data } }: Props): JSX.Element => {
   const navigate = useNavigate();
-  const [activeChatId, setActiveChatId] = useState(0);
+  const [activeId, setActiveId] = useState(0);
 
   useEffect(() => {
     const chatId = parseInt(location.pathname.split('/')[1], 10);
 
-    if (chatId !== activeChatId) {
-      setActiveChatId(chatId);
+    if (chatId !== activeId) {
+      setActiveId(chatId);
     }
   });
 
   return (
     <>
       {data.map(({ id, title, unReadCount }) => {
-        const isEqual = activeChatId === id;
+        const isEqual = activeId === id;
 
         return (
           <Grid
@@ -33,18 +35,15 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
             key={id}
             onClick={() => navigate(`/${id}`)}
             sx={{
-              p: 2,
-              cursor: 'pointer',
-              maxHeight: '72px',
-              alignItems: 'center',
-              backgroundColor: isEqual ? '#0088cc' : 'transparent',
+              ...STYLES,
+              backgroundColor: isEqual ? palette.primary.main : 'transparent',
             }}
           >
             <Grid item xs={3}>
               <Avatar {...stringAvatar(title)} />
             </Grid>
             <Grid item xs={9}>
-              <Typography variant="h6" sx={{ color: isEqual ? 'white' : 'inherit' }}>
+              <Typography variant="h6" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
                 {title}
               </Typography>
             </Grid>

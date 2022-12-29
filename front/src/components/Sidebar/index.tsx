@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Grid, Box, TextField } from '@mui/material';
-import { grey } from '@mui/material/colors';
 
-import ChatsStore from '../../store/chats';
-import { User } from '../../store/user/types';
+import ChatsStore from 'src/store/chats';
+import { User } from 'src/store/user/types';
 
 import Loader from '../ui/Loader';
 import Navigation from './components/Navigation';
+
+import { STYLES } from './constants';
 
 const store = new ChatsStore();
 
@@ -21,9 +22,9 @@ const Sidebar = ({ user: { id } }: Props): JSX.Element => {
   }, [id]);
 
   return (
-    <Grid item xs={2.5} sx={{ borderRight: `1px solid ${grey['300']}` }}>
-      <Box sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
-        <TextField size="small" label="uniq user login to chat" fullWidth />
+    <Grid item xs={2.5}>
+      <Box sx={STYLES}>
+        <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
       </Box>
       {store.isLoading ? <Loader height="90vh" /> : <Navigation store={store} />}
     </Grid>

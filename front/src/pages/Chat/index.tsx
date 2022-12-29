@@ -7,11 +7,11 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { grey } from '@mui/material/colors';
 
-import { User } from '../../store/user/types';
-import ChatStore from '../../store/chat';
+import { User } from 'src/store/user/types';
+import ChatStore from 'src/store/chat';
 
-import Flexbox from '../../components/Flexbox';
-import Loader from '../../components/ui/Loader';
+import Flexbox from 'src/components/Flexbox';
+import Loader from 'src/components/ui/Loader';
 
 const store = new ChatStore();
 
@@ -19,7 +19,7 @@ interface Props {
   user: User;
 }
 
-const Conversation = ({ user }: Props): JSX.Element => {
+const Chat = ({ user }: Props): JSX.Element => {
   // TODO fix any later
   const inputRef = useRef<any>();
   const socket = useRef<Socket<any, any>>();
@@ -96,4 +96,4 @@ const Conversation = ({ user }: Props): JSX.Element => {
   );
 };
 
-export default observer(Conversation);
+export default observer(Chat);

@@ -1,10 +1,8 @@
 import { Box, Button, TextField } from '@mui/material';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 
-import auth from '../../store/auth';
-import { LoginPayload } from '../../store/auth/types';
-
-// TODO remove all any later
+import auth from 'src/store/auth';
+import { LoginPayload } from 'src/store/auth/types';
 
 const Login = (): JSX.Element => {
   const { control, handleSubmit } = useForm<LoginPayload>({

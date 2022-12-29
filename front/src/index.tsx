@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { createRoot } from 'react-dom/client';
@@ -8,7 +7,6 @@ import { theme } from './style';
 import App from './App';
 
 // TODO add signUp opportinuty
-// TODO black and purple app like discord
 // TODO add client and server validation to login form
 // TODO add empty image and text to start chat with someone maybe add some recommendations
 // TODO add background to chat area
