@@ -8,13 +8,14 @@ import App from './App';
 
 // TODO add signUp opportinuty
 // TODO add client and server validation to login form
+
 // TODO add empty image and text to start chat with someone maybe add some recommendations
 // TODO add background to chat area
-// TODO add unReadMessages count
+
 // TODO add last message time
 // TODO add last message
 
-// Second way
+// Second way optional
 // TODO add search opportinuty
 // TODO add drawer bar
 // TODO add avatar change option

@@ -12,4 +12,15 @@ export const theme = createTheme({
     h6: { fontSize: '14px', fontWeight: 600 },
     subtitle1: { fontSize: '11px', fontWeight: 400 },
   },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        sizeSmall: {
+          minWidth: '18px',
+          height: '18px',
+          fontSize: '12px',
+        },
+      },
+    },
+  },
 });
