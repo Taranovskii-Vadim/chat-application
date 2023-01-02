@@ -28,7 +28,7 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
 
   return (
     <>
-      {data.map(({ id, title, unReadCount }) => {
+      {data.map(({ id, title, unReadCount, lastMessageTime }) => {
         const isEqual = activeId === id;
 
         return (
@@ -48,6 +48,9 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
               <Flexbox>
                 <Typography variant="h6" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
                   {title}
+                </Typography>
+                <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+                  {lastMessageTime}
                 </Typography>
               </Flexbox>
               <Flexbox>

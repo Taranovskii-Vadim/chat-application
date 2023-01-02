@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from '../../api';
 import getChats from '../../api/getChats';
 
-import { Chat } from '../types';
+import { Chat } from './types';
 
 // TODO add types for stores
 class ChatsStore {
@@ -23,11 +23,11 @@ class ChatsStore {
     this.isLoading = value;
   };
 
-  fetchData = async (userId: number): Promise<void> => {
+  fetchData = async (): Promise<void> => {
     try {
       this.setIsLoading(true);
 
-      const result = await api(getChats, undefined, userId);
+      const result = await api(getChats);
 
       this.data = result;
     } finally {

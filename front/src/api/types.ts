@@ -9,9 +9,3 @@ export type Route<D = unknown> = {
   getUrl: (query?: Query) => string;
   getData: (result: any) => D;
 };
-
-export interface CommonChatDTO {
-  id: number;
-  title: string;
-  unReadCount: number;
-}

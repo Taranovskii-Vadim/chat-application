@@ -1,27 +1,21 @@
 // lastMessage: { senderId: number; text: string };
 // TODO add last message object, lastmessage time
 
-type CommonChat = {
+export type ChatDB = {
   id: number;
-  unReadCount: number;
-};
-
-export type ChatDB = CommonChat & {
-  members: number[];
-};
-
-export type ChatWithTitle = CommonChat & {
-  id: number;
-  unReadCount: number;
-  title: string;
-};
-
-export type Chat = CommonChat & {
-  id: number;
-  title: string;
   members: number[];
   unReadCount: number;
+  lastMessageTime: Date;
 };
+
+export type Chat = {
+  id: number;
+  title: string;
+  unReadCount: number;
+  lastMessageTime: Date;
+};
+
+export type Conversation = { id: number; title: string; members: number[] };
 
 export type NewChatDTO = {
   senderId: number;

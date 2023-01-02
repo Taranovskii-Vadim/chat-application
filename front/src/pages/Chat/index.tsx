@@ -65,7 +65,7 @@ const Chat = ({ user }: Props): JSX.Element => {
         <Box>
           <Typography variant="h6">{store.data.title}</Typography>
           {store.isUserOnline ? (
-            <Typography color="primary" variant="subtitle1">
+            <Typography color="primary" variant="subtitle2">
               online
             </Typography>
           ) : null}

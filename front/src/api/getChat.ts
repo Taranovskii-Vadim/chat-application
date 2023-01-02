@@ -1,8 +1,10 @@
 import { Chat } from '../store/chat/types';
 
-import { CommonChatDTO, Method, Route } from './types';
+import { Method, Route } from './types';
 
-interface ResponseDTO extends CommonChatDTO {
+interface ResponseDTO {
+  id: number;
+  title: string;
   members: number[];
 }
 

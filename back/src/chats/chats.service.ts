@@ -4,14 +4,14 @@ import { User } from 'src/users/types';
 import { UsersService } from 'src/users/users.service';
 
 import { capitalizeString } from './helpers';
-import { Chat, ChatDB, ChatWithTitle, NewChatDTO } from './types';
+import { Chat, ChatDB, Conversation, NewChatDTO } from './types';
 
 @Injectable()
 export class ChatsService {
   private chats: ChatDB[] = [
-    { id: 1, members: [1, 2], unReadCount: 0 },
-    { id: 2, members: [1, 3], unReadCount: 14 },
-    { id: 3, members: [2, 3], unReadCount: 6 },
+    { id: 1, members: [1, 2], unReadCount: 0, lastMessageTime: new Date() },
+    { id: 2, members: [1, 3], unReadCount: 14, lastMessageTime: new Date() },
+    { id: 3, members: [2, 3], unReadCount: 6, lastMessageTime: new Date() },
   ];
 
   constructor(private usersService: UsersService) {}
@@ -29,7 +29,7 @@ export class ChatsService {
     return result.join(', ');
   }
 
-  getChats(userId: number): ChatWithTitle[] {
+  getChats(userId: number): Chat[] {
     const filtered = this.chats.filter(({ members }) =>
       members.includes(userId),
     );
@@ -45,7 +45,7 @@ export class ChatsService {
     return result;
   }
 
-  getChat(userId: number, chatId: number): Chat | undefined {
+  getChat(userId: number, chatId: number): Conversation | undefined {
     const result = this.chats.find(({ id }) => id === chatId);
 
     if (!result) return undefined;
@@ -57,7 +57,6 @@ export class ChatsService {
       title,
       id: result.id,
       members: filtered,
-      unReadCount: result.unReadCount,
     };
   }
 
