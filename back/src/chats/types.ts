@@ -1,18 +1,17 @@
-// lastMessage: { senderId: number; text: string };
-// TODO add last message object, lastmessage time
+import { LastMessage } from 'src/messages/types';
 
 export type ChatDB = {
   id: number;
   members: number[];
   unReadCount: number;
-  lastMessageTime: Date;
+  lastMessageId?: number;
 };
 
 export type Chat = {
   id: number;
   title: string;
   unReadCount: number;
-  lastMessageTime: Date;
+  lastMessage?: LastMessage;
 };
 
 export type Conversation = { id: number; title: string; members: number[] };

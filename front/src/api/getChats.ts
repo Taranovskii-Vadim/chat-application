@@ -8,7 +8,10 @@ interface ResponseDTO {
   id: number;
   title: string;
   unReadCount: number;
-  lastMessageTime: Date;
+  lastMessage?: {
+    text: string;
+    createdAt: Date;
+  };
 }
 
 class GetChats implements Route {
@@ -19,8 +22,11 @@ class GetChats implements Route {
   }
 
   getData(data: ResponseDTO[]): Chat[] {
-    return data.map(({ lastMessageTime, ...others }) => ({
-      lastMessageTime: format(new Date(lastMessageTime), 'dd.mm.yyyy'),
+    return data.map(({ lastMessage, ...others }) => ({
+      lastMessage: lastMessage && {
+        text: lastMessage.text,
+        createdAt: format(new Date(lastMessage.createdAt), 'dd.mm.yyyy'),
+      },
       ...others,
     }));
   }

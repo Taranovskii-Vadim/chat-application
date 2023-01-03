@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 import { User } from 'src/users/types';
+import { LastMessage } from 'src/messages/types';
 import { UsersService } from 'src/users/users.service';
+import { MessagesService } from 'src/messages/messages.service';
 
 import { capitalizeString } from './helpers';
 import { Chat, ChatDB, Conversation, NewChatDTO } from './types';
@@ -9,12 +11,15 @@ import { Chat, ChatDB, Conversation, NewChatDTO } from './types';
 @Injectable()
 export class ChatsService {
   private chats: ChatDB[] = [
-    { id: 1, members: [1, 2], unReadCount: 0, lastMessageTime: new Date() },
-    { id: 2, members: [1, 3], unReadCount: 14, lastMessageTime: new Date() },
-    { id: 3, members: [2, 3], unReadCount: 6, lastMessageTime: new Date() },
+    { id: 1, members: [1, 2], unReadCount: 0, lastMessageId: 1 },
+    { id: 2, members: [1, 3], unReadCount: 14 },
+    { id: 3, members: [2, 3], unReadCount: 6 },
   ];
 
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private messagesService: MessagesService,
+  ) {}
 
   private getChatTitle(membersId: number[]): string {
     const result = membersId.map((id) => {
@@ -29,17 +34,22 @@ export class ChatsService {
     return result.join(', ');
   }
 
+  private getChatLastMessage(id?: number): LastMessage | undefined {
+    return this.messagesService.getMessage(id);
+  }
+
   getChats(userId: number): Chat[] {
     const filtered = this.chats.filter(({ members }) =>
       members.includes(userId),
     );
 
-    const result = filtered.map(({ members, ...other }) => {
+    const result = filtered.map(({ members, lastMessageId, ...other }) => {
       const otherMembers = members.filter((id) => id !== userId);
 
       const title = this.getChatTitle(otherMembers);
+      const lastMessage = this.getChatLastMessage(lastMessageId);
 
-      return { title, ...other };
+      return { title, lastMessage, ...other };
     });
 
     return result;
