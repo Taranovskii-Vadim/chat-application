@@ -11,8 +11,8 @@ import { Chat, ChatDB, Conversation, NewChatDTO } from './types';
 @Injectable()
 export class ChatsService {
   private chats: ChatDB[] = [
-    { id: 1, members: [1, 2], unReadCount: 0, lastMessageId: 1 },
-    { id: 2, members: [1, 3], unReadCount: 14 },
+    { id: 1, members: [1, 2], unReadCount: 14, lastMessageId: 4 },
+    { id: 2, members: [1, 3], unReadCount: 0 },
     { id: 3, members: [2, 3], unReadCount: 6 },
   ];
 

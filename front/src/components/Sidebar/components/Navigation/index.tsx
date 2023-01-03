@@ -31,6 +31,12 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
       {data.map(({ id, title, unReadCount, lastMessage }) => {
         const isEqual = activeId === id;
 
+        const Title = (
+          <Typography variant="h6" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+            {title}
+          </Typography>
+        );
+
         return (
           <Grid
             container
@@ -45,24 +51,37 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
               <Avatar {...stringAvatar(title)} />
             </Grid>
             <Grid item xs={9}>
-              <Flexbox>
-                <Typography variant="h6" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
-                  {title}
-                </Typography>
-                {lastMessage ? (
-                  <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
-                    {lastMessage.createdAt}
-                  </Typography>
-                ) : null}
-              </Flexbox>
-              <Flexbox>
-                {lastMessage ? (
-                  <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
-                    {lastMessage.text}
-                  </Typography>
-                ) : null}
-                {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
-              </Flexbox>
+              {lastMessage ? (
+                <>
+                  <Flexbox>
+                    {Title}
+                    {lastMessage ? (
+                      <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+                        {lastMessage.createdAt}
+                      </Typography>
+                    ) : null}
+                  </Flexbox>
+                  <Flexbox>
+                    {lastMessage ? (
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          width: '80%',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          color: isEqual ? palette.common.white : 'inherit',
+                        }}
+                      >
+                        {lastMessage.text}
+                      </Typography>
+                    ) : null}
+                    {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
+                  </Flexbox>
+                </>
+              ) : (
+                Title
+              )}
             </Grid>
           </Grid>
         );

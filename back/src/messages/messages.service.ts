@@ -29,11 +29,9 @@ export class MessagesService {
       id: 4,
       chatId: 1,
       senderId: 2,
-      text: 'good what about you?',
+      text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
       createdAt: new Date(),
     },
-    { id: 5, chatId: 2, senderId: 1, text: 'first?', createdAt: new Date() },
-    { id: 6, chatId: 2, senderId: 3, text: 'second?', createdAt: new Date() },
   ];
 
   getMessages(id: number): Message[] {
