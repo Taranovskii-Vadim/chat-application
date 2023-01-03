@@ -24,7 +24,7 @@ const Pages = (): JSX.Element => {
 
   return (
     <Grid container sx={{ height: '100vh' }}>
-      <Sidebar />
+      <Sidebar user={store.data} />
       <Grid
         item
         xs={9.5}

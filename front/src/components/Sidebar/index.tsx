@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Grid, Box, TextField } from '@mui/material';
 
 import ChatsStore from 'src/store/chats';
+import { User } from '../../store/user/types';
 
 import Loader from '../ui/Loader';
 import Navigation from './components/Navigation';
@@ -11,7 +12,11 @@ import { STYLES } from './constants';
 
 const store = new ChatsStore();
 
-const Sidebar = (): JSX.Element => {
+interface Props {
+  user: User;
+}
+
+const Sidebar = ({ user }: Props): JSX.Element => {
   useEffect(() => {
     store.fetchData();
   }, []);
@@ -21,7 +26,7 @@ const Sidebar = (): JSX.Element => {
       <Box sx={STYLES}>
         <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
       </Box>
-      {store.isLoading ? <Loader height="90vh" /> : <Navigation store={store} />}
+      {store.isLoading ? <Loader height="90vh" /> : <Navigation user={user} store={store} />}
     </Grid>
   );
 };

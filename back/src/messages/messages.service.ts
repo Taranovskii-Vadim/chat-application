@@ -21,14 +21,14 @@ export class MessagesService {
     {
       id: 3,
       chatId: 1,
-      senderId: 1,
+      senderId: 2,
       text: 'how are you?',
       createdAt: new Date(),
     },
     {
       id: 4,
       chatId: 1,
-      senderId: 2,
+      senderId: 1,
       text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
       createdAt: new Date(),
     },
@@ -43,7 +43,13 @@ export class MessagesService {
   getMessage(id?: number): LastMessage | undefined {
     const result = this.messages.find((item) => item.id === id);
 
-    return result && { text: result.text, createdAt: result.createdAt };
+    return (
+      result && {
+        text: result.text,
+        senderId: result.senderId,
+        createdAt: result.createdAt,
+      }
+    );
   }
 
   createMessage(payload: NewMessageDTO): number {

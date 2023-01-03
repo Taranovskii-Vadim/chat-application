@@ -4,6 +4,7 @@ import { Avatar, Grid, Typography, Chip } from '@mui/material';
 
 import ChatsStore from '../../../../store/chats';
 import { palette } from '../../../../style/palette';
+import { User } from '../../../../store/user/types';
 
 import Flexbox from '../../../Flexbox';
 
@@ -11,10 +12,11 @@ import { STYLES } from './constants';
 import { stringAvatar } from './helpers';
 
 interface Props {
+  user: User;
   store: ChatsStore;
 }
 
-const Navigation = ({ store: { data } }: Props): JSX.Element => {
+const Navigation = ({ store: { data }, user }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState(0);
 
@@ -53,29 +55,25 @@ const Navigation = ({ store: { data } }: Props): JSX.Element => {
             <Grid item xs={9}>
               {lastMessage ? (
                 <>
-                  <Flexbox>
+                  <Flexbox sx={{ mb: '3px' }}>
                     {Title}
-                    {lastMessage ? (
-                      <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
-                        {lastMessage.createdAt}
-                      </Typography>
-                    ) : null}
+                    <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+                      {lastMessage.createdAt}
+                    </Typography>
                   </Flexbox>
                   <Flexbox>
-                    {lastMessage ? (
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          width: '80%',
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          color: isEqual ? palette.common.white : 'inherit',
-                        }}
-                      >
-                        {lastMessage.text}
-                      </Typography>
-                    ) : null}
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        width: '80%',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        color: isEqual ? palette.common.white : 'inherit',
+                      }}
+                    >
+                      {`${lastMessage.senderId === user.id ? 'You:' : ''} ${lastMessage.text}`}
+                    </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
                   </Flexbox>
                 </>

@@ -5,5 +5,6 @@ export type Chat = {
   lastMessage?: {
     text: string;
     createdAt: string;
+    senderId: number;
   };
 };

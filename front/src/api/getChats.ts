@@ -11,6 +11,7 @@ interface ResponseDTO {
   lastMessage?: {
     text: string;
     createdAt: Date;
+    senderId: number;
   };
 }
 
@@ -25,6 +26,7 @@ class GetChats implements Route {
     return data.map(({ lastMessage, ...others }) => ({
       lastMessage: lastMessage && {
         text: lastMessage.text,
+        senderId: lastMessage.senderId,
         createdAt: format(new Date(lastMessage.createdAt), 'dd.mm.yyyy'),
       },
       ...others,
