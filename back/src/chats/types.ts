@@ -10,6 +10,7 @@ export type ChatDB = {
 export type Chat = {
   id: number;
   title: string;
+  members: number[];
   unReadCount: number;
   lastMessage?: LastMessage;
 };

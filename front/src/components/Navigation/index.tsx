@@ -1,35 +1,43 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Avatar, Grid, Typography, Chip } from '@mui/material';
+import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
 import ChatsStore from '../../store/chats';
 import { palette } from '../../style/palette';
-import UserStore from '../../store/user';
 
 import Flexbox from '../Flexbox';
 
 import { STYLES } from './constants';
 import Loader from '../ui/Loader';
 import { stringAvatar } from './helpers';
+import { User } from '../../store/user/types';
+import { OnlineUser } from '../../store/chats/types';
 
 interface Props {
-  user: UserStore;
   socket: any;
   store: ChatsStore;
+  currentUserId: User['id'];
 }
 
-const Navigation = ({ store, socket, user }: Props): JSX.Element => {
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+  },
+}));
+
+const Navigation = ({ store, socket, currentUserId }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState(0);
 
   useEffect(() => {
     store.fetchData();
 
-    socket.on('getUsers', (activeUsers: { id: number }[]) => {
-      // console.log(users);
-      // const isOnline = !!users.find((item) => item.id === store.data.members[0]);
-      // store.setIsUserOnline(isOnline);
+    socket.on('getUsers', (users: OnlineUser[]) => {
+      const otherOnlineUsers = users.filter((item) => item.id !== currentUserId);
+      store.setIsOnline(otherOnlineUsers);
     });
   }, []);
 
@@ -47,7 +55,7 @@ const Navigation = ({ store, socket, user }: Props): JSX.Element => {
 
   return (
     <>
-      {store.data.map(({ id, title, unReadCount, lastMessage }) => {
+      {store.data.map(({ id, title, unReadCount, isOnline, lastMessage }) => {
         const isEqual = activeId === id;
 
         const Title = (
@@ -67,7 +75,17 @@ const Navigation = ({ store, socket, user }: Props): JSX.Element => {
             }}
           >
             <Grid item xs={3}>
-              <Avatar {...stringAvatar(title)} />
+              {isOnline ? (
+                <StyledBadge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  variant="dot"
+                >
+                  <Avatar {...stringAvatar(title)} />
+                </StyledBadge>
+              ) : (
+                <Avatar {...stringAvatar(title)} />
+              )}
             </Grid>
             <Grid item xs={9}>
               {lastMessage ? (
@@ -89,7 +107,7 @@ const Navigation = ({ store, socket, user }: Props): JSX.Element => {
                         color: isEqual ? palette.common.white : 'inherit',
                       }}
                     >
-                      {`${user.data && lastMessage.senderId === user.data.id ? 'You:' : ''} ${lastMessage.text}`}
+                      {`${lastMessage.senderId === currentUserId ? 'You:' : ''} ${lastMessage.text}`}
                     </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
                   </Flexbox>

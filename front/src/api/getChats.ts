@@ -7,6 +7,7 @@ import { Method, Route } from './types';
 interface ResponseDTO {
   id: number;
   title: string;
+  members: number[];
   unReadCount: number;
   lastMessage?: {
     text: string;

@@ -39,7 +39,7 @@ const Pages = (): JSX.Element => {
     }
   }, [user.data]);
 
-  if (user.isLoading || !socket) {
+  if (user.isLoading || !user.data || !socket) {
     return <Loader height="100vh" />;
   }
 
@@ -49,7 +49,7 @@ const Pages = (): JSX.Element => {
         {/* <Box sx={STYLES}>
           <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
         </Box> */}
-        <Navigation socket={socket} user={user} store={chats} />
+        <Navigation socket={socket} currentUserId={user.data.id} store={chats} />
       </Grid>
       <Grid
         item

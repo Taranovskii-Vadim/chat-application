@@ -49,7 +49,7 @@ export class ChatsService {
       const title = this.getChatTitle(otherMembers);
       const lastMessage = this.getChatLastMessage(lastMessageId);
 
-      return { title, lastMessage, ...other };
+      return { title, lastMessage, members: otherMembers, ...other };
     });
 
     return result;
