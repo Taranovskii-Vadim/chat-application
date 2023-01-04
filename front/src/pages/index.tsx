@@ -1,30 +1,56 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import { io, Socket } from 'socket.io-client';
+import { BoxProps } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { Routes, Route } from 'react-router-dom';
 import grey from '@mui/material/colors/grey';
 
-import UserStore from 'src/store/user';
+import UserStore from '../store/user';
+import Loader from '../components/ui/Loader';
+import ChatsStore from '../store/chats';
+import Navigation from '../components/Navigation';
 
-import Sidebar from 'src/components/Sidebar';
-import Loader from 'src/components/ui/Loader';
+const user = new UserStore();
+const chats = new ChatsStore();
 
-import Chat from './Chat';
-
-const store = new UserStore();
+const STYLES: BoxProps['sx'] = {
+  height: '38px',
+  pt: 1,
+  pr: 2,
+  pb: 1,
+  pl: 2,
+  borderBottom: `1px solid ${grey['300']}`,
+};
 
 const Pages = (): JSX.Element => {
+  const [socket, setSocket] = useState<Socket<any, any>>();
+
   useEffect(() => {
-    store.fetchData();
+    user.fetchData();
   }, []);
 
-  if (store.isLoading || !store.data) {
+  useEffect(() => {
+    if (user.data) {
+      const connection = io('http://localhost:8080');
+      connection.emit('addNewUser', user.data.id);
+
+      setSocket(connection);
+    }
+  }, [user.data]);
+
+  if (user.isLoading || !socket) {
     return <Loader height="100vh" />;
   }
 
   return (
     <Grid container sx={{ height: '100vh' }}>
-      <Sidebar user={store.data} />
+      <Grid item xs={2.5}>
+        {/* <Box sx={STYLES}>
+          <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
+        </Box> */}
+        <Navigation socket={socket} user={user} store={chats} />
+      </Grid>
       <Grid
         item
         xs={9.5}
@@ -32,9 +58,9 @@ const Pages = (): JSX.Element => {
       >
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
-        <Routes>
-          <Route path="/:id" element={<Chat user={store.data} />} />
-        </Routes>
+        {/* <Routes>
+          <Route path="/:id" element={<Chat user={user.data} />} />
+        </Routes> */}
       </Grid>
     </Grid>
   );

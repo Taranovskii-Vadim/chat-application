@@ -1,24 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { Avatar, Grid, Typography, Chip } from '@mui/material';
 
-import ChatsStore from '../../../../store/chats';
-import { palette } from '../../../../style/palette';
-import { User } from '../../../../store/user/types';
+import ChatsStore from '../../store/chats';
+import { palette } from '../../style/palette';
+import UserStore from '../../store/user';
 
-import Flexbox from '../../../Flexbox';
+import Flexbox from '../Flexbox';
 
 import { STYLES } from './constants';
+import Loader from '../ui/Loader';
 import { stringAvatar } from './helpers';
 
 interface Props {
-  user: User;
+  user: UserStore;
+  socket: any;
   store: ChatsStore;
 }
 
-const Navigation = ({ store: { data }, user }: Props): JSX.Element => {
+const Navigation = ({ store, socket, user }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState(0);
+
+  useEffect(() => {
+    store.fetchData();
+
+    socket.on('getUsers', (users: { id: number }[]) => {
+      console.log(users);
+      // const isOnline = !!users.find((item) => item.id === store.data.members[0]);
+
+      // store.setIsUserOnline(isOnline);
+    });
+  }, []);
 
   useEffect(() => {
     const chatId = parseInt(location.pathname.split('/')[1], 10);
@@ -28,9 +42,13 @@ const Navigation = ({ store: { data }, user }: Props): JSX.Element => {
     }
   });
 
+  if (store.isLoading) {
+    return <Loader height="90vh" />;
+  }
+
   return (
     <>
-      {data.map(({ id, title, unReadCount, lastMessage }) => {
+      {store.data.map(({ id, title, unReadCount, lastMessage }) => {
         const isEqual = activeId === id;
 
         const Title = (
@@ -72,7 +90,7 @@ const Navigation = ({ store: { data }, user }: Props): JSX.Element => {
                         color: isEqual ? palette.common.white : 'inherit',
                       }}
                     >
-                      {`${lastMessage.senderId === user.id ? 'You:' : ''} ${lastMessage.text}`}
+                      {`${user.data && lastMessage.senderId === user.data.id ? 'You:' : ''} ${lastMessage.text}`}
                     </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
                   </Flexbox>
@@ -88,4 +106,4 @@ const Navigation = ({ store: { data }, user }: Props): JSX.Element => {
   );
 };
 
-export default Navigation;
+export default observer(Navigation);
