@@ -42,9 +42,22 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   }
 
   const handleAddMessage = async (): Promise<void> => {
-    const text = inputRef.current.value;
-    const id = await store.addMessage(currentUserId, text);
-    socket.emit('sendMessage', { id, senderId: currentUserId, receiverId: data.members[0], text });
+    if (id) {
+      const text = inputRef.current.value;
+      // TODO can receive chatId from store
+      const chatId = +id;
+      const messageId = await store.addMessage(currentUserId, text);
+
+      const config = {
+        text,
+        chatId,
+        id: messageId,
+        senderId: currentUserId,
+        receiverId: data.members[0],
+      };
+
+      socket.emit('sendMessage', config);
+    }
   };
 
   return (

@@ -8,12 +8,11 @@ import grey from '@mui/material/colors/grey';
 
 import UserStore from '../store/user';
 import Loader from '../components/ui/Loader';
-import ChatsStore from '../store/chats';
+
 import Navigation from '../components/Navigation';
 import Chat from './Chat';
 
 const user = new UserStore();
-const chats = new ChatsStore();
 
 // const STYLES: BoxProps['sx'] = {
 //   height: '38px',
@@ -50,7 +49,7 @@ const Pages = (): JSX.Element => {
         {/* <Box sx={STYLES}>
           <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
         </Box> */}
-        <Navigation socket={socket} currentUserId={user.data.id} store={chats} />
+        <Navigation socket={socket} currentUserId={user.data.id} />
       </Grid>
       <Grid
         item

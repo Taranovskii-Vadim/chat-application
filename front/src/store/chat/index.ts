@@ -5,6 +5,7 @@ import getChat from '../../api/getChat';
 
 import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
+import chats from '../chats';
 
 import { Message, MessagePayload, Chat } from './types';
 
@@ -64,6 +65,9 @@ class ChatStore {
       this.setMessage({ id, ...payload });
 
       await api(postMessage, payload);
+
+      // TODO instead of today we must load client time
+      chats.setLastMessage(chatId, { text, senderId, createdAt: 'today' });
 
       return id;
     }

@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from '../../api';
 import getChats from '../../api/getChats';
 
-import { Chat, OnlineUser } from './types';
+import { Chat, LastMessage, OnlineUser } from './types';
 
 // TODO add types for stores
 class ChatsStore {
@@ -17,6 +17,7 @@ class ChatsStore {
       isLoading: observable,
 
       setIsOnline: action,
+      setLastMessage: action,
       setIsLoading: action,
     });
   }
@@ -28,6 +29,16 @@ class ChatsStore {
   setIsOnline = (onlineUsers: OnlineUser[]): void => {
     this.data.map((item) => {
       item.isOnline = onlineUsers.map(({ id }) => id).includes(item.members[0]);
+
+      return item;
+    });
+  };
+
+  setLastMessage = (id: number, value: LastMessage): void => {
+    this.data.map((item) => {
+      if (item.id === id) {
+        item.lastMessage = value;
+      }
 
       return item;
     });
@@ -46,4 +57,4 @@ class ChatsStore {
   };
 }
 
-export default ChatsStore;
+export default new ChatsStore();

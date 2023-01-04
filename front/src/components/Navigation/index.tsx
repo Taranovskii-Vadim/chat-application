@@ -3,21 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
-import ChatsStore from '../../store/chats';
 import { palette } from '../../style/palette';
 
 import Flexbox from '../Flexbox';
+
+import store from '../../store/chats';
 
 import { STYLES } from './constants';
 import Loader from '../ui/Loader';
 import { stringAvatar } from './helpers';
 import { User } from '../../store/user/types';
-import { OnlineUser } from '../../store/chats/types';
+import { LastMessage, OnlineUser } from '../../store/chats/types';
 
 // TODO remove any later
 interface Props {
   socket: any;
-  store: ChatsStore;
   currentUserId: User['id'];
 }
 
@@ -29,7 +29,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Navigation = ({ store, socket, currentUserId }: Props): JSX.Element => {
+const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState(0);
 
@@ -39,6 +39,10 @@ const Navigation = ({ store, socket, currentUserId }: Props): JSX.Element => {
     socket.on('getUsers', (users: OnlineUser[]) => {
       const otherOnlineUsers = users.filter((item) => item.id !== currentUserId);
       store.setIsOnline(otherOnlineUsers);
+    });
+
+    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & LastMessage) => {
+      store.setLastMessage(chatId, others);
     });
   }, []);
 

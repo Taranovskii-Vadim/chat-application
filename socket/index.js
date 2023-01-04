@@ -14,13 +14,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    const { receiverId, ...others } = data;
+    const { receiverId, chatId, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);
-
-    console.log(data);
 
     if (user) {
       io.to(user.socketId).emit("receiveMessage", others);
+      io.to(user.socketId).emit("receiveLastMessage", {
+        chatId,
+        senderId: others.senderId,
+        // TODO first do we need client time or server time???
+        createdAt: new Date(),
+        text: others.text,
+      });
     }
   });
 
