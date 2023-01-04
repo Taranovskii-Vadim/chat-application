@@ -26,10 +26,9 @@ const Navigation = ({ store, socket, user }: Props): JSX.Element => {
   useEffect(() => {
     store.fetchData();
 
-    socket.on('getUsers', (users: { id: number }[]) => {
-      console.log(users);
+    socket.on('getUsers', (activeUsers: { id: number }[]) => {
+      // console.log(users);
       // const isOnline = !!users.find((item) => item.id === store.data.members[0]);
-
       // store.setIsUserOnline(isOnline);
     });
   }, []);

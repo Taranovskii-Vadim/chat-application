@@ -22,7 +22,7 @@ const STYLES: BoxProps['sx'] = {
   pl: 2,
   borderBottom: `1px solid ${grey['300']}`,
 };
-
+// TODO check component perfomance
 const Pages = (): JSX.Element => {
   const [socket, setSocket] = useState<Socket<any, any>>();
 
