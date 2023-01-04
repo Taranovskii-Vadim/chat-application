@@ -27,7 +27,8 @@ class ChatStore {
       isUserOnline: observable,
 
       setIsLoading: action,
-      setLastMessage: action,
+      setMessage: action,
+      // setLastMessage: action,
       setIsUserOnline: action,
       setIsFormLoading: action,
     });
@@ -41,29 +42,30 @@ class ChatStore {
     this.isLoading = value;
   };
 
-  setLastMessage = (senderId: number, text: string): void => {
-    const id = this.messages[this.messages.length - 1].id + 1;
-    this.messages.push({ id, senderId, text });
+  setMessage = (message: Message): void => {
+    this.messages.push(message);
   };
+
+  // setLastMessage = (senderId: number, text: string): void => {
+  //   const id = this.messages[this.messages.length - 1].id + 1;
+  //   this.messages.push({ id, senderId, text });
+  // };
 
   setIsFormLoading = (value: boolean): void => {
     this.isFormLoading = value;
   };
 
-  addMessage = async (senderId: number, text: string): Promise<void> => {
+  addMessage = async (senderId: number, text: string): Promise<number | undefined> => {
     if (this.data) {
-      try {
-        this.setIsFormLoading(true);
+      const chatId = this.data.id;
+      const payload: MessagePayload = { senderId, chatId, text };
+      // TODO create uniq message id in front instead of 100500
+      const id = 100500;
+      this.setMessage({ id, ...payload });
 
-        const chatId = this.data.id;
-        const payload: MessagePayload = { senderId, chatId, text };
+      await api(postMessage, payload);
 
-        const id = await api(postMessage, payload);
-
-        this.messages.push({ id, ...payload });
-      } finally {
-        this.setIsFormLoading(false);
-      }
+      return id;
     }
   };
 

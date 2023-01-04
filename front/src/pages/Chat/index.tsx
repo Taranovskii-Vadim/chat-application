@@ -6,21 +6,22 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { grey } from '@mui/material/colors';
 
-import { User } from 'src/store/user/types';
-import ChatStore from 'src/store/chat';
-
-import Flexbox from 'src/components/Flexbox';
-import Loader from 'src/components/ui/Loader';
+import ChatStore from '../../store/chat';
+import { User } from '../../store/user/types';
+import Loader from '../../components/ui/Loader';
+import Flexbox from '../../components/Flexbox';
 
 const store = new ChatStore();
 
 interface Props {
-  user: User;
+  socket: any;
+  currentUserId: User['id'];
 }
 
-const Chat = ({ user }: Props): JSX.Element => {
+const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   // TODO fix any later
   const inputRef = useRef<any>();
+  const { data } = store;
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
@@ -29,23 +30,21 @@ const Chat = ({ user }: Props): JSX.Element => {
     }
   }, [id]);
 
-  useEffect(() => {
-    socket.current.on('receiveMessage', (data: any) => {
-      store.setLastMessage(data.senderId, data.text);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.current.on('receiveMessage', (data: any) => {
+  //     store.setLastMessage(data.senderId, data.text);
+  //   });
+  // }, []);
 
-  if (store.isLoading || !store.data) {
+  if (store.isLoading || !data) {
     return <Loader height="100vh" />;
   }
 
-  const handleAddMessage = (): void => {
-    if (socket.current && store.data) {
-      const text = inputRef.current.value;
-      store.addMessage(user.id, text);
-      // TODO maybe we should await addMessage get messageId from api and provide it to socket
-      socket.current.emit('sendMessage', { senderId: user.id, receiverId: store.data.members[0], text });
-    }
+  const handleAddMessage = async (): Promise<void> => {
+    const text = inputRef.current.value;
+    const id = await store.addMessage(currentUserId, text);
+    // TODO maybe we should await addMessage get messageId from api and provide it to socket
+    socket.current.emit('sendMessage', { senderId: currentUserId, receiverId: data.members[0], text });
   };
 
   return (
@@ -53,11 +52,11 @@ const Chat = ({ user }: Props): JSX.Element => {
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
         <Box>
           <Typography variant="h6">{store.data.title}</Typography>
-          {store.isUserOnline ? (
+          {/* {store.isUserOnline ? (
             <Typography color="primary" variant="subtitle2">
               online
             </Typography>
-          ) : null}
+          ) : null} */}
         </Box>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>
@@ -70,7 +69,7 @@ const Chat = ({ user }: Props): JSX.Element => {
       </Flexbox>
       <Box sx={{ flex: 1, overflowY: 'scroll' }}>
         {store.messages.map(({ id, senderId, text }) => (
-          <Typography key={id} sx={{ textAlign: senderId === user.id ? 'right' : 'left' }}>
+          <Typography key={id} sx={{ textAlign: senderId === currentUserId ? 'right' : 'left' }}>
             {text}
           </Typography>
         ))}

@@ -10,18 +10,19 @@ import UserStore from '../store/user';
 import Loader from '../components/ui/Loader';
 import ChatsStore from '../store/chats';
 import Navigation from '../components/Navigation';
+import Chat from './Chat';
 
 const user = new UserStore();
 const chats = new ChatsStore();
 
-const STYLES: BoxProps['sx'] = {
-  height: '38px',
-  pt: 1,
-  pr: 2,
-  pb: 1,
-  pl: 2,
-  borderBottom: `1px solid ${grey['300']}`,
-};
+// const STYLES: BoxProps['sx'] = {
+//   height: '38px',
+//   pt: 1,
+//   pr: 2,
+//   pb: 1,
+//   pl: 2,
+//   borderBottom: `1px solid ${grey['300']}`,
+// };
 // TODO check component perfomance
 const Pages = (): JSX.Element => {
   const [socket, setSocket] = useState<Socket<any, any>>();
@@ -58,9 +59,9 @@ const Pages = (): JSX.Element => {
       >
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
-        {/* <Routes>
-          <Route path="/:id" element={<Chat user={user.data} />} />
-        </Routes> */}
+        <Routes>
+          <Route path="/:id" element={<Chat socket={socket} currentUserId={user.data.id} />} />
+        </Routes>
       </Grid>
     </Grid>
   );

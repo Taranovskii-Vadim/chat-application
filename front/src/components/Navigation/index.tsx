@@ -14,6 +14,7 @@ import { stringAvatar } from './helpers';
 import { User } from '../../store/user/types';
 import { OnlineUser } from '../../store/chats/types';
 
+// TODO remove any later
 interface Props {
   socket: any;
   store: ChatsStore;
