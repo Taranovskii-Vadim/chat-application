@@ -10,6 +10,7 @@ import ChatStore from '../../store/chat';
 import { User } from '../../store/user/types';
 import Loader from '../../components/ui/Loader';
 import Flexbox from '../../components/Flexbox';
+import { Message } from '../../store/chat/types';
 
 const store = new ChatStore();
 
@@ -30,11 +31,11 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
     }
   }, [id]);
 
-  // useEffect(() => {
-  //   socket.current.on('receiveMessage', (data: any) => {
-  //     store.setLastMessage(data.senderId, data.text);
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.on('receiveMessage', (data: Message) => {
+      store.setMessage(data);
+    });
+  }, []);
 
   if (store.isLoading || !data) {
     return <Loader height="100vh" />;
@@ -43,15 +44,14 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   const handleAddMessage = async (): Promise<void> => {
     const text = inputRef.current.value;
     const id = await store.addMessage(currentUserId, text);
-    // TODO maybe we should await addMessage get messageId from api and provide it to socket
-    socket.current.emit('sendMessage', { senderId: currentUserId, receiverId: data.members[0], text });
+    socket.emit('sendMessage', { id, senderId: currentUserId, receiverId: data.members[0], text });
   };
 
   return (
     <>
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
         <Box>
-          <Typography variant="h6">{store.data.title}</Typography>
+          <Typography variant="h6">{data.title}</Typography>
           {/* {store.isUserOnline ? (
             <Typography color="primary" variant="subtitle2">
               online

@@ -14,11 +14,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    const { receiverId, text, senderId } = data;
+    const { receiverId, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);
 
+    console.log(data);
+
     if (user) {
-      io.to(user.socketId).emit("receiveMessage", { text, senderId });
+      io.to(user.socketId).emit("receiveMessage", others);
     }
   });
 
