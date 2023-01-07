@@ -2,10 +2,11 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
 import getChat from '../../api/getChat';
-
 import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
+
 import chats from '../chats';
+import { formatChatDate } from '../../utils';
 
 import { Message, MessagePayload, Chat } from './types';
 
@@ -27,9 +28,8 @@ class ChatStore {
       isFormLoading: observable,
       isUserOnline: observable,
 
-      setIsLoading: action,
       setMessage: action,
-      // setLastMessage: action,
+      setIsLoading: action,
       setIsUserOnline: action,
       setIsFormLoading: action,
     });
@@ -47,11 +47,6 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  // setLastMessage = (senderId: number, text: string): void => {
-  //   const id = this.messages[this.messages.length - 1].id + 1;
-  //   this.messages.push({ id, senderId, text });
-  // };
-
   setIsFormLoading = (value: boolean): void => {
     this.isFormLoading = value;
   };
@@ -66,8 +61,7 @@ class ChatStore {
 
       await api(postMessage, payload);
 
-      // TODO instead of today we must load client time
-      chats.setLastMessage(chatId, { text, senderId, createdAt: 'today' });
+      chats.setLastMessage(chatId, { text, senderId, createdAt: formatChatDate(new Date()) });
 
       return id;
     }

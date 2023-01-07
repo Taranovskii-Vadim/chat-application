@@ -21,10 +21,8 @@ io.on("connection", (socket) => {
       io.to(user.socketId).emit("receiveMessage", others);
       io.to(user.socketId).emit("receiveLastMessage", {
         chatId,
-        senderId: others.senderId,
-        // TODO first do we need client time or server time???
-        createdAt: new Date(),
         text: others.text,
+        senderId: others.senderId,
       });
     }
   });

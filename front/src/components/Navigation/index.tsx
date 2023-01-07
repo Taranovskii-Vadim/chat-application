@@ -14,12 +14,20 @@ import Loader from '../ui/Loader';
 import { stringAvatar } from './helpers';
 import { User } from '../../store/user/types';
 import { LastMessage, OnlineUser } from '../../store/chats/types';
+import { formatChatDate } from '../../utils';
 
 // TODO remove any later
 interface Props {
   socket: any;
   currentUserId: User['id'];
 }
+
+const DOTS_STYLE = {
+  width: '80%',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+};
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -41,8 +49,8 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
       store.setIsOnline(otherOnlineUsers);
     });
 
-    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & LastMessage) => {
-      store.setLastMessage(chatId, others);
+    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & Omit<LastMessage, 'createdAt'>) => {
+      store.setLastMessage(chatId, { ...others, createdAt: formatChatDate(new Date()) });
     });
   }, []);
 
@@ -64,7 +72,7 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
         const isEqual = activeId === id;
 
         const Title = (
-          <Typography variant="h6" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+          <Typography variant="h6" sx={{ ...DOTS_STYLE, color: isEqual ? palette.common.white : 'inherit' }}>
             {title}
           </Typography>
         );
@@ -105,10 +113,7 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
                     <Typography
                       variant="subtitle1"
                       sx={{
-                        width: '80%',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
+                        ...DOTS_STYLE,
                         color: isEqual ? palette.common.white : 'inherit',
                       }}
                     >
