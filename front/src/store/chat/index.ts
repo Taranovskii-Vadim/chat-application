@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
@@ -30,6 +31,7 @@ class ChatStore {
 
       setMessage: action,
       setIsLoading: action,
+      updateMessage: action,
       setIsUserOnline: action,
       setIsFormLoading: action,
     });
@@ -47,23 +49,41 @@ class ChatStore {
     this.messages.push(message);
   };
 
+  updateMessage = (id: Message['id'], value: Partial<Message>): void => {
+    this.messages = this.messages.map((item) => {
+      if (item.id === id) {
+        item = { ...item, ...value };
+      }
+
+      return item;
+    });
+  };
+
   setIsFormLoading = (value: boolean): void => {
     this.isFormLoading = value;
   };
 
-  addMessage = async (senderId: number, text: string): Promise<number | undefined> => {
+  addMessage = async (senderId: number, text: string): Promise<{ id: string; chatId: number } | undefined> => {
     if (this.data) {
+      const id = nanoid(10);
       const chatId = this.data.id;
-      const payload: MessagePayload = { senderId, chatId, text };
-      // TODO create uniq message id in front instead of 100500
-      const id = 100500;
-      this.setMessage({ id, ...payload });
 
-      await api(postMessage, payload);
+      try {
+        const payload: MessagePayload = { id, senderId, chatId, text };
 
-      chats.setLastMessage(chatId, { text, senderId, createdAt: formatChatDate(new Date()) });
+        this.setMessage({ isLoading: true, ...payload });
 
-      return id;
+        await api(postMessage, payload);
+
+        chats.setLastMessage(chatId, { text, senderId, createdAt: formatChatDate(new Date()) });
+
+        return { id, chatId };
+      } catch {
+        // TODO add context menu with resend or delete option
+        this.updateMessage(id, { isError: true });
+      } finally {
+        this.updateMessage(id, { isLoading: false });
+      }
     }
   };
 

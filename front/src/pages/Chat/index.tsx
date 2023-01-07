@@ -1,18 +1,20 @@
 import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
+import { grey } from '@mui/material/colors';
 import { useParams } from 'react-router-dom';
-import { Box, Button, TextField, Typography, IconButton } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { grey } from '@mui/material/colors';
+import { Box, Button, TextField, Typography, IconButton } from '@mui/material';
 
 import ChatStore from '../../store/chat';
 import { User } from '../../store/user/types';
-import Loader from '../../components/ui/Loader';
 import Flexbox from '../../components/Flexbox';
+import Loader from '../../components/ui/Loader';
 import { Message } from '../../store/chat/types';
 
 const store = new ChatStore();
+
+// TODO fix any later
 
 interface Props {
   socket: any;
@@ -20,10 +22,10 @@ interface Props {
 }
 
 const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
-  // TODO fix any later
-  const inputRef = useRef<any>();
   const { data } = store;
+
   const { id } = useParams<{ id: string }>();
+  const inputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
     if (id) {
@@ -42,21 +44,22 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   }
 
   const handleAddMessage = async (): Promise<void> => {
-    if (id) {
+    if (inputRef.current) {
       const text = inputRef.current.value;
-      // TODO can receive chatId from store
-      const chatId = +id;
-      const messageId = await store.addMessage(currentUserId, text);
 
-      const config = {
-        text,
-        chatId,
-        id: messageId,
-        senderId: currentUserId,
-        receiverId: data.members[0],
-      };
+      const response = await store.addMessage(currentUserId, text);
 
-      socket.emit('sendMessage', config);
+      if (response) {
+        const { chatId, id } = response;
+
+        socket.emit('sendMessage', {
+          id,
+          text,
+          chatId,
+          senderId: currentUserId,
+          receiverId: data.members[0],
+        });
+      }
     }
   };
 
@@ -81,9 +84,9 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
         </Box>
       </Flexbox>
       <Box sx={{ flex: 1, overflowY: 'scroll' }}>
-        {store.messages.map(({ id, senderId, text }) => (
+        {store.messages.map(({ id, senderId, text, isLoading }) => (
           <Typography key={id} sx={{ textAlign: senderId === currentUserId ? 'right' : 'left' }}>
-            {text}
+            {isLoading ? `${text} loading...` : text}
           </Typography>
         ))}
       </Box>

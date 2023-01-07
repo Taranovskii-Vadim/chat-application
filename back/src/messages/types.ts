@@ -5,8 +5,6 @@ export type LastMessage = {
 };
 
 export type Message = LastMessage & {
-  id: number;
+  id: string;
   chatId: number;
 };
-
-export type NewMessageDTO = Omit<Message, 'id'>;

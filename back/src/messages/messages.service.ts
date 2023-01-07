@@ -1,32 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { LastMessage, Message, NewMessageDTO } from './types';
+import { LastMessage, Message } from './types';
 
 @Injectable()
 export class MessagesService {
   private messages: Message[] = [
     {
-      id: 1,
+      id: '1',
       chatId: 1,
       senderId: 1,
       text: 'hello user 2',
       createdAt: new Date(),
     },
     {
-      id: 2,
+      id: '2',
       chatId: 1,
       senderId: 2,
       text: 'hello user 1',
       createdAt: new Date(),
     },
     {
-      id: 3,
+      id: '3',
       chatId: 1,
       senderId: 2,
       text: 'how are you?',
       createdAt: new Date(),
     },
     {
-      id: 4,
+      id: '4',
       chatId: 1,
       senderId: 1,
       text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
@@ -40,7 +40,7 @@ export class MessagesService {
     return result;
   }
 
-  getMessage(id?: number): LastMessage | undefined {
+  getMessage(id?: string): LastMessage | undefined {
     const result = this.messages.find((item) => item.id === id);
 
     return (
@@ -52,11 +52,7 @@ export class MessagesService {
     );
   }
 
-  createMessage(payload: NewMessageDTO): number {
-    const id = this.messages.length + 1;
-
-    this.messages.push({ id, ...payload });
-
-    return id;
+  createMessage(payload: Message): void {
+    this.messages.push(payload);
   }
 }

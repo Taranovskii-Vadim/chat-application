@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
-import { palette } from '../../style/palette';
-
-import Flexbox from '../Flexbox';
-
 import store from '../../store/chats';
-
-import { STYLES } from './constants';
-import Loader from '../ui/Loader';
-import { stringAvatar } from './helpers';
+import { formatChatDate } from '../../utils';
+import { palette } from '../../style/palette';
 import { User } from '../../store/user/types';
 import { LastMessage, OnlineUser } from '../../store/chats/types';
-import { formatChatDate } from '../../utils';
+
+import Flexbox from '../Flexbox';
+import Loader from '../ui/Loader';
+
+import { STYLES } from './constants';
+import { stringAvatar } from './helpers';
 
 // TODO remove any later
 interface Props {
@@ -90,9 +89,9 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
             <Grid item xs={3}>
               {isOnline ? (
                 <StyledBadge
+                  variant="dot"
                   overlap="circular"
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  variant="dot"
                 >
                   <Avatar {...stringAvatar(title)} />
                 </StyledBadge>

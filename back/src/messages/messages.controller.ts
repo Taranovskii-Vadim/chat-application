@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { MessagesService } from './messages.service';
 
-import { Message, NewMessageDTO } from './types';
+import { Message } from './types';
 
 // TODO add guards everywhere
 @Controller('/api/messages')
@@ -19,7 +19,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createMessage(@Body() body: NewMessageDTO): number {
+  createMessage(@Body() body: Message): void {
     return this.messagesService.createMessage(body);
   }
 }
