@@ -1,4 +1,4 @@
-import { formatChatDate } from '../utils';
+import { formatDate } from '../utils';
 import { Chat } from '../store/chats/types';
 
 import { Method, Route } from './types';
@@ -27,7 +27,7 @@ class GetChats implements Route {
       lastMessage: lastMessage && {
         text: lastMessage.text,
         senderId: lastMessage.senderId,
-        createdAt: formatChatDate(lastMessage.createdAt),
+        createdAt: formatDate(lastMessage.createdAt),
       },
       ...others,
     }));

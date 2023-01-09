@@ -7,9 +7,9 @@ import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
 
 import chats from '../chats';
-import { formatChatDate } from '../../utils';
+import { formatDate } from '../../utils';
 
-import { Message, MessagePayload, Chat } from './types';
+import { Message, MessagePayload, Chat, AddMessageResult } from './types';
 
 class ChatStore {
   data: Chat | undefined = undefined;
@@ -63,19 +63,19 @@ class ChatStore {
     this.isFormLoading = value;
   };
 
-  addMessage = async (senderId: number, text: string): Promise<{ id: string; chatId: number } | undefined> => {
+  addMessage = async (senderId: number, text: string): Promise<AddMessageResult | undefined> => {
     if (this.data) {
       const id = nanoid(10);
       const chatId = this.data.id;
+      const createdAt = new Date();
 
       try {
-        const payload: MessagePayload = { id, senderId, chatId, text };
-
-        this.setMessage({ isLoading: true, ...payload });
+        const payload: MessagePayload = { id, senderId, chatId, text, createdAt };
+        this.setMessage({ isLoading: true, ...payload, createdAt: formatDate(createdAt) });
 
         await api(postMessage, payload);
 
-        chats.setLastMessage(chatId, { text, senderId, createdAt: formatChatDate(new Date()) });
+        chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
 
         return { id, chatId };
       } catch {

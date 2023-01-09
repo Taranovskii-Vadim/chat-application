@@ -4,7 +4,7 @@ export type ChatDB = {
   id: number;
   members: number[];
   unReadCount: number;
-  lastMessageId?: number;
+  lastMessageId?: string;
 };
 
 export type Chat = {

@@ -11,6 +11,7 @@ import { User } from '../../store/user/types';
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
 import { Message } from '../../store/chat/types';
+import { formatDate } from '../../utils';
 
 const store = new ChatStore();
 
@@ -34,8 +35,8 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   }, [id]);
 
   useEffect(() => {
-    socket.on('receiveMessage', (data: Message) => {
-      store.setMessage(data);
+    socket.on('receiveMessage', (data: Omit<Message, 'createdAt'>) => {
+      store.setMessage({ ...data, createdAt: formatDate(new Date()) });
     });
   }, []);
 
@@ -50,12 +51,9 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
       const response = await store.addMessage(currentUserId, text);
 
       if (response) {
-        const { chatId, id } = response;
-
         socket.emit('sendMessage', {
-          id,
           text,
-          chatId,
+          ...response,
           senderId: currentUserId,
           receiverId: data.members[0],
         });
@@ -83,12 +81,22 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
           </IconButton>
         </Box>
       </Flexbox>
-      <Box sx={{ flex: 1, overflowY: 'scroll' }}>
-        {store.messages.map(({ id, senderId, text, isLoading }) => (
-          <Typography key={id} sx={{ textAlign: senderId === currentUserId ? 'right' : 'left' }}>
-            {isLoading ? `${text} loading...` : text}
-          </Typography>
-        ))}
+      <Box sx={{ flex: 1, overflowY: 'scroll', p: 1, backgroundColor: 'grey' }}>
+        {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
+          const isAuthor = senderId === currentUserId;
+          // <Typography key={id} sx={{ textAlign: senderId === currentUserId ? 'right' : 'left' }}>
+          //   {isLoading ? `${text} loading...` : text}
+          // </Typography>
+
+          return (
+            <Flexbox key={id} sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
+              <Box sx={{ backgroundColor: isAuthor ? '#96e987' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}>
+                <Typography>{text}</Typography>
+                <Typography sx={{ textAlign: 'right' }}>{createdAt}</Typography>
+              </Box>
+            </Flexbox>
+          );
+        })}
       </Box>
       <Box sx={{ display: 'flex', p: '12px 16px' }}>
         <TextField inputRef={inputRef} fullWidth size="small" />

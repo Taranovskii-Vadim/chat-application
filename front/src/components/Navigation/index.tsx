@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
 import store from '../../store/chats';
-import { formatChatDate } from '../../utils';
+import { formatDate } from '../../utils';
 import { palette } from '../../style/palette';
 import { User } from '../../store/user/types';
 import { LastMessage, OnlineUser } from '../../store/chats/types';
@@ -49,7 +49,7 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
     });
 
     socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & Omit<LastMessage, 'createdAt'>) => {
-      store.setLastMessage(chatId, { ...others, createdAt: formatChatDate(new Date()) });
+      store.setLastMessage(chatId, { ...others, createdAt: formatDate(new Date()) });
     });
   }, []);
 
