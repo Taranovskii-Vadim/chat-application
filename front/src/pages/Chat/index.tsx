@@ -13,6 +13,8 @@ import Loader from '../../components/ui/Loader';
 import { Message } from '../../store/chat/types';
 import { formatDate } from '../../utils';
 
+import background from '../../assets/bg.jpg';
+
 const store = new ChatStore();
 
 // TODO fix any later
@@ -64,14 +66,7 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   return (
     <>
       <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
-        <Box>
-          <Typography variant="h6">{data.title}</Typography>
-          {/* {store.isUserOnline ? (
-            <Typography color="primary" variant="subtitle2">
-              online
-            </Typography>
-          ) : null} */}
-        </Box>
+        <Typography variant="h6">{data.title}</Typography>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>
             <SearchOutlinedIcon />
@@ -81,18 +76,15 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
           </IconButton>
         </Box>
       </Flexbox>
-      <Box sx={{ flex: 1, overflowY: 'scroll', p: 1, backgroundColor: 'grey' }}>
+      <Box sx={{ flex: 1, overflowY: 'scroll', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
         {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
           const isAuthor = senderId === currentUserId;
-          // <Typography key={id} sx={{ textAlign: senderId === currentUserId ? 'right' : 'left' }}>
-          //   {isLoading ? `${text} loading...` : text}
-          // </Typography>
 
           return (
             <Flexbox key={id} sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
-              <Box sx={{ backgroundColor: isAuthor ? '#96e987' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}>
+              <Box sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}>
                 <Typography>{text}</Typography>
-                <Typography sx={{ textAlign: 'right' }}>{createdAt}</Typography>
+                <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
               </Box>
             </Flexbox>
           );
