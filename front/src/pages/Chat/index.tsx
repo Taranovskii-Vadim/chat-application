@@ -8,9 +8,10 @@ import { Box, Button, TextField, Typography, IconButton } from '@mui/material';
 
 import ChatStore from '../../store/chat';
 import { User } from '../../store/user/types';
+import Message from './components/Message';
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
-import { Message } from '../../store/chat/types';
+import { Message as MessageType } from '../../store/chat/types';
 import { formatDate } from '../../utils';
 
 import background from '../../assets/bg.jpg';
@@ -37,7 +38,7 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
   }, [id]);
 
   useEffect(() => {
-    socket.on('receiveMessage', (data: Omit<Message, 'createdAt'>) => {
+    socket.on('receiveMessage', (data: Omit<MessageType, 'createdAt'>) => {
       store.setMessage({ ...data, createdAt: formatDate(new Date()) });
     });
   }, []);
@@ -80,14 +81,7 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
         {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
           const isAuthor = senderId === currentUserId;
 
-          return (
-            <Flexbox key={id} sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
-              <Box sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}>
-                <Typography>{text}</Typography>
-                <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
-              </Box>
-            </Flexbox>
-          );
+          return <Message key={id} isAuthor={isAuthor} text={text} createdAt={createdAt} />;
         })}
       </Box>
       <Box sx={{ display: 'flex', p: '12px 16px' }}>
