@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
@@ -65,9 +64,9 @@ class ChatStore {
 
   addMessage = async (senderId: number, text: string): Promise<AddMessageResult | undefined> => {
     if (this.data) {
-      const id = nanoid(10);
       const chatId = this.data.id;
       const createdAt = new Date();
+      const id = crypto.randomUUID();
 
       try {
         const payload: MessagePayload = { id, senderId, chatId, text, createdAt };
