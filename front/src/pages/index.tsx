@@ -51,11 +51,7 @@ const Pages = (): JSX.Element => {
         </Box> */}
         <Navigation socket={socket} currentUserId={user.data.id} />
       </Grid>
-      <Grid
-        item
-        xs={9.5}
-        sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%', borderLeft: `1px solid ${grey['300']}` }}
-      >
+      <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
         <Routes>

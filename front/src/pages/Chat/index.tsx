@@ -4,7 +4,10 @@ import { grey } from '@mui/material/colors';
 import { useParams } from 'react-router-dom';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { Box, Button, TextField, Typography, IconButton } from '@mui/material';
+import { Box, TextField, Typography, IconButton, InputBase } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 import ChatStore from '../../store/chat';
 import { User } from '../../store/user/types';
@@ -64,9 +67,10 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
     }
   };
 
+  // TODO add borders to the app
   return (
     <>
-      <Flexbox sx={{ height: '38px', padding: '8px 16px', borderBottom: `1px solid ${grey['300']}` }}>
+      <Flexbox sx={{ height: '38px', padding: '8px 16px' }}>
         <Typography variant="h6">{data.title}</Typography>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>
@@ -77,18 +81,26 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
           </IconButton>
         </Box>
       </Flexbox>
-      <Box sx={{ flex: 1, overflowY: 'scroll', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
         {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
           const isAuthor = senderId === currentUserId;
 
           return <Message key={id} isAuthor={isAuthor} text={text} createdAt={createdAt} />;
         })}
       </Box>
-      <Box sx={{ display: 'flex', p: '12px 16px' }}>
-        <TextField inputRef={inputRef} fullWidth size="small" />
-        <Button disabled={store.isFormLoading} onClick={handleAddMessage}>
-          Send
-        </Button>
+      <Box sx={{ display: 'flex', p: 1 }}>
+        <IconButton size="small">
+          <AttachFileIcon />
+        </IconButton>
+        {/* <TextField placeholder="Write a message..." inputRef={inputRef} fullWidth size="small" sx={{ mr: 1, ml: 1 }} /> */}
+        <InputBase sx={{ mr: 1, ml: 1, flex: 1 }} placeholder="Write a message..." />
+        <IconButton size="small" sx={{ mr: 1 }}>
+          <SentimentSatisfiedAltIcon />
+        </IconButton>
+        {/* TODO disable if input is empty */}
+        <IconButton size="small" color="primary" disabled={store.isFormLoading} onClick={handleAddMessage}>
+          <SendIcon />
+        </IconButton>
       </Box>
     </>
   );
