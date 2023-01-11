@@ -2,20 +2,20 @@ import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { grey } from '@mui/material/colors';
 import { useParams } from 'react-router-dom';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { Box, TextField, Typography, IconButton, InputBase } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { Box, Typography, IconButton, InputBase } from '@mui/material';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
+import { formatDate } from '../../utils';
 import ChatStore from '../../store/chat';
-import { User } from '../../store/user/types';
 import Message from './components/Message';
+import { User } from '../../store/user/types';
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
 import { Message as MessageType } from '../../store/chat/types';
-import { formatDate } from '../../utils';
 
 import background from '../../assets/bg.jpg';
 
@@ -67,10 +67,9 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
     }
   };
 
-  // TODO add borders to the app
   return (
     <>
-      <Flexbox sx={{ height: '38px', padding: '8px 16px' }}>
+      <Flexbox sx={{ height: '38px', padding: '8px 16px', borderLeft: `1px solid ${grey['300']}` }}>
         <Typography variant="h6">{data.title}</Typography>
         <Box>
           <IconButton size="small" sx={{ mr: 1 }}>
@@ -88,14 +87,18 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
           return <Message key={id} isAuthor={isAuthor} text={text} createdAt={createdAt} />;
         })}
       </Box>
-      <Box sx={{ display: 'flex', p: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'end', p: 1, borderLeft: `1px solid ${grey['300']}` }}>
         <IconButton size="small">
           <AttachFileIcon />
         </IconButton>
-        {/* <TextField placeholder="Write a message..." inputRef={inputRef} fullWidth size="small" sx={{ mr: 1, ml: 1 }} /> */}
-        <InputBase sx={{ mr: 1, ml: 1, flex: 1 }} placeholder="Write a message..." />
+        <InputBase
+          multiline
+          inputRef={inputRef}
+          sx={{ mr: 1, ml: 1, flex: 1, maxHeight: '130px', overflow: 'auto', paddingBottom: '6px' }}
+          placeholder="Write a message..."
+        />
         <IconButton size="small" sx={{ mr: 1 }}>
-          <SentimentSatisfiedAltIcon />
+          <EmojiEmotionsOutlinedIcon />
         </IconButton>
         {/* TODO disable if input is empty */}
         <IconButton size="small" color="primary" disabled={store.isFormLoading} onClick={handleAddMessage}>
