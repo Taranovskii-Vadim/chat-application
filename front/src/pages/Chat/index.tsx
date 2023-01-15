@@ -67,7 +67,7 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
           return <Message key={id} isAuthor={isAuthor} text={text} createdAt={createdAt} />;
         })}
       </Box>
-      <Footer />
+      <Footer currentUserId={currentUserId} socket={socket} store={store} />
     </>
   );
 };

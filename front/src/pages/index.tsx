@@ -12,6 +12,7 @@ import Loader from '../components/ui/Loader';
 import Navigation from '../components/Navigation';
 import Chat from './Chat';
 
+// TODO change export
 const user = new UserStore();
 
 // const STYLES: BoxProps['sx'] = {

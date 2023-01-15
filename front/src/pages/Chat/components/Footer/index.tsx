@@ -7,31 +7,33 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
 import ChatStore from '../../../../store/chat';
+import { User } from '../../../../store/user/types';
 
-// interface Props {
-//   socket: any;
-//   store: ChatStore;
-//   currentUserId: User['id'];
-// }
+interface Props {
+  socket: any;
+  store: ChatStore;
+  currentUserId: User['id'];
+}
 
-const Footer = (): JSX.Element => {
+const Footer = ({ currentUserId, store, socket }: Props): JSX.Element => {
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
-  //   const { data } = store;
+  const { data } = store;
 
   const handleAddMessage = async (): Promise<void> => {
-    //   if (inputRef.current) {
-    //     const text = inputRef.current.value;
-    //     const response = await store.addMessage(currentUserId, text);
-    //     if (response) {
-    //       socket.emit('sendMessage', {
-    //         text,
-    //         ...response,
-    //         senderId: currentUserId,
-    //         receiverId: data.members[0],
-    //       });
-    //     }
-    //   }
+    try {
+      const response = await store.addMessage(currentUserId, text);
+      if (data && response) {
+        socket.emit('sendMessage', {
+          text,
+          ...response,
+          senderId: currentUserId,
+          receiverId: data.members[0],
+        });
+      }
+    } finally {
+      setText('');
+    }
   };
 
   const handleEmojiClick = (emojiObject: any): void => {
