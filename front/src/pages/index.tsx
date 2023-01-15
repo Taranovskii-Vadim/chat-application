@@ -6,14 +6,11 @@ import { observer } from 'mobx-react-lite';
 import { Routes, Route } from 'react-router-dom';
 import grey from '@mui/material/colors/grey';
 
-import UserStore from '../store/user';
+import user from '../store/user';
 import Loader from '../components/ui/Loader';
 
 import Navigation from '../components/Navigation';
 import Chat from './Chat';
-
-// TODO change export
-const user = new UserStore();
 
 // const STYLES: BoxProps['sx'] = {
 //   height: '38px',
@@ -50,13 +47,13 @@ const Pages = (): JSX.Element => {
         {/* <Box sx={STYLES}>
           <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
         </Box> */}
-        <Navigation socket={socket} currentUserId={user.data.id} />
+        <Navigation socket={socket} />
       </Grid>
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
         <Routes>
-          <Route path="/:id" element={<Chat socket={socket} currentUserId={user.data.id} />} />
+          <Route path="/:id" element={<Chat socket={socket} />} />
         </Routes>
       </Grid>
     </Grid>

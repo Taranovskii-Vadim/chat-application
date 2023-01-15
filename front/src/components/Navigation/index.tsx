@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
+import user from '../../store/user';
 import store from '../../store/chats';
 import { formatDate } from '../../utils';
 import { palette } from '../../style/palette';
-import { User } from '../../store/user/types';
 import { LastMessage, OnlineUser } from '../../store/chats/types';
 
 import Flexbox from '../Flexbox';
@@ -18,7 +18,6 @@ import { stringAvatar } from './helpers';
 // TODO remove any later
 interface Props {
   socket: any;
-  currentUserId: User['id'];
 }
 
 const DOTS_STYLE = {
@@ -36,7 +35,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
+const Navigation = ({ socket }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState(0);
 
@@ -44,7 +43,7 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
     store.fetchData();
 
     socket.on('getUsers', (users: OnlineUser[]) => {
-      const otherOnlineUsers = users.filter((item) => item.id !== currentUserId);
+      const otherOnlineUsers = users.filter((item) => item.id !== user.data?.id);
       store.setIsOnline(otherOnlineUsers);
     });
 
@@ -116,7 +115,7 @@ const Navigation = ({ socket, currentUserId }: Props): JSX.Element => {
                         color: isEqual ? palette.common.white : 'inherit',
                       }}
                     >
-                      {`${lastMessage.senderId === currentUserId ? 'You:' : ''} ${lastMessage.text}`}
+                      {`${lastMessage.senderId === user.data?.id ? 'You:' : ''} ${lastMessage.text}`}
                     </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
                   </Flexbox>

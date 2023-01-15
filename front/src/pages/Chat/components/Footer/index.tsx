@@ -6,31 +6,33 @@ import grey from '@mui/material/colors/grey';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
+import user from '../../../../store/user';
 import ChatStore from '../../../../store/chat';
-import { User } from '../../../../store/user/types';
 
 interface Props {
   socket: any;
   store: ChatStore;
-  currentUserId: User['id'];
 }
 
-const Footer = ({ currentUserId, store, socket }: Props): JSX.Element => {
+const Footer = ({ store, socket }: Props): JSX.Element => {
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
   const { data } = store;
 
   const handleAddMessage = async (): Promise<void> => {
     try {
-      const response = await store.addMessage(currentUserId, text);
-      if (data && response) {
-        socket.emit('sendMessage', {
-          text,
-          ...response,
-          senderId: currentUserId,
-          receiverId: data.members[0],
-        });
-      }
+      if (!user.data) return;
+
+      const response = await store.addMessage(user.data.id, text);
+
+      if (!response || !data) return;
+
+      socket.emit('sendMessage', {
+        text,
+        ...response,
+        senderId: user.data.id,
+        receiverId: data.members[0],
+      });
     } finally {
       setText('');
     }

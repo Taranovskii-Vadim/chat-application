@@ -6,9 +6,9 @@ import { Box, Typography, IconButton } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
+import user from '../../store/user';
 import { formatDate } from '../../utils';
 import ChatStore from '../../store/chat';
-import { User } from '../../store/user/types';
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
 import { Message as MessageType } from '../../store/chat/types';
@@ -24,10 +24,9 @@ const store = new ChatStore();
 
 interface Props {
   socket: any;
-  currentUserId: User['id'];
 }
 
-const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
+const Chat = ({ socket }: Props): JSX.Element => {
   const { data } = store;
   const { id } = useParams<{ id: string }>();
 
@@ -62,12 +61,12 @@ const Chat = ({ socket, currentUserId }: Props): JSX.Element => {
       </Flexbox>
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
         {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
-          const isAuthor = senderId === currentUserId;
+          const isAuthor = senderId === user.data?.id;
 
           return <Message key={id} isAuthor={isAuthor} text={text} createdAt={createdAt} />;
         })}
       </Box>
-      <Footer currentUserId={currentUserId} socket={socket} store={store} />
+      <Footer socket={socket} store={store} />
     </>
   );
 };

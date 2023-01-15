@@ -33,4 +33,4 @@ class UserStore implements Store {
   };
 }
 
-export default UserStore;
+export default new UserStore();
