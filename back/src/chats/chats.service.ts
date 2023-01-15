@@ -38,6 +38,16 @@ export class ChatsService {
     return this.messagesService.getMessage(id);
   }
 
+  setChatLastMessageId(chatId: number, messageId: string): void {
+    this.chats = this.chats.filter((item) => {
+      if (item.id === chatId) {
+        item.lastMessageId = messageId;
+      }
+
+      return item;
+    });
+  }
+
   getChats(userId: number): Chat[] {
     const filtered = this.chats.filter(({ members }) =>
       members.includes(userId),
