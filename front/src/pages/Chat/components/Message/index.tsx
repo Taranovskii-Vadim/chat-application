@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import copy from 'copy-to-clipboard';
 import { ListItemIcon, ListItemText, Menu, MenuItem, Box, Typography } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import ShortcutOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
@@ -18,15 +20,29 @@ interface Props {
 const Message = ({ isAuthor, text, createdAt }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null);
+  };
+
+  const handleCopy = (): void => {
+    copy(text);
+    handleClose();
   };
 
   return (
     <>
+      <Flexbox sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
+        <Box
+          onClick={handleClick}
+          sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}
+        >
+          <Typography>{text}</Typography>
+          <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
+        </Box>
+      </Flexbox>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -48,7 +64,15 @@ const Message = ({ isAuthor, text, createdAt }: Props): JSX.Element => {
           </ListItemIcon>
           <ListItemText>Закрепить</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        {isAuthor ? (
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <EditOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Изменить</ListItemText>
+          </MenuItem>
+        ) : null}
+        <MenuItem onClick={handleCopy}>
           <ListItemIcon>
             <ContentCopyOutlinedIcon fontSize="small" />
           </ListItemIcon>
@@ -73,15 +97,6 @@ const Message = ({ isAuthor, text, createdAt }: Props): JSX.Element => {
           <ListItemText>Выделить</ListItemText>
         </MenuItem>
       </Menu>
-      <Flexbox sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
-        <Box
-          onClick={handleClick}
-          sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}
-        >
-          <Typography>{text}</Typography>
-          <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
-        </Box>
-      </Flexbox>
     </>
   );
 };
