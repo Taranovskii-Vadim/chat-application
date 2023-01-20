@@ -15,10 +15,10 @@ interface Props {
   text: string;
   createdAt: string;
   isAuthor: boolean;
-  onResendMessage: () => void;
+  onReply: () => void;
 }
 
-const Message = ({ isAuthor, text, createdAt, onResendMessage }: Props): JSX.Element => {
+const Message = ({ isAuthor, text, createdAt, onReply }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
@@ -26,6 +26,11 @@ const Message = ({ isAuthor, text, createdAt, onResendMessage }: Props): JSX.Ele
   };
   const handleClose = (): void => {
     setAnchorEl(null);
+  };
+
+  const handleReply = (): void => {
+    onReply();
+    handleClose();
   };
 
   const handleCopy = (): void => {
@@ -53,7 +58,7 @@ const Message = ({ isAuthor, text, createdAt, onResendMessage }: Props): JSX.Ele
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={onResendMessage}>
+        <MenuItem onClick={handleReply}>
           <ListItemIcon>
             <ReplyIcon fontSize="small" />
           </ListItemIcon>

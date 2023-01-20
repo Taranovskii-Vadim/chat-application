@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChatsService } from 'src/chats/chats.service';
+import { User } from 'src/users/types';
+// import { ChatsService } from 'src/chats/chats.service';
+import { UsersService } from 'src/users/users.service';
 
-import { LastMessage, Message } from './types';
+import { LastMessage, Message, MessageRender } from './types';
 
 @Injectable()
 export class MessagesService {
@@ -38,9 +40,16 @@ export class MessagesService {
   ];
 
   // constructor(private chatsService: ChatsService) {}
+  constructor(private usersService: UsersService) {}
 
-  getMessages(id: number): Message[] {
-    const result = this.messages.filter(({ chatId }) => chatId === id);
+  getMessages(id: number): MessageRender[] {
+    const messages = this.messages.filter(({ chatId }) => chatId === id);
+
+    const result = messages.map(({ senderId, ...others }) => {
+      const fullname = this.usersService.getFullname(senderId) as string;
+
+      return { ...others, sender: { id: senderId, fullname } };
+    });
 
     return result;
   }
@@ -59,6 +68,9 @@ export class MessagesService {
 
   createMessage(payload: Message): void {
     this.messages.push(payload);
+    // TODO also return sender object here
+    // const sender = this.usersService.getFullname(senderId) as string;
+
     // TODO after create we must call this action to update id, but here we probadly have circular dep error in nest
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
   }

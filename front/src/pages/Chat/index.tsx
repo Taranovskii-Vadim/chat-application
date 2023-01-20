@@ -34,7 +34,7 @@ interface Props {
 const Chat = ({ socket }: Props): JSX.Element => {
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
-  const [resendedMessage, setResendedMessage] = useState<Pick<MessageType, 'id' | 'text'>>();
+  const [repliedMessage, setRepliedMessage] = useState<Pick<MessageType, 'id' | 'text' | 'sender'>>();
 
   const { data } = store;
   const { id } = useParams<{ id: string }>();
@@ -94,32 +94,26 @@ const Chat = ({ socket }: Props): JSX.Element => {
       </Flexbox>
       {/* TODO sep component */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-        {store.messages.map(({ id, senderId, text, isLoading, createdAt }) => {
-          const isAuthor = senderId === user.data?.id;
+        {store.messages.map(({ id, sender, text, isLoading, createdAt }) => {
+          const isAuthor = sender.id === user.data?.id;
 
-          // TODO need user name instead of senderId need object with senderId and sender name
-          const handleResendMessage = (): void => {
-            setResendedMessage({ id, text });
+          const handleReply = (): void => {
+            setRepliedMessage({ id, text, sender });
           };
 
-          return (
-            <Message
-              key={id}
-              text={text}
-              isAuthor={isAuthor}
-              createdAt={createdAt}
-              onResendMessage={handleResendMessage}
-            />
-          );
+          return <Message key={id} text={text} isAuthor={isAuthor} createdAt={createdAt} onReply={handleReply} />;
         })}
       </Box>
-      {resendedMessage ? (
+      {repliedMessage ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
           <Flexbox>
-            <ReplyIcon sx={{ mr: 1 }} />
-            <Typography>{resendedMessage.text}</Typography>
+            <ReplyIcon color="primary" sx={{ mr: 1 }} />
+            <Box>
+              <Typography color="primary">{repliedMessage.sender.fullname}</Typography>
+              <Typography>{repliedMessage.text}</Typography>
+            </Box>
           </Flexbox>
-          <IconButton size="small" onClick={() => setResendedMessage(undefined)}>
+          <IconButton size="small" onClick={() => setRepliedMessage(undefined)}>
             <CloseIcon />
           </IconButton>
         </Flexbox>

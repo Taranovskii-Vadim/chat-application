@@ -8,28 +8,34 @@ export class UsersService {
     {
       id: 1,
       login: 'admin',
-      name: 'vadim',
-      lastname: 'taranovsckiy',
+      name: 'вадим',
+      lastname: 'тарановский',
       password: 'admin',
     },
     {
       id: 2,
       login: 'devil',
-      name: 'eva',
-      lastname: 'summer',
+      name: 'ева',
+      lastname: 'саммер',
       password: 'qwerty',
     },
     {
       id: 3,
       login: 'teste',
-      name: 'kruella',
-      lastname: 'winter',
+      name: 'круэлла',
+      lastname: 'винтер',
       password: 'qwerty',
     },
   ];
 
   findById(id: number): User | undefined {
     return this.users.find((user) => user.id === id);
+  }
+
+  getFullname(id: number): string | undefined {
+    const user = this.findById(id) as User;
+
+    return `${user.name} ${user.lastname}`;
   }
 
   // TODO use async because in future we can access to DB here

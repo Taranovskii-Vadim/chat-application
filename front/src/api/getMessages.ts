@@ -5,7 +5,10 @@ import { Method, Route } from './types';
 interface ResponseDTO {
   id: string;
   chatId: number;
-  senderId: number;
+  sender: {
+    id: number;
+    fullname: string;
+  };
   text: string;
   createdAt: string;
 }
@@ -18,7 +21,7 @@ class GetMessages implements Route {
   }
 
   getData(data: ResponseDTO[]): Message[] {
-    return data.map(({ id, senderId, text, createdAt }) => ({ id, senderId, text, createdAt: formatDate(createdAt) }));
+    return data.map(({ id, sender, text, createdAt }) => ({ id, text, sender, createdAt: formatDate(createdAt) }));
   }
 }
 
