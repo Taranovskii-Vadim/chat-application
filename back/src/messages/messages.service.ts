@@ -34,6 +34,10 @@ export class MessagesService {
       id: '4',
       chatId: 1,
       senderId: 1,
+      replied: {
+        id: '3',
+        fullname: 'Вадим Тарановский',
+      },
       text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
       createdAt: new Date(),
     },
@@ -45,10 +49,13 @@ export class MessagesService {
   getMessages(id: number): MessageRender[] {
     const messages = this.messages.filter(({ chatId }) => chatId === id);
 
-    const result = messages.map(({ senderId, ...others }) => {
+    const result = messages.map(({ senderId, replied, ...others }) => {
       const fullname = this.usersService.getFullname(senderId) as string;
 
-      return { ...others, sender: { id: senderId, fullname } };
+      const res = replied && this.messages.find(({ id }) => id === replied.id);
+      const rep = res && { text: res.text, ...replied };
+
+      return { ...others, sender: { id: senderId, fullname }, replied: rep };
     });
 
     return result;
@@ -66,6 +73,7 @@ export class MessagesService {
     );
   }
 
+  // TODO also put fullname to reply object
   createMessage(payload: Message): void {
     this.messages.push(payload);
     // TODO also return sender object here

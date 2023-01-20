@@ -9,16 +9,19 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
+import { Replied } from '../../../../store/chat/types';
+
 import Flexbox from '../../../../components/Flexbox';
 
 interface Props {
   text: string;
+  replied?: Replied;
   createdAt: string;
   isAuthor: boolean;
   onReply: () => void;
 }
 
-const Message = ({ isAuthor, text, createdAt, onReply }: Props): JSX.Element => {
+const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
@@ -45,6 +48,12 @@ const Message = ({ isAuthor, text, createdAt, onReply }: Props): JSX.Element => 
           onClick={handleClick}
           sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}
         >
+          {replied ? (
+            <Box sx={{ borderLeft: '3px solid black', borderColor: '#37a123', pl: 1 }}>
+              <Typography sx={{ color: '#37a123' }}>{replied.fullname}</Typography>
+              <Typography>{replied.text}</Typography>
+            </Box>
+          ) : null}
           <Typography>{text}</Typography>
           <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
         </Box>

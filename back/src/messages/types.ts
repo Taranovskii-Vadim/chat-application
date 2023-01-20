@@ -14,9 +14,18 @@ export type LastMessage = Common & {
 
 export type Message = CommonMessage & {
   senderId: number;
+  replied?: {
+    id: string;
+    fullname: string;
+  };
 };
 
 export type MessageRender = CommonMessage & {
+  replied?: {
+    id: string;
+    fullname: string;
+    text: string;
+  };
   sender: {
     id: number;
     fullname: string;

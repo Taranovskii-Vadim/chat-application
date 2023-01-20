@@ -9,6 +9,11 @@ interface ResponseDTO {
     id: number;
     fullname: string;
   };
+  replied?: {
+    id: string;
+    fullname: string;
+    text: string;
+  };
   text: string;
   createdAt: string;
 }
@@ -21,7 +26,13 @@ class GetMessages implements Route {
   }
 
   getData(data: ResponseDTO[]): Message[] {
-    return data.map(({ id, sender, text, createdAt }) => ({ id, text, sender, createdAt: formatDate(createdAt) }));
+    return data.map(({ id, sender, replied, text, createdAt }) => ({
+      id,
+      text,
+      sender,
+      replied,
+      createdAt: formatDate(createdAt),
+    }));
   }
 }
 

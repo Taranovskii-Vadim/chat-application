@@ -34,9 +34,9 @@ interface Props {
 const Chat = ({ socket }: Props): JSX.Element => {
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
-  const [repliedMessage, setRepliedMessage] = useState<Pick<MessageType, 'id' | 'text' | 'sender'>>();
+  // const [repliedMessage, setRepliedMessage] = useState<Pick<MessageType, 'id' | 'text' | 'sender'>>();
 
-  const { data } = store;
+  const { data, repliedMessage } = store;
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
@@ -94,14 +94,23 @@ const Chat = ({ socket }: Props): JSX.Element => {
       </Flexbox>
       {/* TODO sep component */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-        {store.messages.map(({ id, sender, text, isLoading, createdAt }) => {
+        {store.messages.map(({ id, sender, text, replied, isLoading, createdAt }) => {
           const isAuthor = sender.id === user.data?.id;
 
           const handleReply = (): void => {
-            setRepliedMessage({ id, text, sender });
+            store.setRepliedMessage({ id, text, sender });
           };
 
-          return <Message key={id} text={text} isAuthor={isAuthor} createdAt={createdAt} onReply={handleReply} />;
+          return (
+            <Message
+              key={id}
+              text={text}
+              replied={replied}
+              isAuthor={isAuthor}
+              createdAt={createdAt}
+              onReply={handleReply}
+            />
+          );
         })}
       </Box>
       {repliedMessage ? (
@@ -113,7 +122,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
               <Typography>{repliedMessage.text}</Typography>
             </Box>
           </Flexbox>
-          <IconButton size="small" onClick={() => setRepliedMessage(undefined)}>
+          <IconButton size="small" onClick={() => store.setRepliedMessage(undefined)}>
             <CloseIcon />
           </IconButton>
         </Flexbox>
