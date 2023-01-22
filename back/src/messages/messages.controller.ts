@@ -12,7 +12,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { MessagesService } from './messages.service';
 
-import { Message, MessageRender } from './types';
+import { Message, MessageDTO } from './types';
 
 // TODO add guards everywhere
 @Controller('/api/messages')
@@ -21,7 +21,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatId')
-  getMessages(@Param('chatId') chatId: string): MessageRender[] {
+  getMessages(@Param('chatId') chatId: string): MessageDTO[] {
     return this.messagesService.getMessages(+chatId);
   }
 

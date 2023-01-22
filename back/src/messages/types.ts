@@ -1,33 +1,32 @@
-type Common = {
+type MessageId = string;
+
+type CommonMessage = {
+  id: MessageId;
   text: string;
+  chatId: number;
   createdAt: Date;
 };
 
-type CommonMessage = Common & {
-  id: string;
-  chatId: number;
+type SenderDTO = {
+  id: number;
+  fullname: string;
 };
 
-export type LastMessage = Common & {
-  senderId: number;
+type RepliedDTO = {
+  id: MessageId;
+  text: string;
+  fullname: string;
 };
 
 export type Message = CommonMessage & {
-  senderId: number;
   replied?: {
-    id: string;
-    fullname: string;
+    id: MessageId;
+    senderId: number;
   };
+  senderId: SenderDTO['id'];
 };
 
-export type MessageRender = CommonMessage & {
-  replied?: {
-    id: string;
-    fullname: string;
-    text: string;
-  };
-  sender: {
-    id: number;
-    fullname: string;
-  };
+export type MessageDTO = CommonMessage & {
+  sender: SenderDTO;
+  replied?: RepliedDTO;
 };

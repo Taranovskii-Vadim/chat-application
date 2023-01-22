@@ -1,4 +1,4 @@
-import { LastMessage } from 'src/messages/types';
+import { MessageDTO } from 'src/messages/types';
 
 export type ChatDB = {
   id: number;
@@ -12,7 +12,7 @@ export type Chat = {
   title: string;
   members: number[];
   unReadCount: number;
-  lastMessage?: LastMessage;
+  lastMessage?: MessageDTO;
 };
 
 export type Conversation = { id: number; title: string; members: number[] };

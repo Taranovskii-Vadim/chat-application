@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { User } from 'src/users/types';
-import { LastMessage } from 'src/messages/types';
+import { MessageDTO } from 'src/messages/types';
 import { UsersService } from 'src/users/users.service';
 import { MessagesService } from 'src/messages/messages.service';
 
@@ -34,7 +34,7 @@ export class ChatsService {
     return result.join(', ');
   }
 
-  private getChatLastMessage(id?: string): LastMessage | undefined {
+  private getChatLastMessage(id?: string): MessageDTO | undefined {
     return this.messagesService.getMessage(id);
   }
 

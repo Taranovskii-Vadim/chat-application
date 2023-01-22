@@ -3,15 +3,27 @@ import { Chat } from '../store/chats/types';
 
 import { Method, Route } from './types';
 
+// TODO move common types in sep file
+
 interface ResponseDTO {
   id: number;
   title: string;
   members: number[];
   unReadCount: number;
   lastMessage?: {
+    id: string;
     text: string;
+    chatId: number;
     createdAt: string;
-    senderId: number;
+    sender: {
+      id: number;
+      fullname: string;
+    };
+    replied: {
+      id: string;
+      text: string;
+      fullname: string;
+    };
   };
 }
 
@@ -26,7 +38,7 @@ class GetChats implements Route {
     return data.map(({ lastMessage, ...others }) => ({
       lastMessage: lastMessage && {
         text: lastMessage.text,
-        senderId: lastMessage.senderId,
+        senderId: lastMessage.sender.id,
         createdAt: formatDate(lastMessage.createdAt),
       },
       ...others,

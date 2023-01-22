@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 // TODO vite resolve alias but ts not
+
 import auth from 'src/store/auth';
 
 import Pages from './pages';

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from 'src/users/types';
+// import { User } from 'src/users/types';
 // import { ChatsService } from 'src/chats/chats.service';
 import { UsersService } from 'src/users/users.service';
 
-import { LastMessage, Message, MessageRender } from './types';
+import { Message, MessageDTO } from './types';
 
 @Injectable()
 export class MessagesService {
@@ -36,7 +36,7 @@ export class MessagesService {
       senderId: 1,
       replied: {
         id: '3',
-        fullname: 'Вадим Тарановский',
+        senderId: 2,
       },
       text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
       createdAt: new Date(),
@@ -46,31 +46,36 @@ export class MessagesService {
   // constructor(private chatsService: ChatsService) {}
   constructor(private usersService: UsersService) {}
 
-  getMessages(id: number): MessageRender[] {
-    const messages = this.messages.filter(({ chatId }) => chatId === id);
-
-    const result = messages.map(({ senderId, replied, ...others }) => {
-      const fullname = this.usersService.getFullname(senderId) as string;
-
-      const res = replied && this.messages.find(({ id }) => id === replied.id);
-      const rep = res && { text: res.text, ...replied };
-
-      return { ...others, sender: { id: senderId, fullname }, replied: rep };
-    });
-
-    return result;
+  private getSenderFullname(id: number): string {
+    return this.usersService.getFullname(id) as string;
   }
 
-  getMessage(id?: string): LastMessage | undefined {
+  private prepareMessageDTO({ replied, senderId, ...r }: Message): MessageDTO {
+    const fullname = this.getSenderFullname(senderId);
+
+    const sender: MessageDTO['sender'] = { id: senderId, fullname };
+
+    const res = replied && this.messages.find(({ id }) => id === replied.id);
+
+    const rep: MessageDTO['replied'] = res && {
+      id: res.id,
+      text: res.text,
+      fullname: this.getSenderFullname(replied.senderId),
+    };
+
+    return { ...r, sender, replied: rep };
+  }
+
+  getMessages(id: number): MessageDTO[] {
+    const messages = this.messages.filter(({ chatId }) => chatId === id);
+
+    return messages.map((item) => this.prepareMessageDTO(item));
+  }
+
+  getMessage(id?: string): MessageDTO | undefined {
     const result = this.messages.find((item) => item.id === id);
 
-    return (
-      result && {
-        text: result.text,
-        senderId: result.senderId,
-        createdAt: result.createdAt,
-      }
-    );
+    return result && this.prepareMessageDTO(result);
   }
 
   // TODO also put fullname to reply object

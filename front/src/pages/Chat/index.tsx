@@ -34,7 +34,6 @@ interface Props {
 const Chat = ({ socket }: Props): JSX.Element => {
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
-  // const [repliedMessage, setRepliedMessage] = useState<Pick<MessageType, 'id' | 'text' | 'sender'>>();
 
   const { data, repliedMessage } = store;
   const { id } = useParams<{ id: string }>();
