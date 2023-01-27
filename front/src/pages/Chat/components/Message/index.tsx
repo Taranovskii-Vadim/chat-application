@@ -49,8 +49,8 @@ const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.El
           sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}
         >
           {replied ? (
-            <Box sx={{ borderLeft: '3px solid black', borderColor: '#37a123', pl: 1 }}>
-              <Typography sx={{ color: '#37a123' }}>{replied.fullname}</Typography>
+            <Box sx={{ borderLeft: `3px solid ${isAuthor ? '#37a123' : '#2AABEE'}`, pl: 1 }}>
+              <Typography sx={{ color: isAuthor ? '#37a123' : '#2AABEE' }}>{replied.fullname}</Typography>
               <Typography>{replied.text}</Typography>
             </Box>
           ) : null}
