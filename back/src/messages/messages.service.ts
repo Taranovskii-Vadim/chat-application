@@ -78,12 +78,8 @@ export class MessagesService {
     return result && this.prepareMessageDTO(result);
   }
 
-  // TODO also put fullname to reply object
-  // TODO return new message object
   createMessage(payload: Message): void {
     this.messages.push(payload);
-    // TODO also return sender object here
-    // const sender = this.usersService.getFullname(senderId) as string;
 
     // TODO after create we must call this action to update id, but here we probadly have circular dep error in nest
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);

@@ -73,15 +73,17 @@ class ChatStore {
   addMessage = async (senderId: number, text: string): Promise<AddMessageResult | undefined> => {
     if (this.data) {
       const chatId = this.data.id;
-      const repliedId = this.repliedMessage && this.repliedMessage.id;
+      const repliedId = this.repliedMessage?.id;
+      const repliedSenderId = this.repliedMessage?.sender?.id;
       const createdAt = new Date();
       const id = crypto.randomUUID();
 
       try {
-        const payload: Omit<MessagePayload, 'senderId'> = { id, chatId, repliedId, text, createdAt };
+        const payload: any = { id, chatId, replied: { id: repliedId, senderId: repliedSenderId }, text, createdAt };
         // TODO fix empty
         this.setMessage({
           ...payload,
+          replied: { id: repliedId, text: this.repliedMessage?.text, fullname: this.repliedMessage?.sender?.fullname },
           isLoading: true,
           sender: { id: senderId, fullname: '' },
           createdAt: formatDate(createdAt),

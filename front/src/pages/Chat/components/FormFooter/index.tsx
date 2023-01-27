@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Box, Typography, InputBase, IconButton } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import EmojiPicker from 'emoji-picker-react';
@@ -97,4 +98,4 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
   );
 };
 
-export default FormFooter;
+export default observer(FormFooter);

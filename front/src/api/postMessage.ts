@@ -7,9 +7,7 @@ class PostMessage implements Route {
     return '/messages';
   }
 
-  getData(data: number): number {
-    return data;
-  }
+  getData() {}
 }
 
 export default new PostMessage();
