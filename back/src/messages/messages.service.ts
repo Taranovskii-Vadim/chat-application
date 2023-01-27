@@ -79,6 +79,7 @@ export class MessagesService {
   }
 
   // TODO also put fullname to reply object
+  // TODO return new message object
   createMessage(payload: Message): void {
     this.messages.push(payload);
     // TODO also return sender object here
