@@ -36,7 +36,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
       socket.emit('sendMessage', {
         text,
         ...response,
-        senderId: user.data.id,
+        // senderId: user.data.id,
         receiverId: data.members[0],
       });
     } finally {

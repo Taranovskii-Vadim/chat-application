@@ -70,7 +70,7 @@ class ChatStore {
     this.isFormLoading = value;
   };
 
-  addMessage = async (senderId: number, text: string): Promise<AddMessageResult | undefined> => {
+  addMessage = async (senderId: number, text: string) => {
     if (this.data) {
       const chatId = this.data.id;
       const repliedId = this.repliedMessage?.id;
@@ -79,13 +79,21 @@ class ChatStore {
       const id = crypto.randomUUID();
 
       try {
+        const replied = {
+          id: repliedId,
+          text: this.repliedMessage?.text,
+          fullname: this.repliedMessage?.sender?.fullname,
+        };
+
+        const sender = { id: senderId, fullname: '' };
+
         const payload: any = { id, chatId, replied: { id: repliedId, senderId: repliedSenderId }, text, createdAt };
         // TODO fix empty
         this.setMessage({
           ...payload,
-          replied: { id: repliedId, text: this.repliedMessage?.text, fullname: this.repliedMessage?.sender?.fullname },
+          replied,
           isLoading: true,
-          sender: { id: senderId, fullname: '' },
+          sender,
           createdAt: formatDate(createdAt),
         });
 
@@ -95,7 +103,7 @@ class ChatStore {
 
         chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
 
-        return { id, chatId };
+        return { id, chatId, replied, sender };
       } catch {
         // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });
