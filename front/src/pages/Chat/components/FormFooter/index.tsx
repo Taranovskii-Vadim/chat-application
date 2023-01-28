@@ -9,7 +9,6 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
-import user from '../../../../store/user';
 import ChatStore from '../../../../store/chat';
 
 import Flexbox from '../../../../components/Flexbox';
@@ -20,23 +19,20 @@ interface Props {
 }
 
 const FormFooter = ({ socket, store }: Props): JSX.Element => {
-  const { data } = store;
+  const { data, replied } = store;
 
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
 
   const handleAddMessage = async (): Promise<void> => {
     try {
-      if (!user.data) return;
-
-      const response = await store.addMessage(user.data.id, text);
+      const response = await store.addMessage(text);
 
       if (!response || !data) return;
 
       socket.emit('sendMessage', {
         text,
         ...response,
-        // senderId: user.data.id,
         receiverId: data.members[0],
       });
     } finally {
@@ -50,20 +46,20 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
   return (
     <>
-      {/* {repliedMessage ? (
+      {replied ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
           <Flexbox>
             <ReplyIcon color="primary" sx={{ mr: 1 }} />
             <Box>
-              <Typography color="primary">{repliedMessage.sender.fullname}</Typography>
-              <Typography>{repliedMessage.text}</Typography>
+              <Typography color="primary">{replied.fullname}</Typography>
+              <Typography>{replied.text}</Typography>
             </Box>
           </Flexbox>
           <IconButton size="small" onClick={() => store.setRepliedMessage(undefined)}>
             <CloseIcon />
           </IconButton>
         </Flexbox>
-      ) : null} */}
+      ) : null}
       <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
         <AttachFileIcon />
         <InputBase

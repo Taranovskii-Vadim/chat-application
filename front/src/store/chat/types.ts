@@ -10,11 +10,11 @@ type Sender = {
   fullname: string;
 };
 
-// export type Replied = Pick<Common, 'id' | 'text'> & { fullname: string };
+export type Replied = Pick<Common, 'id' | 'text'> & { fullname: string };
 
 export type Message = Common & {
   sender: Sender;
-  // replied?: Replied;
+  replied?: Replied;
   isLoading?: boolean;
   isError?: boolean;
 };

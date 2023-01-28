@@ -63,21 +63,21 @@ const Chat = ({ socket }: Props): JSX.Element => {
       </Flexbox>
       {/* TODO sep component */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-        {store.messages.map(({ id, sender, text, isLoading, createdAt }) => {
+        {store.messages.map(({ id, sender, replied, text, isLoading, createdAt }) => {
           const isAuthor = sender.id === user.data?.id;
 
-          // const handleReply = (): void => {
-          //   store.setRepliedMessage({ id, text, sender });
-          // };
+          const handleReply = (): void => {
+            store.setRepliedMessage({ id, text, fullname: sender.fullname });
+          };
 
           return (
             <Message
               key={id}
               text={text}
-              // replied={replied}
+              replied={replied}
               isAuthor={isAuthor}
               createdAt={createdAt}
-              // onReply={handleReply}
+              onReply={handleReply}
             />
           );
         })}
