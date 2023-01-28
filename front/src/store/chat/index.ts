@@ -9,7 +9,7 @@ import user from '../user';
 import chats from '../chats';
 import { formatDate } from '../../utils';
 
-import { Message, Replied, Chat } from './types';
+import { Message, Replied, Chat, AddResponse } from './types';
 
 class ChatStore {
   data: Chat | undefined = undefined;
@@ -71,9 +71,7 @@ class ChatStore {
     this.isFormLoading = value;
   };
 
-  // TODO remove any
-
-  addMessage = async (text: string): Promise<any> => {
+  addMessage = async (text: string): Promise<AddResponse | void> => {
     if (this.data && user.data) {
       const id = crypto.randomUUID();
 
@@ -88,6 +86,7 @@ class ChatStore {
         // TODO temp must set fullname empty string because we only have id in user. Must expand getProfile route to get fullname
         const sender: Message['sender'] = { id: senderId, fullname: 'Temp Fix' };
 
+        // TODO can shuffle code below
         const replied = this.replied && {
           id: this.replied.id,
           text: this.replied.text,

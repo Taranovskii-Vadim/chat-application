@@ -21,17 +21,9 @@ export type Message = Common & {
 
 export type MessageDTO = Common & {
   senderId: Sender['id'];
-  // repliedId?: Replied['id'];
+  repliedId?: Replied['id'];
 };
 
 export type Chat = { id: number; title: string; members: number[] };
 
-// export type AddMessageResult = Pick<MessagePayload, 'id' | 'chatId'>;
-
-// export type Message = {
-//   isLoading?: boolean;
-//   isError?: boolean;
-//   createdAt: string;
-//   sender: Sender;
-//   replied?: Replied;
-// } & Omit<MessagePayload, 'chatId' | 'createdAt' | 'senderId' | 'repliedId'>;
+export type AddResponse = Pick<Message, 'id' | 'chatId' | 'replied' | 'sender'>;
