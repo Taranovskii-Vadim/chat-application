@@ -73,13 +73,9 @@ class ChatStore {
   };
 
   updateMessage = (id: Message['id'], value: Partial<Message>): void => {
-    this.messages = this.messages.map((item) => {
-      if (item.id === id) {
-        item = { ...item, ...value };
-      }
+    const index = this.messages.findIndex((item) => item.id === id);
 
-      return item;
-    });
+    this.messages[index] = { ...this.messages[index], ...value };
   };
 
   setIsFormLoading = (value: boolean): void => {
@@ -110,7 +106,7 @@ class ChatStore {
         };
 
         if (this.editId) {
-          // TODO call pushMessage
+          this.updateMessage(this.editId, { ...payload, isEdited: true, isLoading: true });
           // TODO enough send only text and id
           await api(putMessage, { ...payload, repliedId, senderId, createdAt });
 
