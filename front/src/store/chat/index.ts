@@ -9,7 +9,7 @@ import user from '../user';
 import chats from '../chats';
 import { formatDate } from '../../utils';
 
-import { Message, Replied, Chat, AddResponse } from './types';
+import { Message, Replied, Chat, CreateUpdateResponse } from './types';
 import putMessage from '../../api/putMessage';
 
 class ChatStore {
@@ -82,7 +82,7 @@ class ChatStore {
     this.isFormLoading = value;
   };
 
-  createUpdateMessage = async (): Promise<AddResponse | void> => {
+  createUpdateMessage = async (): Promise<CreateUpdateResponse | void> => {
     if (this.data && user.data) {
       const id = this.editId || crypto.randomUUID();
 
@@ -93,12 +93,13 @@ class ChatStore {
         const senderId = user.data.id;
         const repliedId = this.replied?.id;
 
-        const payload = { id, text, chatId };
+        const payload = { id, text };
+
+        let result: CreateUpdateResponse = payload;
 
         // TODO temp must set fullname empty string because we only have id in user. Must expand getProfile route to get fullname
         const sender: Message['sender'] = { id: senderId, fullname: 'Temp Fix' };
 
-        // TODO can shuffle code below
         const replied = this.replied && {
           id: this.replied.id,
           text: this.replied.text,
@@ -106,20 +107,19 @@ class ChatStore {
         };
 
         if (this.editId) {
-          this.updateMessage(this.editId, { ...payload, isEdited: true, isLoading: true });
-          // TODO enough send only text and id
-          await api(putMessage, { ...payload, repliedId, senderId, createdAt });
-
-          this.setEditId('');
+          this.updateMessage(this.editId, { text, isEdited: true, isLoading: true });
+          await api(putMessage, payload);
         } else {
-          this.pushMessage({ ...payload, sender, replied, createdAt: formatDate(createdAt), isLoading: true });
-          await api(postMessage, { ...payload, repliedId, senderId, createdAt });
+          result = { ...result, chatId, replied, sender };
+          this.pushMessage({ ...payload, chatId, sender, replied, createdAt: formatDate(createdAt), isLoading: true });
+          await api(postMessage, { ...payload, chatId, repliedId, senderId, createdAt });
           chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
         }
 
+        this.setEditId('');
         this.setRepliedMessage(undefined);
 
-        return { id, chatId, replied, sender, text };
+        return result;
       } catch {
         // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });

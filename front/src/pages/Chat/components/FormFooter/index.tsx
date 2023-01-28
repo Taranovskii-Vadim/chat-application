@@ -19,7 +19,7 @@ interface Props {
 }
 
 const FormFooter = ({ socket, store }: Props): JSX.Element => {
-  const { data, replied } = store;
+  const { data, replied, editId } = store;
 
   const [isPicker, setIsPicker] = useState(false);
 
@@ -29,7 +29,11 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
       if (!response || !data) return;
 
-      socket.emit('sendMessage', { ...response, receiverId: data.members[0] });
+      if (response.chatId) {
+        socket.emit('sendMessage', { ...response, receiverId: data.members[0] });
+      } else {
+        // TODO call here socket update message listener
+      }
     } finally {
       store.setText('');
     }
@@ -41,6 +45,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
   return (
     <>
+      {/* TODO show edit block here */}
       {replied ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
           <Flexbox>

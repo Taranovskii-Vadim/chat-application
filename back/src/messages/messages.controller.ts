@@ -33,7 +33,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  updateMessage(@Body() body: Message): void {
+  updateMessage(@Body() body: Partial<Message>): void {
     return this.messagesService.updateMessage(body);
   }
 }

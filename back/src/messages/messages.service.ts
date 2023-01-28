@@ -84,9 +84,9 @@ export class MessagesService {
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
   }
 
-  updateMessage(payload: Message): void {
-    const index = this.messages.findIndex(({ id }) => id === payload.id);
+  updateMessage(data: Partial<Message>): void {
+    const index = this.messages.findIndex(({ id }) => id === data.id);
 
-    this.messages[index] = { ...payload, isEdited: true };
+    this.messages[index] = { ...this.messages[index], ...data, isEdited: true };
   }
 }

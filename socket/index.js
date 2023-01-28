@@ -13,6 +13,8 @@ io.on("connection", (socket) => {
     io.emit("getUsers", activeUsers);
   });
 
+  // TODO create edit listener for edit logic
+
   socket.on("sendMessage", (data) => {
     const { receiverId, chatId, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);

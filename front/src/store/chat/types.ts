@@ -27,4 +27,5 @@ export type MessageDTO = Common & {
 
 export type Chat = { id: number; title: string; members: number[] };
 
-export type AddResponse = Pick<Message, 'id' | 'chatId' | 'replied' | 'sender' | 'text'>;
+export type CreateUpdateResponse = Pick<Message, 'id' | 'text'> &
+  Partial<Pick<Message, 'chatId' | 'replied' | 'sender'>>;
