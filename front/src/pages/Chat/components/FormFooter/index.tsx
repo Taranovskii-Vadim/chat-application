@@ -21,27 +21,22 @@ interface Props {
 const FormFooter = ({ socket, store }: Props): JSX.Element => {
   const { data, replied } = store;
 
-  const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
 
-  const handleAddMessage = async (): Promise<void> => {
+  const handleCreateUpdateMessage = async (): Promise<void> => {
     try {
-      const response = await store.addMessage(text);
+      const response = await store.createUpdateMessage();
 
       if (!response || !data) return;
 
-      socket.emit('sendMessage', {
-        text,
-        ...response,
-        receiverId: data.members[0],
-      });
+      socket.emit('sendMessage', { ...response, receiverId: data.members[0] });
     } finally {
-      setText('');
+      store.setText('');
     }
   };
 
   const handleEmojiClick = (emojiObject: any): void => {
-    setText((prev) => prev + emojiObject.emoji);
+    store.setText(store.text + emojiObject.emoji);
   };
 
   return (
@@ -64,8 +59,8 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
         <AttachFileIcon />
         <InputBase
           multiline
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={store.text}
+          onChange={(e) => store.setText(e.target.value)}
           sx={{ mr: 1, ml: 1, flex: 1, maxHeight: '130px', overflow: 'auto', paddingBottom: '6px' }}
           placeholder="Write a message..."
         />
@@ -86,7 +81,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
         </IconButton>
         {/* TODO disable if input is empty */}
         {/* disabled={store.isFormLoading} */}
-        <IconButton size="small" color="primary" onClick={handleAddMessage}>
+        <IconButton size="small" color="primary" onClick={handleCreateUpdateMessage}>
           <SendIcon />
         </IconButton>
       </Flexbox>

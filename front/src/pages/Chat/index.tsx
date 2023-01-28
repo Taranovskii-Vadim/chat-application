@@ -39,7 +39,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
 
   useEffect(() => {
     socket.on('receiveMessage', (data: Omit<MessageType, 'createdAt'>) => {
-      store.setMessage({ ...data, createdAt: formatDate(new Date()) });
+      store.pushMessage({ ...data, createdAt: formatDate(new Date()) });
     });
   }, []);
 
@@ -63,11 +63,16 @@ const Chat = ({ socket }: Props): JSX.Element => {
       </Flexbox>
       {/* TODO sep component */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-        {store.messages.map(({ id, sender, replied, text, isLoading, createdAt }) => {
+        {store.messages.map(({ id, sender, replied, text, isEdited, isLoading, createdAt }) => {
           const isAuthor = sender.id === user.data?.id;
 
           const handleReply = (): void => {
             store.setRepliedMessage({ id, text, fullname: sender.fullname });
+          };
+
+          const handleEdit = (): void => {
+            store.setEditId(id);
+            store.setText(text);
           };
 
           return (
@@ -75,8 +80,10 @@ const Chat = ({ socket }: Props): JSX.Element => {
               key={id}
               text={text}
               replied={replied}
+              isEdited={isEdited}
               isAuthor={isAuthor}
               createdAt={createdAt}
+              onEdit={handleEdit}
               onReply={handleReply}
             />
           );

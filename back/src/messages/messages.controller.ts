@@ -1,5 +1,5 @@
 import {
-  Req,
+  Put,
   Get,
   Post,
   Body,
@@ -29,5 +29,11 @@ export class MessagesController {
   @Post()
   createMessage(@Body() body: Message): void {
     return this.messagesService.createMessage(body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  updateMessage(@Body() body: Message): void {
+    return this.messagesService.updateMessage(body);
   }
 }

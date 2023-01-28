@@ -20,6 +20,7 @@ type ResponseDTO = {
   createdAt: string;
   sender: SenderDTO;
   replied?: RepliedDTO;
+  isEdited?: boolean;
 };
 
 class GetMessages implements Route {

@@ -10,6 +10,7 @@ import chats from '../chats';
 import { formatDate } from '../../utils';
 
 import { Message, Replied, Chat, AddResponse } from './types';
+import putMessage from '../../api/putMessage';
 
 class ChatStore {
   data: Chat | undefined = undefined;
@@ -24,15 +25,21 @@ class ChatStore {
 
   messages: Message[] = [];
 
+  text = '';
+
+  editId = '';
+
   constructor() {
     makeObservable(this, {
+      text: observable,
       messages: observable,
       replied: observable,
       isLoading: observable,
       isFormLoading: observable,
       isUserOnline: observable,
 
-      setMessage: action,
+      setText: action,
+      pushMessage: action,
       setIsLoading: action,
       setRepliedMessage: action,
       updateMessage: action,
@@ -53,8 +60,16 @@ class ChatStore {
     this.replied = value;
   };
 
-  setMessage = (message: Message): void => {
+  pushMessage = (message: Message): void => {
     this.messages.push(message);
+  };
+
+  setText = (value: string): void => {
+    this.text = value;
+  };
+
+  setEditId = (value: string): void => {
+    this.editId = value;
   };
 
   updateMessage = (id: Message['id'], value: Partial<Message>): void => {
@@ -71,11 +86,12 @@ class ChatStore {
     this.isFormLoading = value;
   };
 
-  addMessage = async (text: string): Promise<AddResponse | void> => {
+  createUpdateMessage = async (): Promise<AddResponse | void> => {
     if (this.data && user.data) {
-      const id = crypto.randomUUID();
+      const id = this.editId || crypto.randomUUID();
 
       try {
+        const text = this.text;
         const chatId = this.data.id;
         const createdAt = new Date();
         const senderId = user.data.id;
@@ -93,15 +109,21 @@ class ChatStore {
           fullname: this.replied.fullname,
         };
 
-        this.setMessage({ ...payload, sender, replied, createdAt: formatDate(createdAt), isLoading: true });
+        if (this.editId) {
+          // TODO call pushMessage
+          // TODO enough send only text and id
+          await api(putMessage, { ...payload, repliedId, senderId, createdAt });
 
-        await api(postMessage, { ...payload, repliedId, senderId, createdAt });
+          this.setEditId('');
+        } else {
+          this.pushMessage({ ...payload, sender, replied, createdAt: formatDate(createdAt), isLoading: true });
+          await api(postMessage, { ...payload, repliedId, senderId, createdAt });
+          chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
+        }
 
         this.setRepliedMessage(undefined);
 
-        chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
-
-        return { id, chatId, replied, sender };
+        return { id, chatId, replied, sender, text };
       } catch {
         // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });

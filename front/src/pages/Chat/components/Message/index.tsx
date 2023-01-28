@@ -18,11 +18,17 @@ interface Props {
   createdAt: string;
   isAuthor: boolean;
   replied?: Replied;
+  isEdited?: boolean;
+  onEdit: () => void;
   onReply: () => void;
 }
 
-const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.Element => {
+// TODO receive rest props
+
+const Message = ({ isAuthor, text, replied, isEdited, createdAt, onReply, onEdit }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
+
+  const color = isAuthor ? '#37a123' : '#2AABEE';
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -33,6 +39,11 @@ const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.El
 
   const handleReply = (): void => {
     onReply();
+    handleClose();
+  };
+
+  const handleEdit = (): void => {
+    onEdit();
     handleClose();
   };
 
@@ -49,13 +60,16 @@ const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.El
           sx={{ backgroundColor: isAuthor ? '#b1e8a7' : 'white', maxWidth: '55%', borderRadius: 1, p: 1 }}
         >
           {replied ? (
-            <Box sx={{ borderLeft: `3px solid ${isAuthor ? '#37a123' : '#2AABEE'}`, pl: 1 }}>
-              <Typography sx={{ color: isAuthor ? '#37a123' : '#2AABEE' }}>{replied.fullname}</Typography>
+            <Box sx={{ borderLeft: `3px solid ${color}`, pl: 1 }}>
+              <Typography sx={{ color }}>{replied.fullname}</Typography>
               <Typography>{replied.text}</Typography>
             </Box>
           ) : null}
           <Typography>{text}</Typography>
-          <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
+          <Flexbox sx={{ justifyContent: 'flex-end' }}>
+            {isEdited ? <Typography sx={{ fontSize: '12px', color, mr: 1 }}>Изменено</Typography> : null}
+            <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
+          </Flexbox>
         </Box>
       </Flexbox>
       <Menu
@@ -80,7 +94,7 @@ const Message = ({ isAuthor, text, replied, createdAt, onReply }: Props): JSX.El
           <ListItemText>Закрепить</ListItemText>
         </MenuItem>
         {isAuthor ? (
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleEdit}>
             <ListItemIcon>
               <EditOutlinedIcon fontSize="small" />
             </ListItemIcon>

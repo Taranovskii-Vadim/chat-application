@@ -83,4 +83,10 @@ export class MessagesService {
     // TODO after create we must call this action to update id, but here we probadly have circular dep error in nest
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
   }
+
+  updateMessage(payload: Message): void {
+    const index = this.messages.findIndex(({ id }) => id === payload.id);
+
+    this.messages[index] = { ...payload, isEdited: true };
+  }
 }
