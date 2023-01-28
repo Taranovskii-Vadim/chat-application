@@ -34,10 +34,7 @@ export class MessagesService {
       id: '4',
       chatId: 1,
       senderId: 1,
-      replied: {
-        id: '3',
-        senderId: 2,
-      },
+      repliedId: '3',
       text: 'good what about you? and btw how is your leg, i heard you hurt it last basketball game',
       createdAt: new Date(),
     },
@@ -50,20 +47,22 @@ export class MessagesService {
     return this.usersService.getFullname(id) as string;
   }
 
-  private prepareMessageDTO({ replied, senderId, ...r }: Message): MessageDTO {
+  private prepareMessageDTO(message: Message): MessageDTO {
+    const { repliedId, senderId, ...r } = message;
+
     const fullname = this.getSenderFullname(senderId);
 
     const sender: MessageDTO['sender'] = { id: senderId, fullname };
 
-    const res = replied && this.messages.find(({ id }) => id === replied.id);
+    const res = this.messages.find(({ id }) => id === repliedId);
 
-    const rep: MessageDTO['replied'] = res && {
+    const replied: MessageDTO['replied'] = res && {
       id: res.id,
       text: res.text,
-      fullname: this.getSenderFullname(replied.senderId),
+      fullname: this.getSenderFullname(res.senderId),
     };
 
-    return { ...r, sender, replied: rep };
+    return { ...r, sender, replied };
   }
 
   getMessages(id: number): MessageDTO[] {

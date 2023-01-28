@@ -19,10 +19,7 @@ type RepliedDTO = {
 };
 
 export type Message = CommonMessage & {
-  replied?: {
-    id: MessageId;
-    senderId: number;
-  };
+  repliedId?: MessageId;
   senderId: SenderDTO['id'];
 };
 

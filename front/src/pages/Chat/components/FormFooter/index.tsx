@@ -20,7 +20,7 @@ interface Props {
 }
 
 const FormFooter = ({ socket, store }: Props): JSX.Element => {
-  const { data, repliedMessage } = store;
+  const { data } = store;
 
   const [text, setText] = useState('');
   const [isPicker, setIsPicker] = useState(false);
@@ -50,7 +50,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
   return (
     <>
-      {repliedMessage ? (
+      {/* {repliedMessage ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
           <Flexbox>
             <ReplyIcon color="primary" sx={{ mr: 1 }} />
@@ -63,7 +63,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
             <CloseIcon />
           </IconButton>
         </Flexbox>
-      ) : null}
+      ) : null} */}
       <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
         <AttachFileIcon />
         <InputBase

@@ -2,21 +2,25 @@ import { Message } from '../store/chat/types';
 import { formatDate } from '../utils';
 import { Method, Route } from './types';
 
-interface ResponseDTO {
+type SenderDTO = {
+  id: number;
+  fullname: string;
+};
+
+type RepliedDTO = {
   id: string;
-  chatId: number;
-  sender: {
-    id: number;
-    fullname: string;
-  };
-  replied?: {
-    id: string;
-    fullname: string;
-    text: string;
-  };
   text: string;
+  fullname: string;
+};
+
+type ResponseDTO = {
+  id: string;
+  text: string;
+  chatId: number;
   createdAt: string;
-}
+  sender: SenderDTO;
+  replied?: RepliedDTO;
+};
 
 class GetMessages implements Route {
   method: Method = 'GET';
@@ -26,12 +30,9 @@ class GetMessages implements Route {
   }
 
   getData(data: ResponseDTO[]): Message[] {
-    return data.map(({ id, sender, replied, text, createdAt }) => ({
-      id,
-      text,
-      sender,
-      replied,
-      createdAt: formatDate(createdAt),
+    return data.map((item) => ({
+      ...item,
+      createdAt: formatDate(item.createdAt),
     }));
   }
 }

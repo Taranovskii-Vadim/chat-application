@@ -1,35 +1,37 @@
+type Common = {
+  id: string;
+  text: string;
+  chatId: number;
+  createdAt: string;
+};
+
 type Sender = {
   id: number;
   fullname: string;
 };
 
-// TODO a lot types refactor
+// export type Replied = Pick<Common, 'id' | 'text'> & { fullname: string };
 
-export type Replied = {
-  id: string;
-  fullname: string;
-  text: string;
+export type Message = Common & {
+  sender: Sender;
+  // replied?: Replied;
+  isLoading?: boolean;
+  isError?: boolean;
 };
 
-export type MessagePayload = {
-  id: string;
+export type MessageDTO = Common & {
   senderId: Sender['id'];
-  repliedId?: string;
-  chatId: number;
-  text: string;
-  createdAt: Date;
+  // repliedId?: Replied['id'];
 };
 
 export type Chat = { id: number; title: string; members: number[] };
 
-export type AddMessageResult = Pick<MessagePayload, 'id' | 'chatId'>;
+// export type AddMessageResult = Pick<MessagePayload, 'id' | 'chatId'>;
 
-export type Message = {
-  isLoading?: boolean;
-  isError?: boolean;
-  createdAt: string;
-  sender: Sender;
-  replied?: Replied;
-} & Omit<MessagePayload, 'chatId' | 'createdAt' | 'senderId' | 'repliedId'>;
-
-export type RepliedMessage = Pick<Message, 'id' | 'text' | 'sender'>;
+// export type Message = {
+//   isLoading?: boolean;
+//   isError?: boolean;
+//   createdAt: string;
+//   sender: Sender;
+//   replied?: Replied;
+// } & Omit<MessagePayload, 'chatId' | 'createdAt' | 'senderId' | 'repliedId'>;
