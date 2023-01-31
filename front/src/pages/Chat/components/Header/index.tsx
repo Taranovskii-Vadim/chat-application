@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Box from '@mui/material/Box';
 import grey from '@mui/material/colors/grey';
 import IconButton from '@mui/material/IconButton';
@@ -25,4 +26,4 @@ const Header = ({ title }: Props): JSX.Element => (
   </Flexbox>
 );
 
-export default Header;
+export default memo(Header);
