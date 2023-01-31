@@ -1,21 +1,17 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { grey } from '@mui/material/colors';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
 
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import background from '../../assets/bg.jpg';
 
 import user from '../../store/user';
 import { formatDate } from '../../utils';
 import ChatStore from '../../store/chat';
-import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
 import { Edited, Message as MessageType } from '../../store/chat/types';
 
-import background from '../../assets/bg.jpg';
-
+import Header from './components/Header';
 import Message from './components/Message';
 import FormFooter from './components/FormFooter';
 
@@ -53,18 +49,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
 
   return (
     <>
-      {/* TODO sep component */}
-      <Flexbox sx={{ height: '38px', padding: '8px 16px', borderLeft: `1px solid ${grey['300']}` }}>
-        <Typography variant="h6">{data.title}</Typography>
-        <Box>
-          <IconButton size="small" sx={{ mr: 1 }}>
-            <SearchOutlinedIcon />
-          </IconButton>
-          <IconButton size="small">
-            <MoreVertOutlinedIcon />
-          </IconButton>
-        </Box>
-      </Flexbox>
+      <Header title={data.title} />
       {/* TODO sep component */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
         {store.messages.map(({ id, sender, replied, text, isEdited, isLoading, createdAt }) => {
