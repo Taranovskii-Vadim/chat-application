@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { grey } from '@mui/material/colors';
 import { useParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { formatDate } from '../../utils';
 import ChatStore from '../../store/chat';
 import Flexbox from '../../components/Flexbox';
 import Loader from '../../components/ui/Loader';
-import { Message as MessageType } from '../../store/chat/types';
+import { Edited, Message as MessageType } from '../../store/chat/types';
 
 import background from '../../assets/bg.jpg';
 
@@ -40,6 +40,10 @@ const Chat = ({ socket }: Props): JSX.Element => {
   useEffect(() => {
     socket.on('receiveMessage', (data: Omit<MessageType, 'createdAt'>) => {
       store.pushMessage({ ...data, createdAt: formatDate(new Date()) });
+    });
+
+    socket.on('changeMessage', ({ id, ...others }: Edited) => {
+      store.updateMessage(id, { ...others, isEdited: true });
     });
   }, []);
 

@@ -30,11 +30,8 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
       if (!response || !data) return;
 
-      if (response.chatId) {
-        socket.emit('sendMessage', { ...response, receiverId: data.members[0] });
-      } else {
-        // TODO call here socket update message listener
-      }
+      const event = response.chatId ? 'sendMessage' : 'updateMessage';
+      socket.emit(event, { ...response, receiverId: data.members[0] });
     } finally {
       store.setText('');
     }
