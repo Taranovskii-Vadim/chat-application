@@ -5,6 +5,7 @@ import { grey } from '@mui/material/colors';
 import EmojiPicker from 'emoji-picker-react';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const FormFooter = ({ socket, store }: Props): JSX.Element => {
-  const { data, replied, editId } = store;
+  const { data, replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
 
@@ -45,7 +46,21 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
 
   return (
     <>
-      {/* TODO show edit block here */}
+      {/* TODO create common component with replied */}
+      {edited ? (
+        <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
+          <Flexbox>
+            <EditOutlinedIcon color="primary" sx={{ mr: 1 }} />
+            <Box>
+              <Typography color="primary">Редактирование</Typography>
+              <Typography>{edited.text}</Typography>
+            </Box>
+          </Flexbox>
+          <IconButton size="small" onClick={() => store.setText('')}>
+            <CloseIcon />
+          </IconButton>
+        </Flexbox>
+      ) : null}
       {replied ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
           <Flexbox>
@@ -85,7 +100,6 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
           <EmojiEmotionsOutlinedIcon />
         </IconButton>
         {/* TODO disable if input is empty */}
-        {/* disabled={store.isFormLoading} */}
         <IconButton size="small" color="primary" onClick={handleCreateUpdateMessage}>
           <SendIcon />
         </IconButton>

@@ -10,7 +10,9 @@ type Sender = {
   fullname: string;
 };
 
-export type Replied = Pick<Common, 'id' | 'text'> & { fullname: string };
+export type Edited = Pick<Common, 'id' | 'text'>;
+
+export type Replied = Edited & { fullname: string };
 
 export type Message = Common & {
   sender: Sender;

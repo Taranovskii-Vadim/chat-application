@@ -71,7 +71,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
           };
 
           const handleEdit = (): void => {
-            store.setEditId(id);
+            store.setEdited({ id, text });
             store.setText(text);
           };
 

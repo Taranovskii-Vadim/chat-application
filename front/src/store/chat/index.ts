@@ -2,6 +2,7 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { api } from '../../api';
 import getChat from '../../api/getChat';
+import putMessage from '../../api/putMessage';
 import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
 
@@ -9,48 +10,35 @@ import user from '../user';
 import chats from '../chats';
 import { formatDate } from '../../utils';
 
-import { Message, Replied, Chat, CreateUpdateResponse } from './types';
-import putMessage from '../../api/putMessage';
+import { Message, Replied, Chat, CreateUpdateResponse, Edited } from './types';
 
 class ChatStore {
-  data: Chat | undefined = undefined;
+  text = '';
 
   isLoading = true;
 
-  replied: Replied | undefined;
-
-  isFormLoading = false;
-
-  isUserOnline = false;
-
   messages: Message[] = [];
 
-  text = '';
+  edited: Edited | undefined;
 
-  editId = '';
+  replied: Replied | undefined;
+
+  data: Chat | undefined = undefined;
 
   constructor() {
     makeObservable(this, {
       text: observable,
-      messages: observable,
       replied: observable,
+      messages: observable,
       isLoading: observable,
-      isFormLoading: observable,
-      isUserOnline: observable,
 
       setText: action,
       pushMessage: action,
       setIsLoading: action,
       setRepliedMessage: action,
       updateMessage: action,
-      setIsUserOnline: action,
-      setIsFormLoading: action,
     });
   }
-
-  setIsUserOnline = (value: boolean): void => {
-    this.isUserOnline = value;
-  };
 
   setIsLoading = (value: boolean): void => {
     this.isLoading = value;
@@ -64,12 +52,16 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  setText = (value: string): void => {
-    this.text = value;
+  setEdited = (value: Edited | undefined): void => {
+    this.edited = value;
   };
 
-  setEditId = (value: string): void => {
-    this.editId = value;
+  setText = (value: string): void => {
+    if (!value) {
+      this.setEdited(undefined);
+    }
+
+    this.text = value;
   };
 
   updateMessage = (id: Message['id'], value: Partial<Message>): void => {
@@ -78,13 +70,9 @@ class ChatStore {
     this.messages[index] = { ...this.messages[index], ...value };
   };
 
-  setIsFormLoading = (value: boolean): void => {
-    this.isFormLoading = value;
-  };
-
   createUpdateMessage = async (): Promise<CreateUpdateResponse | void> => {
     if (this.data && user.data) {
-      const id = this.editId || crypto.randomUUID();
+      const id = this.edited?.id || crypto.randomUUID();
 
       try {
         const text = this.text;
@@ -106,8 +94,8 @@ class ChatStore {
           fullname: this.replied.fullname,
         };
 
-        if (this.editId) {
-          this.updateMessage(this.editId, { text, isEdited: true, isLoading: true });
+        if (this.edited) {
+          this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
           await api(putMessage, payload);
         } else {
           result = { ...result, chatId, replied, sender };
@@ -116,7 +104,7 @@ class ChatStore {
           chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
         }
 
-        this.setEditId('');
+        this.setEdited(undefined);
         this.setRepliedMessage(undefined);
 
         return result;
