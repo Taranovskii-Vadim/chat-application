@@ -5,80 +5,48 @@ import Box from '@mui/material/Box';
 
 import background from '../../assets/bg.jpg';
 
-import user from '../../store/user';
-import { formatDate } from '../../utils';
 import ChatStore from '../../store/chat';
-import Loader from '../../components/ui/Loader';
-import { Edited, Message as MessageType } from '../../store/chat/types';
+import ConversationStore from '../../store/conversation';
 
 import Header from './components/Header';
-import Message from './components/Message';
-import FormFooter from './components/FormFooter';
+import Loader from '../../components/ui/Loader';
 
-const store = new ChatStore();
+import Footer from './components/Footer';
+import Conversation from './components/Conversation';
+
+const chatStore = new ChatStore();
+const conversationStore = new ConversationStore();
 
 // TODO fix any later
 
 interface Props {
+  // TODO maybe store socket in context
   socket: any;
 }
 
 const Chat = ({ socket }: Props): JSX.Element => {
-  const { data } = store;
+  const { data } = chatStore;
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     if (id) {
-      store.fetchData(+id);
+      chatStore.fetchData(+id);
+      // TODO or call get messages here
     }
   }, [id]);
 
-  useEffect(() => {
-    socket.on('receiveMessage', (data: Omit<MessageType, 'createdAt'>) => {
-      store.pushMessage({ ...data, createdAt: formatDate(new Date()) });
-    });
-
-    socket.on('changeMessage', ({ id, ...others }: Edited) => {
-      store.updateMessage(id, { ...others, isEdited: true });
-    });
-  }, []);
-
-  if (store.isLoading || !data) {
+  // TODO change this statement
+  if (chatStore.isLoading || !data || !id) {
     return <Loader height="100vh" />;
   }
 
   return (
     <>
       <Header title={data.title} />
-      {/* TODO sep component */}
-      <Box sx={{ flex: 1, overflowY: 'auto', p: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-        {store.messages.map(({ id, sender, replied, text, isEdited, isLoading, createdAt }) => {
-          const isAuthor = sender.id === user.data?.id;
-
-          const handleReply = (): void => {
-            store.setRepliedMessage({ id, text, fullname: sender.fullname });
-          };
-
-          const handleEdit = (): void => {
-            store.setEdited({ id, text });
-            store.setText(text);
-          };
-
-          return (
-            <Message
-              key={id}
-              text={text}
-              replied={replied}
-              isEdited={isEdited}
-              isAuthor={isAuthor}
-              createdAt={createdAt}
-              onEdit={handleEdit}
-              onReply={handleReply}
-            />
-          );
-        })}
+      <Box sx={{ flex: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
+        <Conversation store={conversationStore} chatId={+id} socket={socket} />
       </Box>
-      <FormFooter store={store} socket={socket} />
+      <Footer chatId={+id} store={conversationStore} socket={socket} />
     </>
   );
 };

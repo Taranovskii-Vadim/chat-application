@@ -10,28 +10,33 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
-import ChatStore from '../../../../store/chat';
+import Store from '../../../../store/conversation';
 
 import Flexbox from '../../../../components/Flexbox';
 
 interface Props {
   socket: any;
-  store: ChatStore;
+  chatId: number;
+  store: Store;
 }
 
-const FormFooter = ({ socket, store }: Props): JSX.Element => {
+// TODO memo this component
+const Footer = ({ socket, chatId, store }: Props): JSX.Element => {
   const { data, replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
 
   const handleCreateUpdateMessage = async (): Promise<void> => {
+    if (!store.text) return;
+
     try {
-      const response = await store.createUpdateMessage();
+      const response = await store.createUpdateMessage(chatId);
 
       if (!response || !data) return;
 
       const event = response.chatId ? 'sendMessage' : 'updateMessage';
-      socket.emit(event, { ...response, receiverId: data.members[0] });
+      // TODO provide receivers id
+      // socket.emit(event, { ...response, receiverId: data.members[0] });
     } finally {
       store.setText('');
     }
@@ -42,7 +47,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
   };
 
   return (
-    <>
+    <Box>
       {/* TODO create common component with replied */}
       {edited ? (
         <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
@@ -72,7 +77,7 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
           </IconButton>
         </Flexbox>
       ) : null}
-      <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
+      <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}`, backgroundColor: 'white' }}>
         <AttachFileIcon />
         <InputBase
           multiline
@@ -96,13 +101,12 @@ const FormFooter = ({ socket, store }: Props): JSX.Element => {
         <IconButton size="small" sx={{ mr: 1 }} onClick={() => setIsPicker((prev) => !prev)}>
           <EmojiEmotionsOutlinedIcon />
         </IconButton>
-        {/* TODO disable if input is empty */}
         <IconButton size="small" color="primary" onClick={handleCreateUpdateMessage}>
           <SendIcon />
         </IconButton>
       </Flexbox>
-    </>
+    </Box>
   );
 };
 
-export default observer(FormFooter);
+export default observer(Footer);
