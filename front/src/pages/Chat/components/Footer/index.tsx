@@ -16,12 +16,13 @@ import Flexbox from '../../../../components/Flexbox';
 
 interface Props {
   socket: any;
-  chatId: number;
   store: Store;
+  chatId: number;
+  receiverId: number;
 }
 
 // TODO memo this component
-const Footer = ({ socket, chatId, store }: Props): JSX.Element => {
+const Footer = ({ socket, chatId, store, receiverId }: Props): JSX.Element => {
   const { data, replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
@@ -35,8 +36,7 @@ const Footer = ({ socket, chatId, store }: Props): JSX.Element => {
       if (!response || !data) return;
 
       const event = response.chatId ? 'sendMessage' : 'updateMessage';
-      // TODO provide receivers id
-      // socket.emit(event, { ...response, receiverId: data.members[0] });
+      socket.emit(event, { ...response, receiverId });
     } finally {
       store.setText('');
     }

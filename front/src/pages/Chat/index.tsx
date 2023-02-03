@@ -31,7 +31,6 @@ const Chat = ({ socket }: Props): JSX.Element => {
   useEffect(() => {
     if (id) {
       chatStore.fetchData(+id);
-      // TODO or call get messages here
     }
   }, [id]);
 
@@ -46,7 +45,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
       <Box sx={{ flex: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         <Conversation store={conversationStore} chatId={+id} socket={socket} />
       </Box>
-      <Footer chatId={+id} store={conversationStore} socket={socket} />
+      <Footer receiverId={data.members[0]} chatId={+id} store={conversationStore} socket={socket} />
     </>
   );
 };

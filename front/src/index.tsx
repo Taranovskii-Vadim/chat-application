@@ -25,11 +25,9 @@ const node = document.getElementById('root') as HTMLElement;
 const root = createRoot(node);
 
 root.render(
-  <StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
-  </StrictMode>,
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </BrowserRouter>,
 );
