@@ -22,16 +22,18 @@ export class ChatsService {
   ) {}
 
   private getChatTitle(membersId: number[]): string {
-    const result = membersId.map((id) => {
-      const user = this.usersService.findById(id) as User;
+    // const result = membersId.map(async (id) => {
+    //   const user = await this.usersService.findById(id);
 
-      const name = capitalizeString(user.name);
-      const lastname = capitalizeString(user.lastname);
+    //   const name = capitalizeString(user.name);
+    //   const lastname = capitalizeString(user.lastname);
 
-      return `${name} ${lastname}`;
-    });
+    //   return `${name} ${lastname}`;
+    // });
 
-    return result.join(', ');
+    // return result.join(', ');
+
+    return 'Temp PostgreSQL title';
   }
 
   private getChatLastMessage(id?: string): MessageDTO | undefined {

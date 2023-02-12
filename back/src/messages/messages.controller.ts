@@ -15,7 +15,7 @@ import { MessagesService } from './messages.service';
 import { Message, MessageDTO } from './types';
 
 // TODO add guards everywhere
-@Controller('/api/messages')
+@Controller('/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 

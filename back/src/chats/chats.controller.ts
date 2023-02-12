@@ -12,8 +12,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ChatsService } from './chats.service';
 import { Chat, Conversation, NewChatDTO } from './types';
 
-// TODO think how to solve base andpoint /api
-@Controller('/api/chats')
+@Controller('/chats')
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 

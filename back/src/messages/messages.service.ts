@@ -44,7 +44,8 @@ export class MessagesService {
   constructor(private usersService: UsersService) {}
 
   private getSenderFullname(id: number): string {
-    return this.usersService.getFullname(id) as string;
+    // return this.usersService.getFullname(id) as string;
+    return '';
   }
 
   private prepareMessageDTO(message: Message): MessageDTO {

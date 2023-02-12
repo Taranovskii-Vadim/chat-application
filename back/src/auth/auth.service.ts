@@ -12,7 +12,7 @@ export class AuthService {
 
   async validateUser(login: string, pass: string): Promise<any> {
     const user = await this.usersService.findByLogin(login);
-    // TODO later include bcrypt to hash password
+    // TODO later include bcrypt or argon2 to hash password
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
