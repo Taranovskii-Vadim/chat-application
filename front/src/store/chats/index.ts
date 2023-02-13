@@ -28,7 +28,7 @@ class ChatsStore {
 
   setIsOnline = (onlineUsers: OnlineUser[]): void => {
     this.data.map((item) => {
-      item.isOnline = onlineUsers.map(({ id }) => id).includes(item.members[0]);
+      item.isOnline = onlineUsers.map(({ id }) => id).includes(item.companionId);
 
       return item;
     });

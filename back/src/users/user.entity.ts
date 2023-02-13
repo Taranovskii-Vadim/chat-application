@@ -1,13 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+
+import { Base } from 'src/utils';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn({
-    type: 'smallint',
-    name: 'user_id',
-  })
-  id: number;
-
+export class User extends Base<number> {
   @Column()
   login: string;
 

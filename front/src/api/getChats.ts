@@ -8,7 +8,7 @@ import { Method, Route } from './types';
 interface ResponseDTO {
   id: number;
   title: string;
-  members: number[];
+  companionId: number;
   unReadCount: number;
   lastMessage?: {
     id: string;

@@ -9,7 +9,7 @@ export type LastMessage = {
 export type Chat = {
   id: number;
   title: string;
-  members: number[];
+  companionId: number;
   isOnline?: boolean;
   unReadCount: number;
   lastMessage?: LastMessage;

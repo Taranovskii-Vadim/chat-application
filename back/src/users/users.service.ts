@@ -10,41 +10,24 @@ export class UsersService {
     @InjectRepository(User) private readonly table: Repository<User>,
   ) {}
 
-  // public readonly users: User[] = [
-  //   {
-  //     id: 1,
-  //     login: 'admin',
-  //     name: 'вадим',
-  //     lastname: 'тарановский',
-  //     password: 'admin',
-  //   },
-  //   {
-  //     id: 2,
-  //     login: 'devil',
-  //     name: 'ева',
-  //     lastname: 'саммер',
-  //     password: 'qwerty',
-  //   },
-  //   {
-  //     id: 3,
-  //     login: 'teste',
-  //     name: 'круэлла',
-  //     lastname: 'винтер',
-  //     password: 'qwerty',
-  //   },
-  // ];
-
   async findById(id: number): Promise<User | null> {
     const result = await this.table.findOne({ where: { id } });
 
     return result;
   }
 
-  // getFullname(id: number): string | undefined {
-  //   const user = this.findById(id) as User;
+  async getFullname(id: number): Promise<string> {
+    const user = await this.findById(id);
 
-  //   return `${user.name} ${user.lastname}`;
-  // }
+    if (user) {
+      const name = user.name[0].toUpperCase() + user.name.slice(1);
+      const lastname = user.lastname[0].toUpperCase() + user.lastname.slice(1);
+
+      return `${name} ${lastname}`;
+    }
+
+    return '';
+  }
 
   async findByLogin(login: string): Promise<User | null> {
     const result = await this.table.findOne({ where: { login } });

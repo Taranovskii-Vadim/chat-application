@@ -7,12 +7,15 @@ export type ChatDB = {
   lastMessageId?: string;
 };
 
-export type Chat = {
+export type GetChatDTO = {
   id: number;
   title: string;
-  members: number[];
+  companionId: number;
   unReadCount: number;
   lastMessage?: MessageDTO;
+  // TODO can move to common type
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type Conversation = { id: number; title: string; members: number[] };
