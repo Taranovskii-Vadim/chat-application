@@ -7,6 +7,7 @@ import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chat/chat.module';
 import { MessagesModule } from './messages/messages.module';
+import { Message } from './messages/message.entity';
 
 // TODO refactor folder structure, define where storage typeORM data
 // TODO refactor code below
@@ -23,7 +24,7 @@ import { MessagesModule } from './messages/messages.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Chat],
+        entities: [User, Chat, Message],
         synchronize: true,
       }),
     }),

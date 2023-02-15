@@ -15,12 +15,13 @@ import { GetChatDTO } from './types';
 export class ChatsService {
   constructor(
     private usersService: UsersService,
-    private messagesService: MessagesService,
+    // private messagesService: MessagesService,
     @InjectRepository(Chat) private readonly table: Repository<Chat>,
   ) {}
 
-  private getChatLastMessage(id?: string): MessageDTO | undefined {
-    return this.messagesService.getMessage(id);
+  private getChatLastMessage(id?: string): any {
+    return '';
+    // return this.messagesService.getMessage(id);
   }
 
   // setChatLastMessageId(chatId: number, messageId: string): void {

@@ -21,19 +21,19 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatId')
-  getMessages(@Param('chatId') chatId: string): MessageDTO[] {
+  async getMessages(@Param('chatId') chatId: string): Promise<void> {
     return this.messagesService.getMessages(+chatId);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  createMessage(@Body() body: Message): void {
-    return this.messagesService.createMessage(body);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Post()
+  // createMessage(@Body() body: Message): void {
+  //   return this.messagesService.createMessage(body);
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Put()
-  updateMessage(@Body() body: Partial<Message>): void {
-    return this.messagesService.updateMessage(body);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Put()
+  // updateMessage(@Body() body: Partial<Message>): void {
+  //   return this.messagesService.updateMessage(body);
+  // }
 }

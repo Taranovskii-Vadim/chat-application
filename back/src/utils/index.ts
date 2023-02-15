@@ -4,9 +4,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export abstract class Base<T> {
+export abstract class Base {
   @PrimaryGeneratedColumn()
-  id: T;
+  id: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

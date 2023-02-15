@@ -3,7 +3,7 @@ import { Column, Entity } from 'typeorm';
 import { Base } from 'src/utils';
 
 @Entity()
-export class User extends Base<number> {
+export class User extends Base {
   @Column()
   login: string;
 
