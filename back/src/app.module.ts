@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { Chat } from './chats/chat.entity';
-import { User } from './users/user.entity';
+import { Chat } from './chat/chat.entity';
+import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
-import { ChatsModule } from './chats/chats.module';
+import { ChatsModule } from './chat/chat.module';
 import { MessagesModule } from './messages/messages.module';
 
 // TODO refactor folder structure, define where storage typeORM data

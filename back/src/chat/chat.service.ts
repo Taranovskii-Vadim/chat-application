@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { MessageDTO } from 'src/messages/types';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/user/user.service';
 import { MessagesService } from 'src/messages/messages.service';
 
 import { Chat } from './chat.entity';

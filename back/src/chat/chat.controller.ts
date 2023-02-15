@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-import { ChatsService } from './chats.service';
+import { ChatsService } from './chat.service';
 import { GetChatDTO, Conversation, NewChatDTO } from './types';
 
 @Controller('/chats')
