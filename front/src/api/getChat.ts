@@ -5,7 +5,7 @@ import { Method, Route } from './types';
 interface ResponseDTO {
   id: number;
   title: string;
-  members: number[];
+  companionId: number;
 }
 
 class GetChat implements Route {

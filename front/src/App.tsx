@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 // TODO vite resolve alias but ts not
+// TODO generate temp message id to show it in ui
 
 import auth from 'src/store/auth';
 

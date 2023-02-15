@@ -7,7 +7,7 @@ import { UsersService } from 'src/user/user.service';
 import { MessagesService } from 'src/messages/messages.service';
 
 import { Chat } from './chat.entity';
-import { GetChatDTO } from './types';
+import { Conversation, GetChatDTO } from './types';
 
 // TODO maybe later develop group chats
 
@@ -36,6 +36,7 @@ export class ChatsService {
 
   async getChats(userId: number): Promise<GetChatDTO[]> {
     // TODO got no idea how to query userId in members
+    // TODO handle error
     const dbResult = await this.table.find();
 
     const chats = dbResult.filter(({ members }) => members.includes(userId));
@@ -52,27 +53,19 @@ export class ChatsService {
     return Promise.all(promises);
   }
 
-  // getChat(userId: number, chatId: number): Conversation | undefined {
-  //   const result = this.chats.find(({ id }) => id === chatId);
+  async getChat(userId: number, id: number): Promise<Conversation> {
+    try {
+      const dbResult = await this.table.findOne({ where: { id } });
 
-  //   if (!result) return undefined;
+      if (!dbResult) throw new Error('Chat not found');
 
-  //   const filtered = result.members.filter((id) => id !== userId);
-  //   const title = this.getChatTitle(filtered);
+      const companionId = dbResult.members.filter((id) => id !== userId)[0];
 
-  //   return {
-  //     title,
-  //     id: result.id,
-  //     members: filtered,
-  //   };
-  // }
+      const title = await this.usersService.getFullname(companionId);
 
-  // createChat({ senderId, receiverId }: NewChatDTO): number {
-  //   const id = this.chats.length + 1;
-
-  //   // TODO put here not id but full short user info
-  //   // this.chats.push({ id, members: [senderId, receiverId] });
-
-  //   return id;
-  // }
+      return { id: dbResult.id, title, companionId };
+    } catch (e) {
+      return e;
+    }
+  }
 }

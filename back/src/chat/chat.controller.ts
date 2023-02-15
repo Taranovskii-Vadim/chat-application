@@ -1,16 +1,8 @@
-import {
-  Body,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-  Controller,
-} from '@nestjs/common';
+import { Get, Param, Req, UseGuards, Controller } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { ChatsService } from './chat.service';
-import { GetChatDTO, Conversation, NewChatDTO } from './types';
+import { GetChatDTO, Conversation } from './types';
 
 @Controller('/chats')
 export class ChatsController {
@@ -22,18 +14,12 @@ export class ChatsController {
     return this.chatsService.getChats(req.user.id);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Post()
-  // createChat(@Body() body: NewChatDTO): number {
-  //   return this.chatsService.createChat(body);
-  // }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Get('/:chatId')
-  // getChat(
-  //   @Param('chatId') chatId: string,
-  //   @Req() req: any,
-  // ): Conversation | undefined {
-  //   return this.chatsService.getChat(req.user.id, +chatId);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('/:chatId')
+  async getChat(
+    @Param('chatId') chatId: string,
+    @Req() req: any,
+  ): Promise<Conversation> {
+    return this.chatsService.getChat(req.user.id, +chatId);
+  }
 }

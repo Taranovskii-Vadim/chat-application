@@ -18,9 +18,4 @@ export type GetChatDTO = {
   updatedAt: Date;
 };
 
-export type Conversation = { id: number; title: string; members: number[] };
-
-export type NewChatDTO = {
-  senderId: number;
-  receiverId: number;
-};
+export type Conversation = { id: number; title: string; companionId: number };

@@ -1,1 +1,1 @@
-export type Chat = { id: number; title: string; members: number[] };
+export type Chat = { id: number; title: string; companionId: number };

@@ -45,8 +45,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
       <Box sx={{ flex: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         <Conversation store={conversationStore} chatId={+id} socket={socket} />
       </Box>
-      {/* TODO change to companionId */}
-      <Footer receiverId={data.members[0]} chatId={+id} store={conversationStore} socket={socket} />
+      <Footer receiverId={data.companionId} chatId={+id} store={conversationStore} socket={socket} />
     </>
   );
 };
