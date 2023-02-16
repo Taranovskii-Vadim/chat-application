@@ -1,18 +1,9 @@
-import {
-  Put,
-  Get,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-  Controller,
-} from '@nestjs/common';
-
+import { Get, Param, UseGuards, Controller } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-import { MessagesService } from './messages.service';
+import { Message } from './message.entity';
 
-import { Message, MessageDTO } from './types';
+import { MessagesService } from './message.service';
 
 // TODO add guards everywhere
 @Controller('/messages')
@@ -21,7 +12,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatId')
-  async getMessages(@Param('chatId') chatId: string): Promise<void> {
+  async getMessages(@Param('chatId') chatId: string): Promise<Message[]> {
     return this.messagesService.getMessages(+chatId);
   }
 

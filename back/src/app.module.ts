@@ -6,8 +6,8 @@ import { Chat } from './chat/chat.entity';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chat/chat.module';
-import { MessagesModule } from './messages/messages.module';
-import { Message } from './messages/message.entity';
+import { MessagesModule } from './message/message.module';
+import { Message } from './message/message.entity';
 
 // TODO refactor folder structure, define where storage typeORM data
 // TODO refactor code below

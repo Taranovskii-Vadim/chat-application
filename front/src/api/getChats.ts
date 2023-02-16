@@ -36,11 +36,12 @@ class GetChats implements Route {
 
   getData(data: ResponseDTO[]): Chat[] {
     return data.map(({ lastMessage, ...others }) => ({
-      lastMessage: lastMessage && {
-        text: lastMessage.text,
-        senderId: lastMessage.sender.id,
-        createdAt: formatDate(lastMessage.createdAt),
-      },
+      // TODO back do not expand sender object
+      // lastMessage: lastMessage && {
+      //   text: lastMessage.text,
+      //   senderId: lastMessage.sender.id,
+      //   createdAt: formatDate(lastMessage.createdAt),
+      // },
       ...others,
     }));
   }

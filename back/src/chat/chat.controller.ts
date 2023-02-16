@@ -1,8 +1,9 @@
 import { Get, Param, Req, UseGuards, Controller } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+import { Chat } from './chat.entity';
 import { ChatsService } from './chat.service';
-import { GetChatDTO, Conversation } from './types';
+import { Conversation, GetChatDTO } from './types';
 
 @Controller('/chats')
 export class ChatsController {

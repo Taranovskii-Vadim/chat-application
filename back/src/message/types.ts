@@ -1,4 +1,4 @@
-type MessageId = string;
+type MessageId = number;
 
 type CommonMessage = {
   id: MessageId;

@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import { Base } from 'src/utils';
+import { Message } from 'src/message/message.entity';
 
 @Entity()
 export class Chat extends Base {
@@ -10,6 +11,7 @@ export class Chat extends Base {
   @Column({ name: 'unread_count' })
   unReadCount: number;
 
-  @Column({ name: 'last_message_id', nullable: true })
-  lastMessageId: string;
+  @JoinColumn({ name: 'last_message_id_fkey' })
+  @OneToOne(() => Message, { nullable: true })
+  lastMessage: Message;
 }

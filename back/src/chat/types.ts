@@ -1,4 +1,4 @@
-import { MessageDTO } from 'src/messages/types';
+import { Message } from 'src/message/message.entity';
 
 export type ChatDB = {
   id: number;
@@ -12,7 +12,7 @@ export type GetChatDTO = {
   title: string;
   companionId: number;
   unReadCount: number;
-  lastMessage?: MessageDTO;
+  lastMessage?: Message;
   // TODO can move to common type
   createdAt: Date;
   updatedAt: Date;
