@@ -5,7 +5,7 @@ import {
 } from 'typeorm';
 
 export abstract class Base {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @CreateDateColumn({ name: 'created_at' })

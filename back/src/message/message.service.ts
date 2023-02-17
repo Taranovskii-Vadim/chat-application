@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Message } from './message.entity';
+import { CreateMessagePayloadDTO, CreateMessageResultDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -49,12 +50,30 @@ export class MessagesService {
     return result;
   }
 
-  // createMessage(payload: Message): void {
-  //   this.messages.push(payload);
+  // TODO fix this when fix front logic
+  async createMessage({
+    text,
+    senderId,
+    chatId,
+    repliedId,
+  }: CreateMessagePayloadDTO): Promise<CreateMessageResultDTO> {
+    const { generatedMaps } = await this.table
+      .createQueryBuilder()
+      .insert()
+      .into(Message)
+      .values({
+        text,
+        chat: { id: chatId },
+        sender: { id: senderId },
+        replied: { id: repliedId },
+      })
+      .execute();
 
-  //   // TODO after create we must call this action to update id, but here we probadly have circular dep error in nest
-  //   // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
-  // }
+    return { id: generatedMaps[0].id, createdAt: generatedMaps[0].createdAt };
+
+    // TODO after create we must call this action to update id, but here we probadly have circular dep error in nest
+    // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
+  }
 
   // updateMessage(data: Partial<Message>): void {
   //   const index = this.messages.findIndex(({ id }) => id === data.id);
