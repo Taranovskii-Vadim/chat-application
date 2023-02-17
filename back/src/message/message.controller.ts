@@ -3,7 +3,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { CreateMessagePayloadDTO, CreateMessageResultDTO } from './message.dto';
+import { InsertPayloadDTO, ResultDTO } from './message.dto';
 
 // TODO add guards everywhere
 @Controller('/messages')
@@ -18,9 +18,7 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createMessage(
-    @Body() body: CreateMessagePayloadDTO,
-  ): Promise<CreateMessageResultDTO> {
+  async createMessage(@Body() body: InsertPayloadDTO): Promise<ResultDTO> {
     return this.messagesService.createMessage(body);
   }
 

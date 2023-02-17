@@ -73,13 +73,10 @@ class ConversationStore {
 
       try {
         const text = this.text;
-        const createdAt = new Date();
         const senderId = user.data.id;
         const repliedId = this.replied?.id;
 
-        const payload = { id, text };
-
-        let result: CreateUpdateResponse = payload;
+        let payload: CreateUpdateResponse = { id, text };
 
         // TODO temp must set fullname empty string because we only have id in user. Must expand getProfile route to get fullname
         const sender: Message['sender'] = { id: senderId, fullname: 'Temp Fix' };
@@ -94,21 +91,24 @@ class ConversationStore {
           this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
           await api(putMessage, payload);
         } else {
-          result = { ...result, chatId, replied, sender };
-          this.pushMessage({ ...payload, chatId, sender, replied, createdAt: formatDate(createdAt), isLoading: true });
-          await api(postMessage, { ...payload, chatId, repliedId, senderId, createdAt });
-          chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
+          payload = { ...payload, chatId, replied, sender };
+
+          // TODO here we set client id and createdAt only to show message before it creates in api
+          this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
+
+          const result = await api(postMessage, { text, chatId, repliedId, senderId });
+
+          this.updateMessage(id, { ...result, isLoading: false });
+          // chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
         }
 
         this.setEdited(undefined);
         this.setRepliedMessage(undefined);
 
-        return result;
+        return payload;
       } catch {
         // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });
-      } finally {
-        this.updateMessage(id, { isLoading: false });
       }
     }
   };

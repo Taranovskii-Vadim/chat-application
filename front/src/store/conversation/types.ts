@@ -1,5 +1,5 @@
 type Common = {
-  id: string;
+  id: string | number;
   text: string;
   chatId: number;
   createdAt: string;
@@ -25,6 +25,11 @@ export type Message = Common & {
 export type MessageDTO = Common & {
   senderId: Sender['id'];
   repliedId?: Replied['id'];
+};
+
+export type PostRequestResult = {
+  id: number;
+  createdAt: string;
 };
 
 export type CreateUpdateResponse = Pick<Message, 'id' | 'text'> &

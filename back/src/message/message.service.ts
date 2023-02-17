@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Message } from './message.entity';
-import { CreateMessagePayloadDTO, CreateMessageResultDTO } from './message.dto';
+import { InsertPayloadDTO, ResultDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -51,22 +51,19 @@ export class MessagesService {
   }
 
   // TODO fix this when fix front logic
-  async createMessage({
-    text,
-    senderId,
-    chatId,
-    repliedId,
-  }: CreateMessagePayloadDTO): Promise<CreateMessageResultDTO> {
+  async createMessage({ text, ...ids }: InsertPayloadDTO): Promise<ResultDTO> {
+    const data = {
+      text,
+      chat: { id: ids.chatId },
+      sender: { id: ids.senderId },
+      replied: { id: ids.repliedId },
+    };
+
     const { generatedMaps } = await this.table
       .createQueryBuilder()
       .insert()
       .into(Message)
-      .values({
-        text,
-        chat: { id: chatId },
-        sender: { id: senderId },
-        replied: { id: repliedId },
-      })
+      .values(data)
       .execute();
 
     return { id: generatedMaps[0].id, createdAt: generatedMaps[0].createdAt };

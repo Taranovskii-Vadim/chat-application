@@ -3,7 +3,7 @@ import { IsString, IsNumber, IsDate } from 'class-validator';
 // TODO modify front we dont expect id and createDate form front here
 
 // TODO why we use class-validator for define income and outcome types????
-export class CreateMessagePayloadDTO {
+export class InsertPayloadDTO {
   @IsString()
   text: string;
 
@@ -17,7 +17,7 @@ export class CreateMessagePayloadDTO {
   senderId: number;
 }
 
-export class CreateMessageResultDTO {
+export class ResultDTO {
   @IsNumber()
   id: number;
 
