@@ -2,6 +2,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
+import { ReqUser } from 'src/types';
+
+import { JwtUser } from './types';
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -12,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({ id }: any) {
-    // TODO here we can return full user object with avatar fullname etc
-    return { id };
+  // TODO learn jwt nest documentation maybe we can hide iat and exp fields
+  async validate({ iat, exp, ...user }: JwtUser): Promise<ReqUser> {
+    return { ...user };
   }
 }

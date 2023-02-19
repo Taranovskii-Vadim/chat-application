@@ -1,7 +1,8 @@
-import { Get, Param, Req, UseGuards, Controller } from '@nestjs/common';
+import { Get, Param, UseGuards, Controller, Request } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
-import { Chat } from './chat.entity';
+import { Req } from 'src/types';
+
 import { ChatsService } from './chat.service';
 import { Conversation, GetChatDTO } from './types';
 
@@ -11,7 +12,7 @@ export class ChatsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getChats(@Req() req: any): Promise<GetChatDTO[]> {
+  async getChats(@Request() req: Req): Promise<GetChatDTO[]> {
     return this.chatsService.getChats(req.user.id);
   }
 
@@ -19,7 +20,7 @@ export class ChatsController {
   @Get('/:chatId')
   async getChat(
     @Param('chatId') chatId: string,
-    @Req() req: any,
+    @Request() req: Req,
   ): Promise<Conversation> {
     return this.chatsService.getChat(req.user.id, +chatId);
   }

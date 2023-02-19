@@ -6,6 +6,7 @@ import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
 import { Conversation, GetChatDTO } from './types';
+import { ReqUser } from 'src/types';
 
 // TODO maybe later develop group chats
 
@@ -26,7 +27,7 @@ export class ChatsService {
   //   });
   // }
 
-  async getChats(userId: number): Promise<GetChatDTO[]> {
+  async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
     // TODO got no idea how to query userId in members
 
     const dbResult = await this.table.find({
@@ -48,7 +49,7 @@ export class ChatsService {
     return Promise.all(promises);
   }
 
-  async getChat(userId: number, id: number): Promise<Conversation> {
+  async getChat(userId: ReqUser['id'], id: number): Promise<Conversation> {
     const dbResult = await this.table.findOne({ where: { id } });
 
     if (!dbResult) throw new Error('Chat not found');
