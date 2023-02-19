@@ -15,6 +15,7 @@ export class MessagesService {
     const result = await this.table.find({
       where: { chat: { id } },
       relations: { chat: true, sender: true, replied: true },
+      order: { createdAt: 'asc' },
     });
 
     // TODO we created prepareDTO function, but from other side we dont need we can answer everything and front can take what he wants
