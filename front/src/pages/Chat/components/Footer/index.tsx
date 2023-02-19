@@ -58,7 +58,7 @@ const Footer = ({ socket, chatId, store, receiverId }: Props): JSX.Element => {
               <Typography>{edited.text}</Typography>
             </Box>
           </Flexbox>
-          <IconButton size="small" onClick={() => store.setText('')}>
+          <IconButton size="small" onClick={() => store.setEdited(undefined)}>
             <CloseIcon />
           </IconButton>
         </Flexbox>

@@ -6,7 +6,6 @@ import getMessages from '../../api/getMessages';
 import postMessage from '../../api/postMessage';
 
 import user from '../user';
-import chats from '../chats';
 import { formatDate } from '../../utils';
 
 import { CreateUpdateResponse, Edited, Message, Replied } from './types';
@@ -54,10 +53,6 @@ class ConversationStore {
   };
 
   setText = (value: string): void => {
-    if (!value) {
-      this.setEdited(undefined);
-    }
-
     this.text = value;
   };
 

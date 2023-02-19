@@ -1,9 +1,17 @@
-import { Get, Param, UseGuards, Controller, Post, Body } from '@nestjs/common';
+import {
+  Get,
+  Put,
+  Param,
+  UseGuards,
+  Controller,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO, ResultDTO } from './message.dto';
+import { InsertPayloadDTO, ResultDTO, UpdatePayloadDTO } from './message.dto';
 
 // TODO add guards everywhere
 @Controller('/messages')
@@ -22,9 +30,9 @@ export class MessagesController {
     return this.messagesService.createMessage(body);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Put()
-  // updateMessage(@Body() body: Partial<Message>): void {
-  //   return this.messagesService.updateMessage(body);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<void> {
+    return this.messagesService.updateMessage(body);
+  }
 }

@@ -4,7 +4,7 @@ import { Base } from 'src/utils';
 
 @Entity()
 export class User extends Base {
-  @Column()
+  @Column({ unique: true })
   login: string;
 
   @Column()
@@ -13,6 +13,6 @@ export class User extends Base {
   @Column()
   lastname: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 }

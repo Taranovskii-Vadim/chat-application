@@ -3,41 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Message } from './message.entity';
-import { InsertPayloadDTO, ResultDTO } from './message.dto';
+import { InsertPayloadDTO, ResultDTO, UpdatePayloadDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
   constructor(
     @InjectRepository(Message) private readonly table: Repository<Message>,
   ) {}
-
-  // private getSenderFullname = (data: Message['sender']): string =>
-  //   `${data.name} ${data.lastname}`;
-
-  // private prepareMessageDTO(data: Message): MessageDTO {
-  //   const { replied, ...message } = data;
-
-  //   const senderDto: MessageDTO['sender'] = {
-  //     id: message.sender.id,
-  //     fullname: this.getSenderFullname(message.sender),
-  //   };
-
-  //   const repliedDto: MessageDTO['replied'] = {
-  //     id: replied.id,
-  //     text: replied.text,
-  //     fullname: this.getSenderFullname(replied.sender),
-  //   };
-
-  //   return {
-  //     id: message.id,
-  //     text: message.text,
-  //     chatId: message.chat.id,
-  //     createdAt: message.createdAt,
-  //     isEdited: message.isEdited,
-  //     replied: repliedDto,
-  //     sender: senderDto,
-  //   };
-  // }
 
   async getMessages(id: number): Promise<Message[]> {
     const result = await this.table.find({
@@ -72,9 +44,12 @@ export class MessagesService {
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
   }
 
-  // updateMessage(data: Partial<Message>): void {
-  //   const index = this.messages.findIndex(({ id }) => id === data.id);
+  async updateMessage({ id, text }: UpdatePayloadDTO): Promise<void> {
+    // TODO do we need store isEdited in DB.
+    // Because we have createdAt and updatedAt data, we can equal them and find out was record changed or not
+    // const result = await this.table.save({ id, text, isEdited: true });
+    await this.table.save({ id, text, isEdited: true });
 
-  //   this.messages[index] = { ...this.messages[index], ...data, isEdited: true };
-  // }
+    // console.log(result);
+  }
 }
