@@ -7,7 +7,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
