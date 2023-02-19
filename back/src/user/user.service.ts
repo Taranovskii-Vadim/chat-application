@@ -10,14 +10,14 @@ export class UsersService {
     @InjectRepository(User) private readonly table: Repository<User>,
   ) {}
 
-  async findById(id: number): Promise<User | null> {
-    const result = await this.table.findOne({ where: { id } });
+  async findBy<T>(key: 'id' | 'login', value: T): Promise<User | null> {
+    const result = await this.table.findOne({ where: { [key]: value } });
 
     return result;
   }
 
   async getFullname(id: number): Promise<string> {
-    const user = await this.findById(id);
+    const user = await this.findBy('id', id);
 
     if (user) {
       const name = user.name[0].toUpperCase() + user.name.slice(1);
@@ -27,11 +27,5 @@ export class UsersService {
     }
 
     return '';
-  }
-
-  async findByLogin(login: string): Promise<User | null> {
-    const result = await this.table.findOne({ where: { login } });
-
-    return result;
   }
 }

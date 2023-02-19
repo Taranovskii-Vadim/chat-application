@@ -13,6 +13,8 @@ export class User extends Base {
   @Column()
   lastname: string;
 
-  @Column({ select: false })
+  // TODO we can set select false to exclude password but we need password for user validation in auth method
+  // { select: false }
+  @Column()
   password: string;
 }

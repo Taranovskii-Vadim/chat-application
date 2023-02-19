@@ -11,7 +11,7 @@ export class AuthService {
   ) {}
 
   async validateUser(login: string, pass: string): Promise<any> {
-    const user = await this.usersService.findByLogin(login);
+    const user = await this.usersService.findBy('login', login);
     // TODO later include bcrypt or argon2 to hash password
     if (user && user.password === pass) {
       const { password, ...result } = user;
