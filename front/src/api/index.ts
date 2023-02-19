@@ -7,18 +7,19 @@ const baseURL = '/api';
 
 export const axiosInsatnce = axios.create({ baseURL });
 
-axiosInsatnce.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const { response } = error;
+// TODO should redirect to login from everywhere except for login form
+// axiosInsatnce.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     const { response } = error;
 
-    if (response.data.statusCode) {
-      auth.logout();
-    }
+//     if (response.data.statusCode) {
+//       auth.logout();
+//     }
 
-    return Promise.reject(error);
-  },
-);
+//     return Promise.reject(error);
+//   },
+// );
 
 export const api = async <D>(route: Route<D>, payload?: Payload, query?: Query): Promise<D> => {
   let config: AxiosRequestConfig = { method: route.method, url: route.getUrl(query) };
