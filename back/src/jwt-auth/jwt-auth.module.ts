@@ -15,7 +15,7 @@ import { JwtAuthController } from './jwt-auth.controller';
     JwtModule.register({
       // TODO .env dont work
       secret: 'cat',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [JwtAuthService, LocalStrategy, JwtStrategy],

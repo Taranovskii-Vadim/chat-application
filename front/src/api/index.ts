@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import auth from '../store/auth';
+import auth from 'src/store/auth';
 import { Payload, Query, Route } from './types';
 
 const baseURL = '/api';

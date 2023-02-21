@@ -1,6 +1,6 @@
-import { PostRequestResult } from '../store/conversation/types';
+import { PostRequestResult } from 'src/store/conversation/types';
 
-import { formatDate } from '../utils';
+import { formatDate } from 'src/utils';
 import { Method, Route } from './types';
 
 interface ResponseDTO {

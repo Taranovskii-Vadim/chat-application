@@ -9,9 +9,9 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
-import { Replied } from '../../../../store/chat/types';
+// import { Replied } from '../../../../store/chat/types';
 
-import Flexbox from '../../../../components/Flexbox';
+import Flexbox from 'src/components/Flexbox';
 
 interface Props {
   text: string;

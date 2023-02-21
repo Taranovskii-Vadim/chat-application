@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import { io, Socket } from 'socket.io-client';
-import { BoxProps } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import { io, Socket } from 'socket.io-client';
 import { Routes, Route } from 'react-router-dom';
-import grey from '@mui/material/colors/grey';
 
-import user from '../store/user';
-import Loader from '../components/ui/Loader';
+import user from 'src/store/user';
+import Loader from 'src/components/ui/Loader';
+import Navigation from 'src/components/Navigation';
 
-import Navigation from '../components/Navigation';
 import Chat from './Chat';
 
 // const STYLES: BoxProps['sx'] = {

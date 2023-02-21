@@ -10,9 +10,9 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
-import Store from '../../../../store/conversation';
+import Store from 'src/store/conversation';
 
-import Flexbox from '../../../../components/Flexbox';
+import Flexbox from 'src/components/Flexbox';
 
 interface Props {
   socket: any;

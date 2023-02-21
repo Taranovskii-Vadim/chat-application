@@ -1,12 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { api } from '../../api';
-import getChats from '../../api/getChats';
+import { api } from 'src/api';
+import getChats from 'src/api/getChats';
+import { ListStore } from '../types';
 
 import { Chat, LastMessage, OnlineUser } from './types';
 
-// TODO add types for stores
-class ChatsStore {
+class ChatsStore implements ListStore<Chat> {
   data: Chat[] = [];
 
   isLoading = true;
@@ -17,8 +17,8 @@ class ChatsStore {
       isLoading: observable,
 
       setIsOnline: action,
-      setLastMessage: action,
       setIsLoading: action,
+      setLastMessage: action,
     });
   }
 

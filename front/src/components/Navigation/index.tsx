@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 
-import user from '../../store/user';
-import store from '../../store/chats';
-import { formatDate } from '../../utils';
-import { palette } from '../../style/palette';
-import { LastMessage, OnlineUser } from '../../store/chats/types';
+import user from 'src/store/user';
+import store from 'src/store/chats';
+import { formatDate } from 'src/utils';
+import { palette } from 'src/style/palette';
+import { LastMessage, OnlineUser } from 'src/store/chats/types';
 
 import Flexbox from '../Flexbox';
 import Loader from '../ui/Loader';

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
-import Flexbox from '../../../../components/Flexbox';
+import Flexbox from 'src/components/Flexbox';
 
 interface Props {
   title: string;

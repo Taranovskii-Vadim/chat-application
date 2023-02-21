@@ -1,13 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { api } from '../../api';
-import postLogin from '../../api/postLogin';
+import { api } from 'src/api';
+import postLogin from 'src/api/postLogin';
 
-import { LoginPayload, Store } from './types';
+import { LoginPayload, AuthStore } from './types';
 
-// TODO check variant when Login is page not component
-
-class AuthStore implements Store {
+class Auth implements AuthStore {
   isLogged = !!localStorage.getItem('token');
 
   constructor() {
@@ -35,4 +33,4 @@ class AuthStore implements Store {
   };
 }
 
-export default new AuthStore();
+export default new Auth();

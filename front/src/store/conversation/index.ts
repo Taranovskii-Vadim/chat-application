@@ -1,12 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { api } from '../../api';
-import putMessage from '../../api/putMessage';
-import getMessages from '../../api/getMessages';
-import postMessage from '../../api/postMessage';
+import { api } from 'src/api';
+import { formatDate } from 'src/utils';
+import putMessage from 'src/api/putMessage';
+import getMessages from 'src/api/getMessages';
+import postMessage from 'src/api/postMessage';
 
 import user from '../user';
-import { formatDate } from '../../utils';
 
 import { CreateUpdateResponse, Edited, Message, Replied } from './types';
 

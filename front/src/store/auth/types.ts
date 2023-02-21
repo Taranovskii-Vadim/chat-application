@@ -3,7 +3,7 @@ export type LoginPayload = {
   password: string;
 };
 
-export type Store = {
+export type AuthStore = {
   isLogged: boolean;
   logout: () => void;
   changeIsLogged: (value: boolean) => void;

@@ -1,5 +1,5 @@
-import { Message } from '../store/chat/types';
-import { formatDate } from '../utils';
+import { Message } from 'src/store/chat/types';
+import { formatDate } from 'src/utils';
 import { Method, Route } from './types';
 
 type SenderDTO = {

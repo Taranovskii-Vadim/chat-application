@@ -1,4 +1,5 @@
-import { User } from '../store/user/types';
+import { User } from 'src/store/user/types';
+
 import { Method, Route } from './types';
 
 interface ResponseDTO {

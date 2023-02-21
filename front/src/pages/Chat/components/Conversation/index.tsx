@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { formatDate } from '../../../../utils';
+import { formatDate } from 'src/utils';
 
-import user from '../../../../store/user';
-import Store from '../../../../store/conversation';
-import { Edited, Message as MessageType } from '../../../../store/conversation/types';
+import user from 'src/store/user';
+import Store from 'src/store/conversation';
+import { Edited, Message as MessageType } from 'src/store/conversation/types';
 
 import Message from '../Message';
 

@@ -1,5 +1,4 @@
-import { formatDate } from '../utils';
-import { Chat } from '../store/chats/types';
+import { Chat } from 'src/store/chats/types';
 
 import { Method, Route } from './types';
 

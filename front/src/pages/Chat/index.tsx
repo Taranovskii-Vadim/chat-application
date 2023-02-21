@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
+import Box from '@mui/material/Box';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
 
-import background from '../../assets/bg.jpg';
+import bg from 'src/assets/bg.jpg';
 
-import ChatStore from '../../store/chat';
-import ConversationStore from '../../store/conversation';
+import ChatStore from 'src/store/chat';
+import Loader from 'src/components/ui/Loader';
+import ConversationStore from 'src/store/conversation';
 
 import Header from './components/Header';
-import Loader from '../../components/ui/Loader';
-
 import Footer from './components/Footer';
 import Conversation from './components/Conversation';
 
@@ -42,7 +41,7 @@ const Chat = ({ socket }: Props): JSX.Element => {
   return (
     <>
       <Header title={data.title} />
-      <Box sx={{ flex: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
+      <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         <Conversation store={conversationStore} chatId={+id} socket={socket} />
       </Box>
       <Footer receiverId={data.companionId} chatId={+id} store={conversationStore} socket={socket} />

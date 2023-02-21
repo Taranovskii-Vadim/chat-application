@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { api } from '../../api';
-import getChat from '../../api/getChat';
+import { api } from 'src/api';
+import getChat from 'src/api/getChat';
 
 import { Chat } from './types';
 

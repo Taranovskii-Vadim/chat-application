@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { api } from '../../api';
-import getProfile from '../../api/getProfile';
+import { api } from 'src/api';
+import getProfile from 'src/api/getProfile';
 
 import { Store, User } from './types';
 

@@ -1,4 +1,4 @@
-import { Chat } from '../store/chat/types';
+import { Chat } from 'src/store/chat/types';
 
 import { Method, Route } from './types';
 
