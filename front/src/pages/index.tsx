@@ -24,19 +24,17 @@ const Pages = (): JSX.Element => {
   const [socket, setSocket] = useState<Socket<any, any>>();
 
   useEffect(() => {
-    user.fetchData();
-  }, []);
-
-  useEffect(() => {
     if (user.data) {
       const connection = io('http://localhost:8080');
       connection.emit('addNewUser', user.data.id);
 
       setSocket(connection);
+    } else {
+      user.fetchData();
     }
   }, [user.data]);
 
-  if (user.isLoading || !user.data || !socket) {
+  if (user.isLoading || !socket) {
     return <Loader height="100vh" />;
   }
 

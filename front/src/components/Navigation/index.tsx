@@ -6,7 +6,6 @@ import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
 import user from 'src/store/user';
 import store from 'src/store/chats';
 import { formatDate } from 'src/utils';
-import { palette } from 'src/style/palette';
 import { LastMessage, OnlineUser } from 'src/store/chats/types';
 
 import Flexbox from '../Flexbox';
@@ -19,13 +18,6 @@ import { stringAvatar } from './helpers';
 interface Props {
   socket: any;
 }
-
-const DOTS_STYLE = {
-  width: '80%',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-};
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -61,6 +53,7 @@ const Navigation = ({ socket }: Props): JSX.Element => {
   });
 
   if (store.isLoading) {
+    // TODO maybe better use backdrop
     return <Loader height="90vh" />;
   }
 
@@ -69,8 +62,18 @@ const Navigation = ({ socket }: Props): JSX.Element => {
       {store.data.map(({ id, title, unReadCount, isOnline, lastMessage }) => {
         const isEqual = activeId === id;
 
+        const colorSx = { color: isEqual ? 'common.white' : 'inherit' };
+
+        const dotsSx = {
+          ...colorSx,
+          width: '80%',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        };
+
         const Title = (
-          <Typography variant="h6" sx={{ ...DOTS_STYLE, color: isEqual ? palette.common.white : 'inherit' }}>
+          <Typography variant="h6" sx={dotsSx}>
             {title}
           </Typography>
         );
@@ -82,7 +85,7 @@ const Navigation = ({ socket }: Props): JSX.Element => {
             onClick={() => navigate(`/${id}`)}
             sx={{
               ...STYLES,
-              backgroundColor: isEqual ? palette.primary.main : 'transparent',
+              backgroundColor: isEqual ? 'primary.main' : 'transparent',
             }}
           >
             <Grid item xs={3}>
@@ -103,18 +106,12 @@ const Navigation = ({ socket }: Props): JSX.Element => {
                 <>
                   <Flexbox sx={{ mb: '3px' }}>
                     {Title}
-                    <Typography variant="subtitle1" sx={{ color: isEqual ? palette.common.white : 'inherit' }}>
+                    <Typography variant="subtitle1" sx={colorSx}>
                       {lastMessage.createdAt}
                     </Typography>
                   </Flexbox>
                   <Flexbox>
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        ...DOTS_STYLE,
-                        color: isEqual ? palette.common.white : 'inherit',
-                      }}
-                    >
+                    <Typography variant="subtitle1" sx={dotsSx}>
                       {`${lastMessage.senderId === user.data?.id ? 'You:' : ''} ${lastMessage.text}`}
                     </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
