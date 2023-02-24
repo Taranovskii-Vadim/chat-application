@@ -3,7 +3,6 @@ import { Chip, Grid, Typography } from '@mui/material';
 import Flexbox from 'src/components/Flexbox';
 import { LastMessage } from 'src/store/chats/types';
 
-// TODO refactor component props
 interface Props {
   title: string;
   isEqual: boolean;
@@ -19,7 +18,6 @@ const COMMON = {
   textOverflow: 'ellipsis',
 };
 
-// TODO maybe we need better refactor this component
 const LinkBody = ({ title, unReadCount, isEqual, currentUserId, lastMessage }: Props): JSX.Element => {
   const colorSx = { color: isEqual ? 'common.white' : 'inherit' };
   const sx = { ...COMMON, ...colorSx };

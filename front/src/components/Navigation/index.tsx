@@ -60,8 +60,8 @@ const Navigation = (): JSX.Element => {
             <LinkBody
               title={title}
               isEqual={isEqual}
-              unReadCount={unReadCount}
               currentUserId={data?.id}
+              unReadCount={unReadCount}
               lastMessage={lastMessage}
             />
           </Grid>
