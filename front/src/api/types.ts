@@ -20,3 +20,18 @@ export interface CommonChatDTO {
   title: string;
   companionId: number;
 }
+
+export interface CommonUserDTO extends MetaDTO {
+  // TODO we dont need password here
+  id: number;
+  name: string;
+  login: string;
+  lastname: string;
+  password: string;
+}
+
+export interface CommonMessageDTO extends MetaDTO {
+  id: number;
+  text: string;
+  sender: CommonUserDTO;
+}

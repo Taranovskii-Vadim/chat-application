@@ -31,7 +31,7 @@ export class ChatsService {
     // TODO got no idea how to query userId in members
 
     const dbResult = await this.table.find({
-      relations: { lastMessage: true },
+      relations: { lastMessage: { sender: true } },
     });
 
     const chats = dbResult.filter(({ members }) => members.includes(userId));
@@ -43,8 +43,6 @@ export class ChatsService {
 
       return { title, companionId, ...other };
     });
-
-    //  TODO we dont expand sender object in lastmessage
 
     return Promise.all(promises);
   }

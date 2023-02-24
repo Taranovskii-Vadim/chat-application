@@ -20,7 +20,6 @@ type ResponseDTO = {
   createdAt: string;
   sender: SenderDTO;
   replied?: RepliedDTO;
-  isEdited?: boolean;
 };
 
 class GetMessages implements Route {
@@ -30,6 +29,7 @@ class GetMessages implements Route {
     return `/messages/${id}`;
   }
 
+  // TODO we dont get isEdited from back, we can equal create and update dates
   getData(data: ResponseDTO[]): Message[] {
     return data.map((item) => ({
       ...item,

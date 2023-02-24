@@ -1,18 +1,12 @@
+import { formatDate } from 'src/utils';
 import { Chat } from 'src/store/chats/types';
 
-import { CommonChatDTO, MetaDTO, Method, Route } from './types';
+import { CommonChatDTO, CommonMessageDTO, MetaDTO, Method, Route } from './types';
 
 interface ResponseDTO extends CommonChatDTO, MetaDTO {
   unReadCount: number;
-  lastMessage: any;
+  lastMessage: CommonMessageDTO;
 }
-
-// last message
-// createdAt: '2023-02-15T16:13:49.185Z';
-// id: 2;
-// isEdited: false;
-// text: 'hello user';
-// updatedAt: '2023-02-15T16:13:49.185Z';
 
 class GetChats implements Route {
   method: Method = 'GET';
@@ -22,15 +16,14 @@ class GetChats implements Route {
   }
 
   getData(data: ResponseDTO[]): Chat[] {
-    return data.map(({ createdAt, updatedAt, ...others }) => ({
-      // TODO back do not expand sender object
-      // lastMessage: lastMessage && {
-      //   text: lastMessage.text,
-      //   senderId: lastMessage.sender.id,
-      //   createdAt: formatDate(lastMessage.createdAt),
-      // },
-      isOnline: false,
+    return data.map(({ createdAt, updatedAt, lastMessage, ...others }) => ({
       ...others,
+      isOnline: false,
+      lastMessage: lastMessage && {
+        text: lastMessage.text,
+        senderId: lastMessage.sender.id,
+        createdAt: formatDate(lastMessage.createdAt),
+      },
     }));
   }
 }

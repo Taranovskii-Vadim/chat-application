@@ -1,5 +1,6 @@
 export type OnlineUser = { id: number; socketId: string };
 
+// TODO refactor store types
 export type LastMessage = {
   text: string;
   createdAt: string;

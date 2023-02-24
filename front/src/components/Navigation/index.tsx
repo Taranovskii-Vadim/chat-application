@@ -44,7 +44,7 @@ const Navigation = (): JSX.Element => {
 
   return (
     <>
-      {store.data.map(({ id, title, isOnline }) => {
+      {store.data.map(({ id, title, isOnline, lastMessage }) => {
         const isEqual = activeId === id;
 
         const sx: GridProps['sx'] = {
@@ -57,7 +57,7 @@ const Navigation = (): JSX.Element => {
         return (
           <Grid key={id} container sx={sx} onClick={() => handleNavigate(id)}>
             <UserAvatar isOnline={isOnline} title={title} />
-            <LinkBody isEqual={isEqual} title={title} />
+            <LinkBody isEqual={isEqual} title={title} lastMessage={lastMessage} />
           </Grid>
         );
       })}

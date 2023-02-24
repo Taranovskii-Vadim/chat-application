@@ -45,12 +45,7 @@ export class MessagesService {
     // this.chatsService.setChatLastMessageId(payload.chatId, payload.id);
   }
 
-  async updateMessage({ id, text }: UpdatePayloadDTO): Promise<void> {
-    // TODO do we need store isEdited in DB.
-    // Because we have createdAt and updatedAt data, we can equal them and find out was record changed or not
-    // const result = await this.table.save({ id, text, isEdited: true });
-    await this.table.save({ id, text, isEdited: true });
-
-    // console.log(result);
+  async updateMessage(data: UpdatePayloadDTO): Promise<void> {
+    await this.table.save(data);
   }
 }

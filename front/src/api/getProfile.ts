@@ -1,10 +1,6 @@
 import { User } from 'src/store/user/types';
 
-import { Method, Route } from './types';
-
-interface ResponseDTO {
-  id: number;
-}
+import { CommonUserDTO, Method, Route } from './types';
 
 class GetProfile implements Route {
   method: Method = 'GET';
@@ -13,7 +9,7 @@ class GetProfile implements Route {
     return '/auth/profile';
   }
 
-  getData(data: ResponseDTO): User {
+  getData(data: Pick<CommonUserDTO, 'id'>): User {
     return data;
   }
 }
