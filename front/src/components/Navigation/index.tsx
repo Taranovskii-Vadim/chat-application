@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Grid, Typography, Chip, styled, Badge } from '@mui/material';
+import { Grid, Typography, Chip } from '@mui/material';
 
 import user from 'src/store/user';
 import store from 'src/store/chats';
@@ -11,18 +11,12 @@ import { LastMessage, OnlineUser } from 'src/store/chats/types';
 import Flexbox from '../Flexbox';
 import Loader from '../ui/Loader';
 
-import { STYLES } from './constants';
-import { stringAvatar } from './helpers';
+import UserAvatar from './components/UserAvatar';
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    backgroundColor: '#44b700',
-    color: '#44b700',
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-  },
-}));
+import { STYLES } from './constants';
 
 const Navigation = (): JSX.Element => {
+  // console.log()
   const { socket, data } = user;
 
   const navigate = useNavigate();
@@ -31,6 +25,8 @@ const Navigation = (): JSX.Element => {
   useEffect(() => {
     store.fetchData();
 
+    // TODO we get online users only if one new user connect to socket.
+    // Think about how to get online users on first render
     socket.on('getUsers', (users: OnlineUser[]) => {
       store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
@@ -81,19 +77,7 @@ const Navigation = (): JSX.Element => {
               backgroundColor: isEqual ? 'primary.main' : 'transparent',
             }}
           >
-            <Grid item xs={3}>
-              {isOnline ? (
-                <StyledBadge
-                  variant="dot"
-                  overlap="circular"
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                >
-                  <Avatar {...stringAvatar(title)} />
-                </StyledBadge>
-              ) : (
-                <Avatar {...stringAvatar(title)} />
-              )}
-            </Grid>
+            <UserAvatar isOnline={isOnline} title={title} />
             <Grid item xs={9}>
               {lastMessage ? (
                 <>

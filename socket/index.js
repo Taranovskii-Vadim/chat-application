@@ -37,7 +37,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    // TODO when user A too fast reload page, user B online chip will hide and then immidiatly show. Think about delay
     activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
+
     io.emit("getUsers", activeUsers);
   });
 });

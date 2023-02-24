@@ -9,7 +9,7 @@ export type LastMessage = {
 export type Chat = {
   id: number;
   title: string;
-  isOnline?: boolean;
+  isOnline: boolean;
   companionId: number;
   unReadCount: number;
   lastMessage?: LastMessage;

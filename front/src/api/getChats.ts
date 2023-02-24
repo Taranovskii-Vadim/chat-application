@@ -41,6 +41,7 @@ class GetChats implements Route {
       //   senderId: lastMessage.sender.id,
       //   createdAt: formatDate(lastMessage.createdAt),
       // },
+      isOnline: false,
       ...others,
     }));
   }
