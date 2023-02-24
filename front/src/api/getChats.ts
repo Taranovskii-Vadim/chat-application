@@ -3,7 +3,7 @@ import { Chat } from 'src/store/chats/types';
 import { Method, Route } from './types';
 
 // TODO move common types in sep file
-
+// TODO here we also get created_at and updated_at
 interface ResponseDTO {
   id: number;
   title: string;

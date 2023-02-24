@@ -26,10 +26,10 @@ class ChatsStore implements ListStore<Chat> {
     this.isLoading = value;
   };
 
-  setIsOnline = (onlineUsers: OnlineUser[]): void => {
+  setIsOnline = (data: OnlineUser[]): void => {
     this.data.map((item) => {
-      item.isOnline = onlineUsers.map(({ id }) => id).includes(item.companionId);
-
+      const ids = data.map(({ id }) => id);
+      item.isOnline = ids.includes(item.companionId);
       return item;
     });
   };

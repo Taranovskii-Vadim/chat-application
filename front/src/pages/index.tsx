@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { io, Socket } from 'socket.io-client';
 import { Routes, Route } from 'react-router-dom';
 
 import user from 'src/store/user';
@@ -21,20 +20,11 @@ import Chat from './Chat';
 
 // TODO check component perfomance
 const Pages = (): JSX.Element => {
-  const [socket, setSocket] = useState<Socket<any, any>>();
-
   useEffect(() => {
-    if (user.data) {
-      const connection = io('http://localhost:8080');
-      connection.emit('addNewUser', user.data.id);
-
-      setSocket(connection);
-    } else {
-      user.fetchData();
-    }
+    user.fetchData();
   }, [user.data]);
 
-  if (user.isLoading || !socket) {
+  if (user.isLoading) {
     return <Loader height="100vh" />;
   }
 
@@ -44,14 +34,14 @@ const Pages = (): JSX.Element => {
         {/* <Box sx={STYLES}>
           <TextField size="small" label="Добавить чат" placeholder="Логин пользователя" fullWidth />
         </Box> */}
-        <Navigation socket={socket} />
+        <Navigation />
       </Grid>
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
-        <Routes>
+        {/* <Routes>
           <Route path="/:id" element={<Chat socket={socket} />} />
-        </Routes>
+        </Routes> */}
       </Grid>
     </Grid>
   );

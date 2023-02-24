@@ -1,4 +1,4 @@
-export type OnlineUser = { id: number };
+export type OnlineUser = { id: number; socketId: string };
 
 export type LastMessage = {
   text: string;
@@ -9,8 +9,8 @@ export type LastMessage = {
 export type Chat = {
   id: number;
   title: string;
-  companionId: number;
   isOnline?: boolean;
+  companionId: number;
   unReadCount: number;
   lastMessage?: LastMessage;
 };

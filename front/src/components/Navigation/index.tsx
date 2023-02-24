@@ -14,11 +14,6 @@ import Loader from '../ui/Loader';
 import { STYLES } from './constants';
 import { stringAvatar } from './helpers';
 
-// TODO remove any later
-interface Props {
-  socket: any;
-}
-
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     backgroundColor: '#44b700',
@@ -27,35 +22,33 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Navigation = ({ socket }: Props): JSX.Element => {
+const Navigation = (): JSX.Element => {
+  const { socket, data } = user;
+
   const navigate = useNavigate();
-  const [activeId, setActiveId] = useState(0);
+  const [activeId, setActiveId] = useState(parseInt(location.pathname.split('/')[1], 10));
 
   useEffect(() => {
     store.fetchData();
 
     socket.on('getUsers', (users: OnlineUser[]) => {
-      const otherOnlineUsers = users.filter((item) => item.id !== user.data?.id);
-      store.setIsOnline(otherOnlineUsers);
+      store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
 
-    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & Omit<LastMessage, 'createdAt'>) => {
-      store.setLastMessage(chatId, { ...others, createdAt: formatDate(new Date()) });
-    });
+    // socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & Omit<LastMessage, 'createdAt'>) => {
+    //   store.setLastMessage(chatId, { ...others, createdAt: formatDate(new Date()) });
+    // });
   }, []);
-
-  useEffect(() => {
-    const chatId = parseInt(location.pathname.split('/')[1], 10);
-
-    if (chatId !== activeId) {
-      setActiveId(chatId);
-    }
-  });
 
   if (store.isLoading) {
     // TODO maybe better use backdrop
     return <Loader height="90vh" />;
   }
+
+  const handleNavigate = (id: number): void => {
+    setActiveId(id);
+    navigate(`/${id}`);
+  };
 
   return (
     <>
@@ -80,9 +73,9 @@ const Navigation = ({ socket }: Props): JSX.Element => {
 
         return (
           <Grid
-            container
             key={id}
-            onClick={() => navigate(`/${id}`)}
+            container
+            onClick={() => handleNavigate(id)}
             sx={{
               ...STYLES,
               backgroundColor: isEqual ? 'primary.main' : 'transparent',
@@ -112,7 +105,7 @@ const Navigation = ({ socket }: Props): JSX.Element => {
                   </Flexbox>
                   <Flexbox>
                     <Typography variant="subtitle1" sx={dotsSx}>
-                      {`${lastMessage.senderId === user.data?.id ? 'You:' : ''} ${lastMessage.text}`}
+                      {`${lastMessage.senderId === data?.id ? 'You:' : ''} ${lastMessage.text}`}
                     </Typography>
                     {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
                   </Flexbox>
