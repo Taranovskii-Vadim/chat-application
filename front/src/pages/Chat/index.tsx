@@ -18,12 +18,7 @@ const conversationStore = new ConversationStore();
 
 // TODO fix any later
 
-interface Props {
-  // TODO maybe store socket in context
-  socket: any;
-}
-
-const Chat = ({ socket }: Props): JSX.Element => {
+const Chat = (): JSX.Element => {
   const { data } = chatStore;
   const { id } = useParams<{ id: string }>();
 
@@ -41,10 +36,10 @@ const Chat = ({ socket }: Props): JSX.Element => {
   return (
     <>
       <Header title={data.title} />
-      <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
+      {/* <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         <Conversation store={conversationStore} chatId={+id} socket={socket} />
       </Box>
-      <Footer receiverId={data.companionId} chatId={+id} store={conversationStore} socket={socket} />
+      <Footer receiverId={data.companionId} chatId={+id} store={conversationStore} socket={socket} /> */}
     </>
   );
 };

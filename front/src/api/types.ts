@@ -6,6 +6,17 @@ export type Query = number;
 
 export type Route<D = unknown> = {
   method: Method;
-  getUrl: (query?: Query) => string;
   getData: (result: any) => D;
+  getUrl: (query?: Query) => string;
 };
+
+interface MetaDTO {
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface CommonChatDTO extends MetaDTO {
+  id: number;
+  title: string;
+  companionId: number;
+}

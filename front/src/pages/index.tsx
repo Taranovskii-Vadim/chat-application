@@ -39,9 +39,9 @@ const Pages = (): JSX.Element => {
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
         {/* TODO think about recoil better use mobx and then rewrite it to redux */}
         {/* TODO add lazy loading maybe */}
-        {/* <Routes>
-          <Route path="/:id" element={<Chat socket={socket} />} />
-        </Routes> */}
+        <Routes>
+          <Route path="/:id" element={<Chat />} />
+        </Routes>
       </Grid>
     </Grid>
   );

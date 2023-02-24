@@ -2,11 +2,11 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { ReqUser } from 'src/types';
 import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
 import { Conversation, GetChatDTO } from './types';
-import { ReqUser } from 'src/types';
 
 // TODO maybe later develop group chats
 

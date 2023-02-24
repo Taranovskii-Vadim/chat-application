@@ -1,30 +1,18 @@
 import { Chat } from 'src/store/chats/types';
 
-import { Method, Route } from './types';
+import { CommonChatDTO, Method, Route } from './types';
 
-// TODO move common types in sep file
-// TODO here we also get created_at and updated_at
-interface ResponseDTO {
-  id: number;
-  title: string;
-  companionId: number;
+interface ResponseDTO extends CommonChatDTO {
   unReadCount: number;
-  lastMessage?: {
-    id: string;
-    text: string;
-    chatId: number;
-    createdAt: string;
-    sender: {
-      id: number;
-      fullname: string;
-    };
-    replied: {
-      id: string;
-      text: string;
-      fullname: string;
-    };
-  };
+  lastMessage: any;
 }
+
+// last message
+// createdAt: '2023-02-15T16:13:49.185Z';
+// id: 2;
+// isEdited: false;
+// text: 'hello user';
+// updatedAt: '2023-02-15T16:13:49.185Z';
 
 class GetChats implements Route {
   method: Method = 'GET';
