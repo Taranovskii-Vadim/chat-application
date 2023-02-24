@@ -1,8 +1,8 @@
 import { Chat } from 'src/store/chats/types';
 
-import { CommonChatDTO, Method, Route } from './types';
+import { CommonChatDTO, MetaDTO, Method, Route } from './types';
 
-interface ResponseDTO extends CommonChatDTO {
+interface ResponseDTO extends CommonChatDTO, MetaDTO {
   unReadCount: number;
   lastMessage: any;
 }
@@ -22,7 +22,7 @@ class GetChats implements Route {
   }
 
   getData(data: ResponseDTO[]): Chat[] {
-    return data.map(({ lastMessage, ...others }) => ({
+    return data.map(({ createdAt, updatedAt, ...others }) => ({
       // TODO back do not expand sender object
       // lastMessage: lastMessage && {
       //   text: lastMessage.text,

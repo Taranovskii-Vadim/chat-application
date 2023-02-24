@@ -10,12 +10,12 @@ export type Route<D = unknown> = {
   getUrl: (query?: Query) => string;
 };
 
-interface MetaDTO {
+export interface MetaDTO {
   updatedAt: string;
   createdAt: string;
 }
 
-export interface CommonChatDTO extends MetaDTO {
+export interface CommonChatDTO {
   id: number;
   title: string;
   companionId: number;
