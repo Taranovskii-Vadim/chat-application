@@ -14,6 +14,7 @@ const COMMON = {
   textOverflow: 'ellipsis',
 };
 
+// TODO maybe we need better refactor this component
 const LinkBody = ({ title, isEqual }: Props): JSX.Element => {
   const colorSx = { color: isEqual ? 'common.white' : 'inherit' };
   const sx = { ...COMMON, ...colorSx };

@@ -36,8 +36,10 @@ const Navigation = (): JSX.Element => {
   }
 
   const handleNavigate = (id: number): void => {
-    setActiveId(id);
-    navigate(`/${id}`);
+    if (id !== activeId) {
+      setActiveId(id);
+      navigate(`/${id}`);
+    }
   };
 
   return (
@@ -53,7 +55,7 @@ const Navigation = (): JSX.Element => {
         };
 
         return (
-          <Grid container key={id} sx={sx} onClick={() => handleNavigate(id)}>
+          <Grid key={id} container sx={sx} onClick={() => handleNavigate(id)}>
             <UserAvatar isOnline={isOnline} title={title} />
             <LinkBody isEqual={isEqual} title={title} />
           </Grid>
