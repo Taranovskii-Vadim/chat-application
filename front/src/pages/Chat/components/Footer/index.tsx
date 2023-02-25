@@ -10,19 +10,20 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
-import Store from 'src/store/conversation';
+import user from 'src/store/user';
+import Store from 'src/store/chat';
 
 import Flexbox from 'src/components/Flexbox';
 
 interface Props {
-  socket: any;
   store: Store;
   chatId: number;
   receiverId: number;
 }
 
 // TODO memo this component
-const Footer = ({ socket, chatId, store, receiverId }: Props): JSX.Element => {
+const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
+  const { socket } = user;
   const { data, replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
