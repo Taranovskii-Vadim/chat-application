@@ -25,7 +25,7 @@ type ResponseDTO = {
 class GetMessages implements Route {
   method: Method = 'GET';
 
-  getUrl(id?: number): string {
+  getUrl(id?: string): string {
     return `/messages/${id}`;
   }
 

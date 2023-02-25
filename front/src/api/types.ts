@@ -2,7 +2,7 @@ export type Method = 'GET' | 'POST' | 'PUT';
 
 export type Payload = object | string | number;
 
-export type Query = number;
+export type Query = string;
 
 export type Route<D = unknown> = {
   method: Method;

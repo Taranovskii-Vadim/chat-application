@@ -19,21 +19,19 @@ import Message from './components/Message';
 const store = new Store();
 
 const Chat = (): JSX.Element => {
-  const { socket, data } = user;
-  const { id } = useParams<{ id: string }>();
+  const { socket } = user;
+  const { id } = useParams();
 
   useEffect(() => {
-    if (id) {
-      store.fetchData(+id);
+    store.fetchData(id as string);
 
-      socket.on('receiveMessage', (value: Omit<MessageType, 'createdAt'>) => {
-        store.pushMessage({ ...value, createdAt: formatDate(new Date()) });
-      });
+    socket.on('receiveMessage', (value: Omit<MessageType, 'createdAt'>) => {
+      store.pushMessage({ ...value, createdAt: formatDate(new Date()) });
+    });
 
-      socket.on('changeMessage', ({ id, ...others }: Edited) => {
-        store.updateMessage(id, { ...others, isEdited: true });
-      });
-    }
+    socket.on('changeMessage', ({ id, ...others }: Edited) => {
+      store.updateMessage(id, { ...others, isEdited: true });
+    });
   }, [id]);
 
   // TODO change this statement
@@ -45,31 +43,9 @@ const Chat = (): JSX.Element => {
     <>
       <Header title={store.data.title} />
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
-        {store.messages.map(({ id, sender, replied, text, isEdited, createdAt }) => {
-          const isAuthor = sender.id === data?.id;
-
-          const handleReply = (): void => {
-            store.setRepliedMessage({ id, text, fullname: sender.fullname });
-          };
-
-          const handleEdit = (): void => {
-            store.setEdited({ id, text });
-            store.setText(text);
-          };
-
-          return (
-            <Message
-              key={id}
-              text={text}
-              replied={replied}
-              isEdited={isEdited}
-              isAuthor={isAuthor}
-              createdAt={createdAt}
-              onEdit={handleEdit}
-              onReply={handleReply}
-            />
-          );
-        })}
+        {store.messages.map((item) => (
+          <Message key={item.id} store={store} {...item} />
+        ))}
       </Box>
       <Footer receiverId={store.data.companionId} chatId={+id} store={store} />
     </>

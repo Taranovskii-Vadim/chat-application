@@ -1,49 +1,48 @@
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';
-import { ListItemIcon, ListItemText, Menu, MenuItem, Box, Typography } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import ShortcutOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { ListItemIcon, ListItemText, Menu, MenuItem, Box, Typography } from '@mui/material';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
-// import { Replied } from '../../../../store/chat/types';
+import user from 'src/store/user';
+import Store from 'src/store/chat';
+import { Message } from 'src/store/chat/types';
 
 import Flexbox from 'src/components/Flexbox';
 
-interface Props {
-  text: string;
-  createdAt: string;
-  isAuthor: boolean;
-  replied?: Replied;
-  isEdited?: boolean;
-  onEdit: () => void;
-  onReply: () => void;
+interface Props extends Message {
+  store: Store;
 }
 
-// TODO receive rest props
-
-const Message = ({ isAuthor, text, replied, isEdited, createdAt, onReply, onEdit }: Props): JSX.Element => {
+const Message = ({ store, id, sender, text, replied, isEdited, createdAt }: Props): JSX.Element => {
+  const { data } = user;
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
+
+  const isAuthor = sender.id === data?.id;
 
   const color = isAuthor ? '#37a123' : '#2AABEE';
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = (): void => {
     setAnchorEl(null);
   };
 
   const handleReply = (): void => {
-    onReply();
+    store.setRepliedMessage({ id, text, fullname: sender.fullname });
     handleClose();
   };
 
   const handleEdit = (): void => {
-    onEdit();
+    store.setEdited({ id, text });
+    store.setText(text);
     handleClose();
   };
 

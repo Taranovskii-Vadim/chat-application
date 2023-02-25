@@ -5,7 +5,7 @@ import { CommonChatDTO, Method, Route } from './types';
 class GetChat implements Route {
   method: Method = 'GET';
 
-  getUrl(id?: number): string {
+  getUrl(id?: string): string {
     return `/chats/${id}`;
   }
 

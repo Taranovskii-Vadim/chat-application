@@ -112,7 +112,7 @@ class ChatStore {
     }
   };
 
-  fetchData = async (chatId: number): Promise<void> => {
+  fetchData = async (chatId: string): Promise<void> => {
     try {
       this.setIsLoading(true);
 
