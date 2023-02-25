@@ -38,6 +38,7 @@ const Navigation = (): JSX.Element => {
   const handleNavigate = (id: number): void => {
     if (id !== activeId) {
       setActiveId(id);
+      store.resetUnReadCount(id);
       navigate(`/${id}`);
     }
   };

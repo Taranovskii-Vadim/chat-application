@@ -15,3 +15,5 @@ export type Chat = {
   unReadCount: number;
   lastMessage?: LastMessage;
 };
+
+export type UpdateChatPLD = Pick<Chat, 'id' | 'unReadCount'>;

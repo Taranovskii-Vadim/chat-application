@@ -1,7 +1,16 @@
-import { Get, Param, UseGuards, Controller, Request } from '@nestjs/common';
+import {
+  Get,
+  Put,
+  Body,
+  Param,
+  Request,
+  UseGuards,
+  Controller,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Req } from 'src/types';
+import { UpdatePayloadDTO } from './chat.dto';
 
 import { ChatsService } from './chat.service';
 import { Conversation, GetChatDTO } from './types';
@@ -23,5 +32,11 @@ export class ChatsController {
     @Request() req: Req,
   ): Promise<Conversation> {
     return this.chatsService.getChat(req.user.id, +chatId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<void> {
+    return this.chatsService.updateChat(body);
   }
 }

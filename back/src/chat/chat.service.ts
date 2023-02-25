@@ -7,6 +7,7 @@ import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
 import { Conversation, GetChatDTO } from './types';
+import { UpdatePayloadDTO } from './chat.dto';
 
 // TODO maybe later develop group chats
 
@@ -57,5 +58,8 @@ export class ChatsService {
     const title = await this.usersService.getFullname(companionId);
 
     return { id: dbResult.id, title, companionId };
+  }
+  async updateChat(data: UpdatePayloadDTO): Promise<void> {
+    await this.table.save(data);
   }
 }

@@ -1,10 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
+import putChat from 'src/api/putChat';
 import getChats from 'src/api/getChats';
+
 import { ListStore } from '../types';
 
-import { Chat, LastMessage, OnlineUser } from './types';
+import { Chat, LastMessage, OnlineUser, UpdateChatPLD } from './types';
 
 class ChatsStore implements ListStore<Chat> {
   data: Chat[] = [];
@@ -32,6 +34,16 @@ class ChatsStore implements ListStore<Chat> {
       item.isOnline = ids.includes(item.companionId);
       return item;
     });
+  };
+
+  resetUnReadCount = async (id: number): Promise<void> => {
+    const idx = this.data.findIndex((item) => item.id === id);
+
+    this.data[idx].unReadCount = 0;
+
+    const payload: UpdateChatPLD = { id, unReadCount: 0 };
+
+    await api(putChat, payload);
   };
 
   setLastMessage = (id: number, value: LastMessage): void => {
