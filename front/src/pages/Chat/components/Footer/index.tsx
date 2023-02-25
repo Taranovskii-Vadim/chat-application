@@ -3,15 +3,16 @@ import { observer } from 'mobx-react-lite';
 import { grey } from '@mui/material/colors';
 import EmojiPicker from 'emoji-picker-react';
 import SendIcon from '@mui/icons-material/Send';
-import CloseIcon from '@mui/icons-material/Close';
 import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Box, InputBase, IconButton, ClickAwayListener } from '@mui/material';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
-import { Box, Typography, InputBase, IconButton, ClickAwayListener } from '@mui/material';
 
 import user from 'src/store/user';
 import Store from 'src/store/chat';
+
+import FooterExtra from '../FooterExtra';
 
 import Flexbox from 'src/components/Flexbox';
 
@@ -50,34 +51,21 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
 
   return (
     <Box>
-      {/* TODO create common component with replied */}
       {edited ? (
-        <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
-          <Flexbox>
-            <EditOutlinedIcon color="primary" sx={{ mr: 1 }} />
-            <Box>
-              <Typography color="primary">Редактирование</Typography>
-              <Typography>{edited.text}</Typography>
-            </Box>
-          </Flexbox>
-          <IconButton size="small" onClick={() => store.setEdited(undefined)}>
-            <CloseIcon />
-          </IconButton>
-        </Flexbox>
+        <FooterExtra
+          second={edited.text}
+          first="Редактирование"
+          Icon={EditOutlinedIcon}
+          onClick={() => store.setEdited(undefined)}
+        />
       ) : null}
       {replied ? (
-        <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}` }}>
-          <Flexbox>
-            <ReplyIcon color="primary" sx={{ mr: 1 }} />
-            <Box>
-              <Typography color="primary">{replied.fullname}</Typography>
-              <Typography>{replied.text}</Typography>
-            </Box>
-          </Flexbox>
-          <IconButton size="small" onClick={() => store.setRepliedMessage(undefined)}>
-            <CloseIcon />
-          </IconButton>
-        </Flexbox>
+        <FooterExtra
+          Icon={ReplyIcon}
+          second={replied.text}
+          first={replied.fullname}
+          onClick={() => store.setRepliedMessage(undefined)}
+        />
       ) : null}
       <Flexbox sx={{ p: 1, borderLeft: `1px solid ${grey['300']}`, backgroundColor: 'white' }}>
         <AttachFileIcon />

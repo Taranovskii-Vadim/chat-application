@@ -67,6 +67,7 @@ class ChatStore {
   };
 
   createUpdateMessage = async (chatId: number): Promise<CreateUpdateResponse | void> => {
+    // TODO check add and update flow logic
     if (this.data && user.data) {
       const id = this.edited?.id || crypto.randomUUID();
 
@@ -108,6 +109,8 @@ class ChatStore {
       } catch {
         // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });
+      } finally {
+        this.updateMessage(id, { isLoading: false });
       }
     }
   };
