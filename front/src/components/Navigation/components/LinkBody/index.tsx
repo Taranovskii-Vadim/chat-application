@@ -7,8 +7,8 @@ interface Props {
   title: string;
   isEqual: boolean;
   unReadCount: number;
-  currentUserId: number | undefined;
-  lastMessage: LastMessage | undefined;
+  currentUserId: U<number>;
+  lastMessage: U<LastMessage>;
 }
 
 const COMMON = {

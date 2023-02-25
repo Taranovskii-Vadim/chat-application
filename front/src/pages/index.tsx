@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { Grid } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import user from 'src/store/user';
+import { getRoutes } from 'src/routes';
 import Loader from 'src/components/ui/Loader';
 import Navigation from 'src/components/Navigation';
-
-import Chat from './Chat';
 
 // const STYLES: BoxProps['sx'] = {
 //   height: '38px',
@@ -37,11 +36,15 @@ const Pages = (): JSX.Element => {
         <Navigation />
       </Grid>
       <Grid item xs={9.5} sx={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
-        {/* TODO think about recoil better use mobx and then rewrite it to redux */}
-        {/* TODO add lazy loading maybe */}
-        <Routes>
-          <Route path="/:id" element={<Chat />} />
-        </Routes>
+        <Suspense fallback={<Loader height="100vh" />}>
+          {/* TODO think about recoil better use mobx and then rewrite it to redux */}
+          <Routes>
+            {getRoutes().map(({ id, ...props }) => (
+              <Route key={id} {...props} />
+            ))}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
       </Grid>
     </Grid>
   );
