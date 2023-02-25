@@ -43,6 +43,7 @@ const Chat = (): JSX.Element => {
     <>
       <Header title={store.data.title} />
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
+        {/* TODO we must show something if array is empty */}
         {store.messages.map((item) => (
           <MessageWrapper key={item.id} store={store} {...item} />
         ))}

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, Typography, InputBase, IconButton } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import EmojiPicker from 'emoji-picker-react';
-import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import ReplyIcon from '@mui/icons-material/Reply';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
+import { Box, Typography, InputBase, IconButton, ClickAwayListener } from '@mui/material';
 
 import user from 'src/store/user';
 import Store from 'src/store/chat';
@@ -44,6 +44,7 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
   };
 
   const handleEmojiClick = (emojiObject: any): void => {
+    // TODO we set emoji only in the end of the string, even if the cursor stands in the begining or in the middle
     store.setText(store.text + emojiObject.emoji);
   };
 
@@ -88,16 +89,18 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
           placeholder="Write a message..."
         />
         {isPicker ? (
-          <Box sx={{ position: 'absolute', bottom: '60px', right: '10px' }}>
-            <EmojiPicker
-              skinTonesDisabled
-              searchDisabled
-              emojiVersion="5.0"
-              height="300px"
-              width="300px"
-              onEmojiClick={handleEmojiClick}
-            />
-          </Box>
+          <ClickAwayListener onClickAway={() => setIsPicker(false)}>
+            <Box sx={{ position: 'absolute', bottom: '60px', right: '10px' }}>
+              <EmojiPicker
+                width="300px"
+                height="300px"
+                searchDisabled
+                skinTonesDisabled
+                emojiVersion="5.0"
+                onEmojiClick={handleEmojiClick}
+              />
+            </Box>
+          </ClickAwayListener>
         ) : null}
         <IconButton size="small" sx={{ mr: 1 }} onClick={() => setIsPicker((prev) => !prev)}>
           <EmojiEmotionsOutlinedIcon />
