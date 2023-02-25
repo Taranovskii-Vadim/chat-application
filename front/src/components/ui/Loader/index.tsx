@@ -3,7 +3,7 @@ import { CircularProgress, CircularProgressProps } from '@mui/material';
 import Flexbox from '../../Flexbox';
 
 interface Props extends CircularProgressProps {
-  height: string;
+  height?: string;
 }
 
 const Loader = ({ height, ...props }: Props): JSX.Element => (

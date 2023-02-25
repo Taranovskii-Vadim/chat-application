@@ -8,13 +8,13 @@ import bg from 'src/assets/bg.jpg';
 import user from 'src/store/user';
 import Store from 'src/store/chat';
 import { formatDate } from 'src/utils';
-import { Edited, Message as MessageType } from 'src/store/chat/types';
+import { Edited, Message } from 'src/store/chat/types';
 
 import Loader from 'src/components/ui/Loader';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Message from './components/Message';
+import MessageWrapper from './components/MessageWrapper';
 
 const store = new Store();
 
@@ -25,7 +25,7 @@ const Chat = (): JSX.Element => {
   useEffect(() => {
     store.fetchData(id as string);
 
-    socket.on('receiveMessage', (value: Omit<MessageType, 'createdAt'>) => {
+    socket.on('receiveMessage', (value: Omit<Message, 'createdAt'>) => {
       store.pushMessage({ ...value, createdAt: formatDate(new Date()) });
     });
 
@@ -44,7 +44,7 @@ const Chat = (): JSX.Element => {
       <Header title={store.data.title} />
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         {store.messages.map((item) => (
-          <Message key={item.id} store={store} {...item} />
+          <MessageWrapper key={item.id} store={store} {...item} />
         ))}
       </Box>
       <Footer receiverId={store.data.companionId} chatId={+id} store={store} />
