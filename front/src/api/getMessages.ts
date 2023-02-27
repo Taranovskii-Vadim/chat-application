@@ -1,23 +1,9 @@
 import { formatDate } from 'src/utils';
 import { Message } from 'src/store/chat/types';
 
-import { CommonUserDTO, Method, Route } from './types';
+import { Method, Route } from './types';
 
-// TODO fix types
-type RepliedDTO = {
-  id: string;
-  text: string;
-  fullname: string;
-};
-
-type ResponseDTO = {
-  id: string;
-  text: string;
-  chatId: number;
-  createdAt: string;
-  sender: CommonUserDTO;
-  replied?: RepliedDTO;
-};
+// TODO add types
 
 class GetMessages implements Route {
   method: Method = 'GET';
@@ -26,11 +12,11 @@ class GetMessages implements Route {
     return `/messages/${id}`;
   }
 
-  // TODO we dont get isEdited from back, we can equal create and update dates
-  getData(data: ResponseDTO[]): Message[] {
-    return data.map(({ createdAt, sender, ...item }) => ({
+  getData(data: any[]): Message[] {
+    return data.map(({ createdAt, updatedAt, sender, ...item }) => ({
       ...item,
       createdAt: formatDate(createdAt),
+      isEdited: createdAt !== updatedAt,
       sender: { id: sender.id, fullname: `${sender.name} ${sender.lastname}` },
     }));
   }

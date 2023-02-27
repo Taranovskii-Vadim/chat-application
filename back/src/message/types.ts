@@ -5,7 +5,6 @@ type CommonMessage = {
   text: string;
   chatId: number;
   createdAt: Date;
-  isEdited?: boolean;
 };
 
 type SenderDTO = {
