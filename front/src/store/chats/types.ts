@@ -1,17 +1,14 @@
-export type OnlineUser = { id: number; socketId: string };
+import { CommonChat, CommonMessage } from '../types';
 
-// TODO refactor store types
-export type LastMessage = {
-  text: string;
-  createdAt: string;
+export type LastMessage = CommonMessage & {
   senderId: number;
 };
 
-export type Chat = {
-  id: number;
-  title: string;
+export type OnlineUser = { id: number; socketId: string };
+
+export type Chat = CommonChat & {
   isOnline: boolean;
-  companionId: number;
+
   unReadCount: number;
   lastMessage?: LastMessage;
 };

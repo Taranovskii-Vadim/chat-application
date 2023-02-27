@@ -8,3 +8,14 @@ type Common<D, F> = {
 export type ObjectStore<D> = Common<D, (id: number) => Promise<void>>;
 
 export type ListStore<D> = Common<D[], () => Promise<void>>;
+
+export type CommonChat = {
+  id: number;
+  title: string;
+  companionId: number;
+};
+
+export type CommonMessage = {
+  text: string;
+  createdAt: string;
+};

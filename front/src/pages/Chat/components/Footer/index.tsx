@@ -35,6 +35,8 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
     try {
       const response = await store.createUpdateMessage(chatId);
 
+      console.log(response);
+
       if (!response || !data) return;
 
       const event = response.chatId ? 'sendMessage' : 'updateMessage';
@@ -72,9 +74,9 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
         <InputBase
           multiline
           value={store.text}
+          placeholder="Write a message..."
           onChange={(e) => store.setText(e.target.value)}
           sx={{ mr: 1, ml: 1, flex: 1, maxHeight: '130px', overflow: 'auto', paddingBottom: '6px' }}
-          placeholder="Write a message..."
         />
         {isPicker ? (
           <ClickAwayListener onClickAway={() => setIsPicker(false)}>

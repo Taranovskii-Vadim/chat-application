@@ -1,4 +1,4 @@
-import { PostRequestResult } from 'src/store/conversation/types';
+import { PostRequestResult } from 'src/store/chat/types';
 
 import { formatDate } from 'src/utils';
 import { Method, Route } from './types';

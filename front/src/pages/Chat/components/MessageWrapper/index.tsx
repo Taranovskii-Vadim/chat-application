@@ -62,12 +62,9 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
       </Flexbox>
       <Menu
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
-        }}
+        open={Boolean(anchorEl)}
+        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
       >
         <MenuItem onClick={handleReply}>
           <ListItemIcon>

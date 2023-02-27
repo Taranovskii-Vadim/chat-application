@@ -1,10 +1,8 @@
-export type Chat = { id: number; title: string; companionId: number };
+import { CommonMessage } from '../types';
 
-type Common = {
-  id: string | number;
-  text: string;
+type Common = CommonMessage & {
   chatId: number;
-  createdAt: string;
+  id: string | number;
 };
 
 type Sender = {
@@ -19,20 +17,11 @@ export type Replied = Edited & { fullname: string };
 export type Message = Common & {
   sender: Sender;
   replied?: Replied;
-  isLoading?: boolean;
   isError?: boolean;
   isEdited?: boolean;
+  isLoading?: boolean;
 };
 
-export type MessageDTO = Common & {
-  senderId: Sender['id'];
-  repliedId?: Replied['id'];
-};
+export type PostRequestResult = Pick<Common, 'id' | 'createdAt'>;
 
-export type PostRequestResult = {
-  id: number;
-  createdAt: string;
-};
-
-export type CreateUpdateResponse = Pick<Message, 'id' | 'text'> &
-  Partial<Pick<Message, 'chatId' | 'replied' | 'sender'>>;
+export type CreateUpdateResponse = Edited & Partial<Pick<Message, 'chatId' | 'replied' | 'sender'>>;

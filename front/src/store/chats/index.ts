@@ -39,11 +39,13 @@ class ChatsStore implements ListStore<Chat> {
   resetUnReadCount = async (id: number): Promise<void> => {
     const idx = this.data.findIndex((item) => item.id === id);
 
-    this.data[idx].unReadCount = 0;
+    if (this.data[idx].unReadCount) {
+      this.data[idx].unReadCount = 0;
 
-    const payload: UpdateChatPLD = { id, unReadCount: 0 };
+      const payload: UpdateChatPLD = { id, unReadCount: 0 };
 
-    await api(putChat, payload);
+      await api(putChat, payload);
+    }
   };
 
   setLastMessage = (id: number, value: LastMessage): void => {

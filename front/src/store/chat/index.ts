@@ -9,8 +9,9 @@ import postMessage from 'src/api/postMessage';
 import { formatDate } from 'src/utils';
 
 import user from '../user';
+import { CommonChat } from '../types';
 
-import { Chat, CreateUpdateResponse, Edited, Message, Replied } from './types';
+import { CreateUpdateResponse, Edited, Message, Replied } from './types';
 
 class ChatStore {
   text = '';
@@ -23,7 +24,7 @@ class ChatStore {
 
   messages: Message[] = [];
 
-  data: Chat | undefined = undefined;
+  data: U<CommonChat> = undefined;
 
   constructor() {
     makeObservable(this, {
@@ -67,7 +68,6 @@ class ChatStore {
   };
 
   createUpdateMessage = async (chatId: number): Promise<CreateUpdateResponse | void> => {
-    // TODO check add and update flow logic
     if (this.data && user.data) {
       const id = this.edited?.id || crypto.randomUUID();
 
@@ -78,8 +78,7 @@ class ChatStore {
 
         let payload: CreateUpdateResponse = { id, text };
 
-        // TODO temp must set fullname empty string because we only have id in user. Must expand getProfile route to get fullname
-        const sender: Message['sender'] = { id: senderId, fullname: 'Temp Fix' };
+        const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
 
         const replied = this.replied && {
           id: this.replied.id,
@@ -107,7 +106,6 @@ class ChatStore {
 
         return payload;
       } catch {
-        // TODO add context menu with resend or delete option
         this.updateMessage(id, { isError: true });
       } finally {
         this.updateMessage(id, { isLoading: false });

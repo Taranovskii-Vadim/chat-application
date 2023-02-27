@@ -9,8 +9,8 @@ class GetProfile implements Route {
     return '/auth/profile';
   }
 
-  getData(data: Pick<CommonUserDTO, 'id'>): User {
-    return data;
+  getData({ id, name, lastname }: CommonUserDTO): User {
+    return { id, fullname: `${lastname} ${name}` };
   }
 }
 
