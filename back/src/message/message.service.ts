@@ -14,7 +14,7 @@ export class MessagesService {
   async getMessages(id: number): Promise<Message[]> {
     const result = await this.table.find({
       where: { chat: { id } },
-      relations: { chat: true, sender: true, replied: true },
+      relations: { chat: true, sender: true, replied: { sender: true } },
       order: { createdAt: 'asc' },
     });
 

@@ -1,9 +1,12 @@
 import { formatDate } from 'src/utils';
 import { Message } from 'src/store/chat/types';
 
-import { Method, Route } from './types';
+import { CommonMessageDTO, MetaDTO, Method, Route } from './types';
 
-// TODO need create all types from zero
+interface ResponseDTO extends CommonMessageDTO {
+  replied?: CommonMessageDTO;
+  chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
+}
 
 class GetMessages implements Route {
   method: Method = 'GET';
@@ -12,12 +15,18 @@ class GetMessages implements Route {
     return `/messages/${id}`;
   }
 
-  getData(data: any[]): Message[] {
-    return data.map(({ createdAt, updatedAt, sender, ...item }) => ({
-      ...item,
+  getData(data: ResponseDTO[]): Message[] {
+    return data.map(({ id, text, createdAt, chat, replied, sender }) => ({
+      id,
+      text,
+      chatId: chat.id,
       createdAt: formatDate(createdAt),
-      isEdited: createdAt !== updatedAt,
-      sender: { id: sender.id, fullname: `${sender.name} ${sender.lastname}` },
+      sender: { id: sender.id, fullname: `${sender.lastname} ${sender.name}` },
+      replied: replied && {
+        id: replied.id,
+        text: replied.text,
+        fullname: `${replied.sender.lastname} ${replied.sender.name}`,
+      },
     }));
   }
 }
