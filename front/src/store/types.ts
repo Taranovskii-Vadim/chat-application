@@ -19,3 +19,8 @@ export type CommonMessage = {
   text: string;
   createdAt: string;
 };
+
+export type LastMessage = CommonMessage & {
+  id: number;
+  senderId: number;
+};

@@ -1,7 +1,8 @@
 import { Chip, Grid, Typography } from '@mui/material';
 
+import { LastMessage } from 'src/store/types';
+
 import Flexbox from 'src/components/Flexbox';
-import { LastMessage } from 'src/store/chats/types';
 
 interface Props {
   title: string;

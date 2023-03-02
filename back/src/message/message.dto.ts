@@ -29,6 +29,12 @@ export class ResultDTO {
   @IsNumber()
   id: number;
 
+  @IsNumber()
+  senderId: number;
+
+  @IsString()
+  text: string;
+
   @IsDate()
   createdAt: string;
 }

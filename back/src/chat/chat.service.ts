@@ -66,7 +66,7 @@ export class ChatsService {
     return { title, companionId, ...other };
   }
 
-  async updateChat(data: UpdatePayloadDTO): Promise<void> {
+  async updateChat(data: any): Promise<void> {
     await this.table.save(data);
   }
 }

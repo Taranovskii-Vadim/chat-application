@@ -22,6 +22,4 @@ export type Message = Common & {
   isLoading?: boolean;
 };
 
-export type PostRequestResult = Pick<Common, 'id' | 'createdAt'>;
-
 export type CreateUpdateResponse = Edited & Partial<Pick<Message, 'chatId' | 'replied' | 'sender'>>;

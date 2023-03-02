@@ -8,7 +8,7 @@ export class Chat extends Base {
   @Column('int', { array: true })
   members: number[];
 
-  @Column({ name: 'unread_count' })
+  @Column({ name: 'unread_count', default: 0 })
   unReadCount: number;
 
   @JoinColumn({ name: 'last_message_id_fkey' })

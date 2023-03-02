@@ -4,9 +4,9 @@ import { api } from 'src/api';
 import putChat from 'src/api/putChat';
 import getChats from 'src/api/getChats';
 
-import { ListStore } from '../types';
+import { ListStore, LastMessage } from '../types';
 
-import { Chat, LastMessage, OnlineUser, UpdateChatPLD } from './types';
+import { Chat, OnlineUser, UpdateChatPLD } from './types';
 
 class ChatsStore implements ListStore<Chat> {
   data: Chat[] = [];

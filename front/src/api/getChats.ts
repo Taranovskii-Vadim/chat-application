@@ -15,6 +15,7 @@ class GetChats implements Route {
       ...others,
       isOnline: false,
       lastMessage: lastMessage && {
+        id: lastMessage.id,
         text: lastMessage.text,
         senderId: lastMessage.sender.id,
         createdAt: formatDate(lastMessage.createdAt),

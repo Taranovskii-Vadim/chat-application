@@ -1,8 +1,4 @@
-import { CommonChat, CommonMessage } from '../types';
-
-export type LastMessage = CommonMessage & {
-  senderId: number;
-};
+import { CommonChat, LastMessage } from '../types';
 
 export type OnlineUser = { id: number; socketId: string };
 

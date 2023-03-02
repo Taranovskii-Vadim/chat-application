@@ -36,7 +36,7 @@ export class ChatsController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<void> {
+  async updateMessage(@Body() body: any): Promise<void> {
     return this.chatsService.updateChat(body);
   }
 }

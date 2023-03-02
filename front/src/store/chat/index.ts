@@ -9,6 +9,7 @@ import postMessage from 'src/api/postMessage';
 import { formatDate } from 'src/utils';
 
 import user from '../user';
+import chats from '../chats';
 import { CommonChat } from '../types';
 
 import { CreateUpdateResponse, Edited, Message, Replied } from './types';
@@ -98,7 +99,7 @@ class ChatStore {
           const result = await api(postMessage, { text, chatId, repliedId, senderId });
 
           this.updateMessage(id, { ...result, isLoading: false });
-          // chats.setLastMessage(chatId, { text, senderId, createdAt: formatDate(createdAt) });
+          chats.setLastMessage(chatId, result);
         }
 
         this.setEdited(undefined);
