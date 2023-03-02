@@ -35,8 +35,6 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
     try {
       const response = await store.createUpdateMessage(chatId);
 
-      console.log(response);
-
       if (!response || !data) return;
 
       const event = response.chatId ? 'sendMessage' : 'updateMessage';

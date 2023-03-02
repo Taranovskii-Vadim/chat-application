@@ -11,6 +11,7 @@ import Loader from '../ui/Loader';
 
 import LinkBody from './components/LinkBody';
 import UserAvatar from './components/UserAvatar';
+import { LastMessage } from 'src/store/types';
 
 const Navigation = (): JSX.Element => {
   const { socket, data } = user;
@@ -25,9 +26,9 @@ const Navigation = (): JSX.Element => {
       store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
 
-    // socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & Omit<LastMessage, 'createdAt'>) => {
-    //   store.setLastMessage(chatId, { ...others, createdAt: formatDate(new Date()) });
-    // });
+    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & LastMessage) => {
+      store.setLastMessage(chatId, others);
+    });
   }, []);
 
   if (store.isLoading) {

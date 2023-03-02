@@ -25,8 +25,8 @@ const Chat = (): JSX.Element => {
   useEffect(() => {
     store.fetchData(id as string);
 
-    socket.on('receiveMessage', (value: Omit<Message, 'createdAt'>) => {
-      store.pushMessage({ ...value, createdAt: formatDate(new Date()) });
+    socket.on('receiveMessage', (value: Message) => {
+      store.pushMessage(value);
     });
 
     socket.on('changeMessage', ({ id, text }: Edited) => {

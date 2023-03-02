@@ -22,4 +22,4 @@ export type Message = Common & {
   isLoading?: boolean;
 };
 
-export type CreateUpdateResponse = Edited & Partial<Pick<Message, 'chatId' | 'replied' | 'sender'>>;
+export type CreateUpdateResponse = Edited & Partial<Pick<Message, 'chatId' | 'replied' | 'sender' | 'createdAt'>>;

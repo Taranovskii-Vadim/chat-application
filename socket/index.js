@@ -21,8 +21,10 @@ io.on("connection", (socket) => {
       io.to(user.socketId).emit("receiveMessage", others);
       io.to(user.socketId).emit("receiveLastMessage", {
         chatId,
+        id: others.id,
         text: others.text,
-        senderId: others.senderId,
+        senderId: others.sender.id,
+        createdAt: others.sender.createdAt,
       });
     }
   });

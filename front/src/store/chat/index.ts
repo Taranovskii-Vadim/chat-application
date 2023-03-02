@@ -68,6 +68,7 @@ class ChatStore {
     this.messages.push(message);
   };
 
+  // TODO split this function
   createUpdateMessage = async (chatId: number): Promise<CreateUpdateResponse | void> => {
     if (this.data && user.data) {
       const id = this.edited?.id || crypto.randomUUID();
@@ -91,15 +92,15 @@ class ChatStore {
           this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
           await api(putMessage, payload);
         } else {
-          payload = { ...payload, chatId, replied, sender };
-
-          // TODO here we set client id and createdAt only to show message before it creates in api
           this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
 
           const result = await api(postMessage, { text, chatId, repliedId, senderId });
 
           this.updateMessage(id, { ...result, isLoading: false });
+
           chats.setLastMessage(chatId, result);
+
+          payload = { text, id: result.id, createdAt: result.createdAt, chatId, replied, sender };
         }
 
         this.setEdited(undefined);
