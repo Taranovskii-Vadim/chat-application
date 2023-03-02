@@ -6,6 +6,6 @@ export type LoginPayload = {
 export type AuthStore = {
   isLogged: boolean;
   logout: () => void;
-  changeIsLogged: (value: boolean) => void;
+  setIsLogged: (value: boolean) => void;
   signIn: (payload: LoginPayload) => Promise<void>;
 };

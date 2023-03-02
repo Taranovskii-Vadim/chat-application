@@ -17,5 +17,3 @@ export type GetChatDTO = {
   createdAt: Date;
   updatedAt: Date;
 };
-
-export type Conversation = { id: number; title: string; companionId: number };

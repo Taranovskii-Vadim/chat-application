@@ -1,12 +1,7 @@
 import { formatDate } from 'src/utils';
 import { Chat } from 'src/store/chats/types';
 
-import { CommonChatDTO, CommonMessageDTO, MetaDTO, Method, Route } from './types';
-
-interface ResponseDTO extends CommonChatDTO, MetaDTO {
-  unReadCount: number;
-  lastMessage: CommonMessageDTO;
-}
+import { CommonChatDTO, Method, Route } from './types';
 
 class GetChats implements Route {
   method: Method = 'GET';
@@ -15,7 +10,7 @@ class GetChats implements Route {
     return '/chats';
   }
 
-  getData(data: ResponseDTO[]): Chat[] {
+  getData(data: CommonChatDTO[]): Chat[] {
     return data.map(({ createdAt, updatedAt, lastMessage, ...others }) => ({
       ...others,
       isOnline: false,

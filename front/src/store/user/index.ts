@@ -26,8 +26,6 @@ class UserStore implements Store {
   };
 
   fetchData = async (): Promise<void> => {
-    if (this.data) return;
-
     try {
       const result = await api(getProfile);
 

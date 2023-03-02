@@ -3,7 +3,7 @@ import { Message } from 'src/store/chat/types';
 
 import { Method, Route } from './types';
 
-// TODO add types
+// TODO need create all types from zero
 
 class GetMessages implements Route {
   method: Method = 'GET';

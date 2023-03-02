@@ -13,7 +13,7 @@ import { Req } from 'src/types';
 import { UpdatePayloadDTO } from './chat.dto';
 
 import { ChatsService } from './chat.service';
-import { Conversation, GetChatDTO } from './types';
+import { GetChatDTO } from './types';
 
 @Controller('/chats')
 export class ChatsController {
@@ -30,7 +30,7 @@ export class ChatsController {
   async getChat(
     @Param('chatId') chatId: string,
     @Request() req: Req,
-  ): Promise<Conversation> {
+  ): Promise<GetChatDTO> {
     return this.chatsService.getChat(req.user.id, +chatId);
   }
 

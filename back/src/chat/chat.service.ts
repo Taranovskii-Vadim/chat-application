@@ -6,7 +6,7 @@ import { ReqUser } from 'src/types';
 import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
-import { Conversation, GetChatDTO } from './types';
+import { GetChatDTO } from './types';
 import { UpdatePayloadDTO } from './chat.dto';
 
 // TODO maybe later develop group chats
@@ -28,6 +28,7 @@ export class ChatsService {
   //   });
   // }
 
+  // TODO can create common method with getChat because the same logic
   async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
     // TODO got no idea how to query userId in members
 
@@ -48,17 +49,23 @@ export class ChatsService {
     return Promise.all(promises);
   }
 
-  async getChat(userId: ReqUser['id'], id: number): Promise<Conversation> {
-    const dbResult = await this.table.findOne({ where: { id } });
+  async getChat(userId: ReqUser['id'], id: number): Promise<GetChatDTO> {
+    const dbResult = await this.table.findOne({
+      where: { id },
+      relations: { lastMessage: { sender: true } },
+    });
 
     if (!dbResult) throw new Error('Chat not found');
 
-    const companionId = dbResult.members.filter((id) => id !== userId)[0];
+    const { members, ...other } = dbResult;
+
+    const companionId = members.filter((id) => id !== userId)[0];
 
     const title = await this.usersService.getFullname(companionId);
 
-    return { id: dbResult.id, title, companionId };
+    return { title, companionId, ...other };
   }
+
   async updateChat(data: UpdatePayloadDTO): Promise<void> {
     await this.table.save(data);
   }

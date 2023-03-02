@@ -21,7 +21,7 @@ import Navigation from 'src/components/Navigation';
 const Pages = (): JSX.Element => {
   useEffect(() => {
     user.fetchData();
-  }, [user.data]);
+  }, []);
 
   if (user.isLoading) {
     return <Loader height="100vh" />;

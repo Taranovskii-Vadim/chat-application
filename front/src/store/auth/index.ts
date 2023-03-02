@@ -12,11 +12,11 @@ class Auth implements AuthStore {
     makeObservable(this, {
       isLogged: observable,
 
-      changeIsLogged: action,
+      setIsLogged: action,
     });
   }
 
-  changeIsLogged = (value: boolean): void => {
+  setIsLogged = (value: boolean): void => {
     this.isLogged = value;
   };
 
@@ -29,7 +29,7 @@ class Auth implements AuthStore {
   signIn = async (payload: LoginPayload): Promise<void> => {
     const result = await api(postLogin, payload);
 
-    this.changeIsLogged(!!result);
+    this.setIsLogged(!!result);
   };
 }
 

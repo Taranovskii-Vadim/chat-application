@@ -15,19 +15,20 @@ export interface MetaDTO {
   createdAt: string;
 }
 
-export interface CommonChatDTO {
+export interface CommonChatDTO extends MetaDTO {
   id: number;
   title: string;
   companionId: number;
+  unReadCount: number;
+  // TODO need fix in back. In sender we get user password
+  lastMessage?: CommonMessageDTO;
 }
 
 export interface CommonUserDTO extends MetaDTO {
-  // TODO we dont need password here
   id: number;
   name: string;
   login: string;
   lastname: string;
-  password: string;
 }
 
 export interface CommonMessageDTO extends MetaDTO {
