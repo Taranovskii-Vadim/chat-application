@@ -1,4 +1,4 @@
-import { Method, Route } from './types';
+import { CommonMessageDTO, Method, Route } from './types';
 
 class PutMessage implements Route {
   method: Method = 'PUT';
@@ -7,7 +7,7 @@ class PutMessage implements Route {
     return '/messages';
   }
 
-  getData() {}
+  getData(data: CommonMessageDTO) {}
 }
 
 export default new PutMessage();

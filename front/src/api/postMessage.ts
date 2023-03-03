@@ -1,14 +1,7 @@
 import { LastMessage } from 'src/store/types';
 
 import { formatDate } from 'src/utils';
-import { Method, Route } from './types';
-
-interface ResponseDTO {
-  id: number;
-  text: string;
-  senderId: number;
-  createdAt: string;
-}
+import { CommonMessageDTO, Method, Route } from './types';
 
 class PostMessage implements Route {
   method: Method = 'POST';
@@ -17,8 +10,8 @@ class PostMessage implements Route {
     return '/messages';
   }
 
-  getData({ id, createdAt, text, senderId }: ResponseDTO): LastMessage {
-    return { id, text, senderId, createdAt: formatDate(createdAt) };
+  getData({ id, createdAt, text, sender }: CommonMessageDTO): LastMessage {
+    return { id, text, senderId: sender.id, createdAt: formatDate(createdAt) };
   }
 }
 

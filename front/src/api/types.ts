@@ -20,7 +20,6 @@ export interface CommonChatDTO extends MetaDTO {
   title: string;
   companionId: number;
   unReadCount: number;
-  // TODO need fix in back. In sender we get user password
   lastMessage?: CommonMessageDTO;
 }
 
@@ -35,4 +34,6 @@ export interface CommonMessageDTO extends MetaDTO {
   id: number;
   text: string;
   sender: CommonUserDTO;
+  replied?: CommonMessageDTO;
+  chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
 }
