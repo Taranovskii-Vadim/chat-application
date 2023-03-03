@@ -22,7 +22,7 @@ export class ChatsService {
     // TODO got no idea how to query userId in members
 
     const dbResult = await this.table.find({
-      relations: { lastMessage: { sender: true } },
+      relations: { lastMessage: { sender: true, chat: true } },
     });
 
     const chats = dbResult.filter(({ members }) => members.includes(userId));

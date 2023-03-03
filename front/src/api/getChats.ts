@@ -17,8 +17,14 @@ class GetChats implements Route {
       lastMessage: lastMessage && {
         id: lastMessage.id,
         text: lastMessage.text,
-        senderId: lastMessage.sender.id,
+        chatId: lastMessage.chat.id,
         createdAt: formatDate(lastMessage.createdAt),
+        sender: { id: lastMessage.sender.id, fullname: `${lastMessage.sender.lastname} ${lastMessage.sender.name}` },
+        replied: lastMessage.replied && {
+          id: lastMessage.replied.id,
+          text: lastMessage.replied.text,
+          fullname: `${lastMessage.replied.sender.lastname} ${lastMessage.replied.sender.name}`,
+        },
       },
     }));
   }
