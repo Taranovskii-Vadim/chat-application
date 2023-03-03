@@ -1,6 +1,6 @@
 import { Chip, Grid, Typography } from '@mui/material';
 
-import { LastMessage } from 'src/store/types';
+import { Message } from 'src/store/chat/types';
 
 import Flexbox from 'src/components/Flexbox';
 
@@ -8,8 +8,8 @@ interface Props {
   title: string;
   isEqual: boolean;
   unReadCount: number;
+  lastMessage: U<Message>;
   currentUserId: U<number>;
-  lastMessage: U<LastMessage>;
 }
 
 const COMMON = {
@@ -35,7 +35,7 @@ const LinkBody = ({ title, unReadCount, isEqual, currentUserId, lastMessage }: P
               {lastMessage.createdAt}
             </Typography>
             <Typography variant="subtitle1" sx={sx}>
-              {`${lastMessage.senderId === currentUserId ? 'You:' : ''} ${lastMessage.text}`}
+              {`${lastMessage.sender.id === currentUserId ? 'You:' : ''} ${lastMessage.text}`}
             </Typography>
           </>
         ) : null}

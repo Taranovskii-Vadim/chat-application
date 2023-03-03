@@ -5,13 +5,13 @@ import { Grid, GridProps } from '@mui/material';
 
 import user from 'src/store/user';
 import store from 'src/store/chats';
+import { Message } from 'src/store/chat/types';
 import { OnlineUser } from 'src/store/chats/types';
 
 import Loader from '../ui/Loader';
 
 import LinkBody from './components/LinkBody';
 import UserAvatar from './components/UserAvatar';
-import { LastMessage } from 'src/store/types';
 
 const Navigation = (): JSX.Element => {
   const { socket, data } = user;
@@ -26,8 +26,8 @@ const Navigation = (): JSX.Element => {
       store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
 
-    socket.on('receiveLastMessage', ({ chatId, ...others }: { chatId: number } & LastMessage) => {
-      store.setLastMessage(chatId, others);
+    socket.on('receiveLastMessage', (value: Message) => {
+      store.setLastMessage(value);
     });
   }, []);
 

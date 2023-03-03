@@ -11,11 +11,11 @@ class GetMessages implements Route {
   }
 
   getData(data: CommonMessageDTO[]): Message[] {
-    return data.map(({ id, text, createdAt, chat, replied, sender }) => ({
-      id,
-      text,
+    return data.map(({ createdAt, chat, replied, sender, ...common }) => ({
+      ...common,
       chatId: chat.id,
       createdAt: formatDate(createdAt),
+      // TODO maybe create method in front, or add map in back with help of typeorm
       sender: { id: sender.id, fullname: `${sender.lastname} ${sender.name}` },
       replied: replied && {
         id: replied.id,

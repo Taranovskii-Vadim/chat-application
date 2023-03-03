@@ -4,7 +4,8 @@ import { api } from 'src/api';
 import putChat from 'src/api/putChat';
 import getChats from 'src/api/getChats';
 
-import { ListStore, LastMessage } from '../types';
+import { ListStore } from '../types';
+import { Message } from '../chat/types';
 
 import { Chat, OnlineUser, UpdateChatPLD } from './types';
 
@@ -48,9 +49,9 @@ class ChatsStore implements ListStore<Chat> {
     }
   };
 
-  setLastMessage = (id: number, value: LastMessage): void => {
+  setLastMessage = (value: Message): void => {
     this.data.map((item) => {
-      if (item.id === id) {
+      if (item.id === value.chatId) {
         item.lastMessage = value;
       }
 

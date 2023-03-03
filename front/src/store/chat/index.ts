@@ -94,7 +94,7 @@ class ChatStore {
 
           this.updateMessage(id, { ...result, isLoading: false });
 
-          chats.setLastMessage(chatId, result);
+          chats.setLastMessage(result);
 
           payload = { text, id: result.id, createdAt: result.createdAt, chatId, replied, sender };
         }

@@ -1,4 +1,4 @@
-import { LastMessage } from 'src/store/types';
+import { Message } from 'src/store/chat/types';
 
 import { formatDate } from 'src/utils';
 import { CommonMessageDTO, Method, Route } from './types';
@@ -10,8 +10,18 @@ class PostMessage implements Route {
     return '/messages';
   }
 
-  getData({ id, createdAt, text, sender }: CommonMessageDTO): LastMessage {
-    return { id, text, senderId: sender.id, createdAt: formatDate(createdAt) };
+  getData({ createdAt, chat, replied, sender, ...common }: CommonMessageDTO): Message {
+    return {
+      ...common,
+      chatId: chat.id,
+      createdAt: formatDate(createdAt),
+      sender: { id: sender.id, fullname: `${sender.lastname} ${sender.name}` },
+      replied: replied && {
+        id: replied.id,
+        text: replied.text,
+        fullname: `${replied.sender.lastname} ${replied.sender.name}`,
+      },
+    };
   }
 }
 
