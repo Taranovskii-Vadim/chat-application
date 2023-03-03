@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 import { Base } from 'src/utils';
 
@@ -17,4 +17,10 @@ export class User extends Base {
   @Exclude()
   @Column()
   password: string;
+
+  // TODO can set fullname here. But front has name and lastname why we need it???
+  // @Expose()
+  // get fullName(): string {
+  //   return `${this.lastname} ${this.name}`;
+  // }
 }

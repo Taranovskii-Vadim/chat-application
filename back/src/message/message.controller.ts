@@ -15,7 +15,6 @@ import { Message } from './message.entity';
 import { MessagesService } from './message.service';
 import { InsertPayloadDTO, ResultDTO, UpdatePayloadDTO } from './message.dto';
 
-// TODO add guards everywhere
 @Controller('/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
