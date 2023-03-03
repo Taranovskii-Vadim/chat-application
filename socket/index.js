@@ -14,18 +14,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    const { receiverId, chatId, ...others } = data;
+    const { receiverId, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);
 
     if (user) {
       io.to(user.socketId).emit("receiveMessage", others);
-      io.to(user.socketId).emit("receiveLastMessage", {
-        chatId,
-        id: others.id,
-        text: others.text,
-        senderId: others.sender.id,
-        createdAt: others.sender.createdAt,
-      });
+      io.to(user.socketId).emit("receiveLastMessage", others);
     }
   });
 

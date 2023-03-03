@@ -25,7 +25,7 @@ interface Props {
 // TODO memo this component
 const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
   const { socket } = user;
-  const { data, replied, edited } = store;
+  const { replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
 
@@ -33,12 +33,14 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
     if (!store.text) return;
 
     try {
-      const response = await store.createUpdateMessage(chatId);
+      // TODO check is edited here and call method needed
+      const message = await store.createUpdateMessage(chatId);
 
-      if (!response || !data) return;
+      // TODO we dont need it when we add handle update message
+      if (!message) return;
 
-      const event = response.chatId ? 'sendMessage' : 'updateMessage';
-      socket.emit(event, { ...response, receiverId });
+      const event = message.chatId ? 'sendMessage' : 'updateMessage';
+      socket.emit(event, { ...message, receiverId });
     } finally {
       store.setText('');
     }

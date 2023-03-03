@@ -1,7 +1,7 @@
-import { CommonMessage } from '../types';
-
-type Common = CommonMessage & {
+type Common = {
+  text: string;
   chatId: number;
+  createdAt: string;
   id: string | number;
 };
 
@@ -21,5 +21,3 @@ export type Message = Common & {
   isEdited?: boolean;
   isLoading?: boolean;
 };
-
-export type CreateUpdateResponse = Edited & Partial<Pick<Message, 'chatId' | 'replied' | 'sender' | 'createdAt'>>;

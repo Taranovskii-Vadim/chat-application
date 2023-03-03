@@ -10,7 +10,7 @@ import { formatDate } from 'src/utils';
 import user from '../user';
 import chats from '../chats';
 
-import { CreateUpdateResponse, Edited, Message, Replied } from './types';
+import { Edited, Message, Replied } from './types';
 
 class ChatStore {
   text = '';
@@ -65,7 +65,7 @@ class ChatStore {
   };
 
   // TODO split this function
-  createUpdateMessage = async (chatId: number): Promise<CreateUpdateResponse | void> => {
+  createUpdateMessage = async (chatId: number): Promise<Message | void> => {
     if (user.data) {
       const id = this.edited?.id || crypto.randomUUID();
 
@@ -74,7 +74,7 @@ class ChatStore {
         const senderId = user.data.id;
         const repliedId = this.replied?.id;
 
-        let payload: CreateUpdateResponse = { id, text };
+        // let payload: CreateUpdateResponse = { id, text };
 
         const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
 
@@ -86,7 +86,8 @@ class ChatStore {
 
         if (this.edited) {
           this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
-          await api(putMessage, payload);
+          // TODO handle new api message here and return it
+          await api(putMessage, { id, text });
         } else {
           this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
 
@@ -96,16 +97,13 @@ class ChatStore {
 
           chats.setLastMessage(result);
 
-          payload = { text, id: result.id, createdAt: result.createdAt, chatId, replied, sender };
+          return result;
         }
-
-        this.setEdited(undefined);
-        this.setRepliedMessage(undefined);
-
-        return payload;
       } catch {
         this.updateMessage(id, { isError: true });
       } finally {
+        this.setEdited(undefined);
+        this.setRepliedMessage(undefined);
         this.updateMessage(id, { isLoading: false });
       }
     }

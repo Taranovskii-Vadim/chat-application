@@ -14,8 +14,3 @@ export type CommonChat = {
   title: string;
   companionId: number;
 };
-
-export type CommonMessage = {
-  text: string;
-  createdAt: string;
-};
