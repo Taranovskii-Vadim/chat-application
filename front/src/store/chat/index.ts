@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
-import getChat from 'src/api/getChat';
 import putMessage from 'src/api/putMessage';
 import getMessages from 'src/api/getMessages';
 import postMessage from 'src/api/postMessage';
@@ -10,7 +9,6 @@ import { formatDate } from 'src/utils';
 
 import user from '../user';
 import chats from '../chats';
-import { CommonChat } from '../types';
 
 import { CreateUpdateResponse, Edited, Message, Replied } from './types';
 
@@ -24,8 +22,6 @@ class ChatStore {
   replied: U<Replied>;
 
   messages: Message[] = [];
-
-  data: U<CommonChat> = undefined;
 
   constructor() {
     makeObservable(this, {
@@ -70,7 +66,7 @@ class ChatStore {
 
   // TODO split this function
   createUpdateMessage = async (chatId: number): Promise<CreateUpdateResponse | void> => {
-    if (this.data && user.data) {
+    if (user.data) {
       const id = this.edited?.id || crypto.randomUUID();
 
       try {
@@ -119,10 +115,8 @@ class ChatStore {
     try {
       this.setIsLoading(true);
 
-      const result = await api(getChat, undefined, chatId);
       const messages = await api(getMessages, undefined, chatId);
 
-      this.data = result;
       this.messages = messages;
     } finally {
       this.setIsLoading(false);

@@ -49,23 +49,6 @@ export class ChatsService {
     return Promise.all(promises);
   }
 
-  async getChat(userId: ReqUser['id'], id: number): Promise<GetChatDTO> {
-    const dbResult = await this.table.findOne({
-      where: { id },
-      relations: { lastMessage: { sender: true } },
-    });
-
-    if (!dbResult) throw new Error('Chat not found');
-
-    const { members, ...other } = dbResult;
-
-    const companionId = members.filter((id) => id !== userId)[0];
-
-    const title = await this.usersService.getFullname(companionId);
-
-    return { title, companionId, ...other };
-  }
-
   async updateChat(data: any): Promise<void> {
     await this.table.save(data);
   }

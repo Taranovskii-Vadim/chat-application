@@ -7,7 +7,7 @@ import bg from 'src/assets/bg.jpg';
 
 import user from 'src/store/user';
 import Store from 'src/store/chat';
-import { formatDate } from 'src/utils';
+import chats from 'src/store/chats';
 import { Edited, Message } from 'src/store/chat/types';
 
 import Loader from 'src/components/ui/Loader';
@@ -18,7 +18,7 @@ import MessageWrapper from './components/MessageWrapper';
 
 const store = new Store();
 
-const Chat = (): JSX.Element => {
+const Chat = (): JSX.Element | null => {
   const { socket } = user;
   const { id } = useParams();
 
@@ -34,21 +34,27 @@ const Chat = (): JSX.Element => {
     });
   }, [id]);
 
-  // TODO change this statement
-  if (store.isLoading || !store.data || !id) {
-    return <Loader height="100vh" />;
-  }
+  // TODO prev we had getChat request. Now we take chat from chats array sync
+  const currentChat = id && chats.data.find((item) => item.id === +id);
+
+  if (!currentChat) return null;
 
   return (
     <>
-      <Header title={store.data.title} />
+      <Header title={currentChat.title} />
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
-        {/* TODO we must show something if array is empty */}
-        {store.messages.map((item) => (
-          <MessageWrapper key={item.id} store={store} {...item} />
-        ))}
+        {!store.isLoading ? (
+          <>
+            {/* TODO we must show something if array is empty */}
+            {store.messages.map((item) => (
+              <MessageWrapper key={item.id} store={store} {...item} />
+            ))}
+          </>
+        ) : (
+          <Loader height="100%" />
+        )}
       </Box>
-      <Footer receiverId={store.data.companionId} chatId={+id} store={store} />
+      <Footer receiverId={currentChat.companionId} chatId={+id} store={store} />
     </>
   );
 };
