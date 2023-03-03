@@ -1,4 +1,5 @@
 import { Column, Entity } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { Base } from 'src/utils';
 
@@ -13,8 +14,7 @@ export class User extends Base {
   @Column()
   lastname: string;
 
-  // TODO we can set select false to exclude password but we need password for user validation in auth method
-  // { select: false }
+  @Exclude()
   @Column()
   password: string;
 }

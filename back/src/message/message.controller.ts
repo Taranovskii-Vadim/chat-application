@@ -6,6 +6,8 @@ import {
   Param,
   UseGuards,
   Controller,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
@@ -19,6 +21,7 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':chatId')
   async getMessages(@Param('chatId') chatId: string): Promise<Message[]> {
     return this.messagesService.getMessages(+chatId);

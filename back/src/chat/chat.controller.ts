@@ -1,4 +1,13 @@
-import { Get, Put, Body, Request, UseGuards, Controller } from '@nestjs/common';
+import {
+  Get,
+  Put,
+  Body,
+  Request,
+  UseGuards,
+  Controller,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Req } from 'src/types';
@@ -11,6 +20,7 @@ export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   async getChats(@Request() req: Req): Promise<GetChatDTO[]> {
     return this.chatsService.getChats(req.user.id);

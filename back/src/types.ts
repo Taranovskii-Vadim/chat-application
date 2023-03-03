@@ -8,3 +8,8 @@ export type ReqUser = {
 };
 
 export type Req = { user: ReqUser } & Request;
+
+export type Meta = {
+  createdAt: Date;
+  updatedAt: Date;
+};

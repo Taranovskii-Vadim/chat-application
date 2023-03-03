@@ -18,17 +18,6 @@ export class ChatsService {
     @InjectRepository(Chat) private readonly table: Repository<Chat>,
   ) {}
 
-  // setChatLastMessageId(chatId: number, messageId: string): void {
-  //   this.chats = this.chats.filter((item) => {
-  //     if (item.id === chatId) {
-  //       item.lastMessageId = messageId;
-  //     }
-
-  //     return item;
-  //   });
-  // }
-
-  // TODO can create common method with getChat because the same logic
   async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
     // TODO got no idea how to query userId in members
 
