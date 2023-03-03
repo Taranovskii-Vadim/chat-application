@@ -28,7 +28,7 @@ export class ChatsController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  async updateMessage(@Body() body: any): Promise<void> {
+  async updateChat(@Body() body: any): Promise<void> {
     return this.chatsService.updateChat(body);
   }
 }
