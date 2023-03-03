@@ -13,7 +13,7 @@ import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO, ResultDTO, UpdatePayloadDTO } from './message.dto';
+import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
 
 @Controller('/messages')
 export class MessagesController {
@@ -27,14 +27,16 @@ export class MessagesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  async createMessage(@Body() body: InsertPayloadDTO): Promise<ResultDTO> {
+  async createMessage(@Body() body: InsertPayloadDTO): Promise<Message | null> {
     return this.messagesService.createMessage(body);
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Put()
-  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<void> {
+  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<Message | null> {
     return this.messagesService.updateMessage(body);
   }
 }

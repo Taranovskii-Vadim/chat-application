@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChatsService } from 'src/chat/chat.service';
 
 import { Message } from './message.entity';
-import { InsertPayloadDTO, ResultDTO, UpdatePayloadDTO } from './message.dto';
+import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -26,36 +26,42 @@ export class MessagesService {
     return result;
   }
 
-  async createMessage({ text, ...ids }: InsertPayloadDTO): Promise<ResultDTO> {
+  async createMessage(body: InsertPayloadDTO): Promise<Message | null> {
+    const { text, ...ids } = body;
+
     const payload = {
       chat: { id: ids.chatId },
       sender: { id: ids.senderId },
       replied: { id: ids.repliedId },
     };
 
-    const { generatedMaps } = await this.table
+    const data = await this.table
       .createQueryBuilder()
       .insert()
       .into(Message)
       .values({ text, ...payload })
       .execute();
 
-    const id = generatedMaps[0].id;
+    const id = data.generatedMaps[0].id;
 
     this.chatsService.updateChat({
       id: ids.chatId,
       lastMessage: { id },
     });
 
-    return {
-      id,
-      text,
-      senderId: ids.senderId,
-      createdAt: generatedMaps[0].createdAt,
-    };
+    return await this.table.findOne({
+      where: { id },
+      relations: { chat: true, sender: true, replied: { sender: true } },
+    });
   }
 
-  async updateMessage(data: UpdatePayloadDTO): Promise<void> {
+  // TODO here we update only text. What about replied???
+  async updateMessage(data: UpdatePayloadDTO): Promise<Message | null> {
     await this.table.save(data);
+
+    return await this.table.findOne({
+      where: { id: data.id },
+      relations: { chat: true, sender: true, replied: { sender: true } },
+    });
   }
 }
