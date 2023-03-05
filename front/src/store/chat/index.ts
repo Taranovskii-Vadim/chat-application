@@ -74,8 +74,6 @@ class ChatStore {
         const senderId = user.data.id;
         const repliedId = this.replied?.id;
 
-        // let payload: CreateUpdateResponse = { id, text };
-
         const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
 
         const replied = this.replied && {
@@ -86,8 +84,9 @@ class ChatStore {
 
         if (this.edited) {
           this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
-          // TODO handle new api message here and return it
-          await api(putMessage, { id, text });
+          const result = await api(putMessage, { id, text });
+
+          return result;
         } else {
           this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
 
@@ -102,8 +101,6 @@ class ChatStore {
       } catch {
         this.updateMessage(id, { isError: true });
       } finally {
-        this.setEdited(undefined);
-        this.setRepliedMessage(undefined);
         this.updateMessage(id, { isLoading: false });
       }
     }

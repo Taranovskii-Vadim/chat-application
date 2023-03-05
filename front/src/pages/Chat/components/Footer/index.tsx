@@ -39,10 +39,13 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
       // TODO we dont need it when we add handle update message
       if (!message) return;
 
-      const event = message.chatId ? 'sendMessage' : 'updateMessage';
+      const event = !store.edited ? 'sendMessage' : 'updateMessage';
+
       socket.emit(event, { ...message, receiverId });
     } finally {
       store.setText('');
+      store.setEdited(undefined);
+      store.setRepliedMessage(undefined);
     }
   };
 

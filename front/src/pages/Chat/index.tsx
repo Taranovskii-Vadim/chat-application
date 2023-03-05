@@ -29,8 +29,8 @@ const Chat = (): JSX.Element | null => {
       store.pushMessage(value);
     });
 
-    socket.on('changeMessage', ({ id, text }: Edited) => {
-      store.updateMessage(id, { text, isEdited: true });
+    socket.on('changeMessage', ({ id, ...others }: Message) => {
+      store.updateMessage(id, { ...others, isEdited: true });
     });
   }, [id]);
 
