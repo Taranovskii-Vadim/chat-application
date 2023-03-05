@@ -69,7 +69,7 @@ class ChatStore {
   pinMessage = async (id: number, isPinned: boolean): Promise<void> => {
     try {
       this.setMessage(id, { isLoading: true });
-      const data = await api(putMessage, { id, isPinned });
+      const data = await api(putMessage, { isPinned }, id);
 
       this.setMessage(id, { ...data, isLoading: false });
     } catch (e) {
@@ -123,7 +123,7 @@ class ChatStore {
 
       this.setMessage(id, { text, isEdited: true, isLoading: true });
 
-      const data = await api(putMessage, { id, text, isEdited: true });
+      const data = await api(putMessage, { text, isEdited: true }, id as number);
       const isLastMessage = this.messages.findIndex((item) => item.id === data.id) === this.messages.length - 1;
 
       if (isLastMessage) {

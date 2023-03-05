@@ -56,11 +56,14 @@ export class MessagesService {
   }
 
   // TODO here we update only text. What about replied???
-  async updateMessage(data: UpdatePayloadDTO): Promise<Message | null> {
-    await this.table.save(data);
+  async updateMessage(
+    id: number,
+    data: UpdatePayloadDTO,
+  ): Promise<Message | null> {
+    await this.table.save({ id, ...data });
 
     return await this.table.findOne({
-      where: { id: data.id },
+      where: { id },
       relations: { chat: true, sender: true, replied: { sender: true } },
     });
   }

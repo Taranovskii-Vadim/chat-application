@@ -5,8 +5,8 @@ import { CommonMessageDTO, Method, Route } from './types';
 class PutMessage implements Route {
   method: Method = 'PUT';
 
-  getUrl(): string {
-    return '/messages';
+  getUrl(id?: number): string {
+    return `/messages/${id}`;
   }
 
   getData({ createdAt, chat, replied, sender, ...common }: CommonMessageDTO): Message {

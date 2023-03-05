@@ -18,7 +18,4 @@ export class InsertPayloadDTO extends PayloadDTO {
   senderId: number;
 }
 
-export class UpdatePayloadDTO extends PayloadDTO {
-  @IsNumber()
-  id: number;
-}
+export class UpdatePayloadDTO extends PayloadDTO {}

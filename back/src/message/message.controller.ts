@@ -33,10 +33,14 @@ export class MessagesController {
     return this.messagesService.createMessage(body);
   }
 
+  // TODO if we need id handle it with @Param not in body. Because we can pipe it
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Put()
-  async updateMessage(@Body() body: UpdatePayloadDTO): Promise<Message | null> {
-    return this.messagesService.updateMessage(body);
+  @Put(':id')
+  async updateMessage(
+    @Param() { id }: { id: string },
+    @Body() body: UpdatePayloadDTO,
+  ): Promise<Message | null> {
+    return this.messagesService.updateMessage(+id, body);
   }
 }
