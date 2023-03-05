@@ -28,6 +28,7 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
 
   const isAuthor = sender.id === data?.id;
+  const isPinned = message.isPinned;
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -45,6 +46,12 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
   const handleEdit = (): void => {
     store.setEdited({ id, text });
     store.setText(text);
+    handleClose();
+  };
+
+  const handlePin = (): void => {
+    // TODO maybe store messages with uuid in db. It helps to use only string type, not string|number
+    store.pinMessage(id as number, !isPinned);
     handleClose();
   };
 
@@ -72,11 +79,11 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
           </ListItemIcon>
           <ListItemText>Ответить</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handlePin}>
           <ListItemIcon>
             <PushPinOutlinedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Закрепить</ListItemText>
+          <ListItemText>{isPinned ? 'Открепить' : 'Закрепить'}</ListItemText>
         </MenuItem>
         {isAuthor ? (
           <MenuItem onClick={handleEdit}>

@@ -26,6 +26,7 @@ class ChatStore {
   constructor() {
     makeObservable(this, {
       text: observable,
+      edited: observable,
       replied: observable,
       messages: observable,
       isLoading: observable,
@@ -34,6 +35,7 @@ class ChatStore {
       pushMessage: action,
       setIsLoading: action,
       setMessage: action,
+      setEdited: action,
       setRepliedMessage: action,
     });
   }
@@ -62,6 +64,17 @@ class ChatStore {
 
   pushMessage = (message: Message): void => {
     this.messages.push(message);
+  };
+
+  pinMessage = async (id: number, isPinned: boolean): Promise<void> => {
+    try {
+      this.setMessage(id, { isLoading: true });
+      const data = await api(putMessage, { id, isPinned });
+
+      this.setMessage(id, { ...data, isLoading: false });
+    } catch (e) {
+      this.setMessage(id, { isError: true });
+    }
   };
 
   createMessage = async (chatId: number, receiverId: number): Promise<void> => {
@@ -110,7 +123,7 @@ class ChatStore {
 
       this.setMessage(id, { text, isEdited: true, isLoading: true });
 
-      const data = await api(putMessage, { id, text });
+      const data = await api(putMessage, { id, text, isEdited: true });
       const isLastMessage = this.messages.findIndex((item) => item.id === data.id) === this.messages.length - 1;
 
       if (isLastMessage) {

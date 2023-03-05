@@ -19,6 +19,12 @@ export class Message extends Base {
   @Column()
   text: string;
 
+  @Column({ name: 'is_edited', type: 'boolean', nullable: true })
+  isEdited: boolean;
+
+  @Column({ name: 'is_pinned', type: 'boolean', nullable: true })
+  isPinned: boolean;
+
   @JoinColumn({ name: 'replied_id_fkey' })
   @ManyToOne(() => Message, { nullable: true })
   replied: Message;
