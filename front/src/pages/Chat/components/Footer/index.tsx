@@ -33,17 +33,11 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
     if (!store.text) return;
 
     try {
-      if (!store.edited) {
-        const result = await store.createMessage(chatId);
-        if (result) {
-          socket.emit('sendMessage', { ...result, receiverId });
-        }
-      } else {
-        const result = await store.updateMessage();
-        if (result) {
-          const { data, isLastMessage } = result;
-          socket.emit('updateMessage', { ...data, isLastMessage, receiverId });
-        }
+      const result = !edited ? await store.createMessage(chatId) : await store.updateMessage();
+
+      if (result) {
+        const event = !edited ? 'sendMessage' : 'updateMessage';
+        socket.emit(event, { ...result, receiverId });
       }
     } finally {
       store.setText('');

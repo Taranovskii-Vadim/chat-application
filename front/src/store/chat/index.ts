@@ -96,7 +96,7 @@ class ChatStore {
     }
   };
 
-  updateMessage = async (): Promise<{ data: Message; isLastMessage: boolean } | void> => {
+  updateMessage = async (): Promise<(Message & { isLastMessage: boolean }) | void> => {
     if (!this.edited) return;
 
     const id = this.edited.id;
@@ -113,7 +113,7 @@ class ChatStore {
         chats.setLastMessage(data);
       }
 
-      return { data, isLastMessage };
+      return { ...data, isLastMessage };
     } catch (e) {
       this.setMessage(id, { isError: true });
     } finally {
