@@ -67,6 +67,7 @@ class ChatStore {
   createMessage = async (chatId: number, receiverId: number): Promise<void> => {
     if (!user.data) return;
 
+    // WARN generate fake id only to avoid react key error
     const id = crypto.randomUUID();
     const senderId = user.data.id;
     const repliedId = this.replied?.id;
