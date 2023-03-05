@@ -64,12 +64,35 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  createMessage = async (chatId: number): Promise<void> => {
-    const fakeId = crypto.randomUUID();
+  createMessage = async (chatId: number): Promise<Message | void> => {
+    if (!user.data) return;
+
+    const id = crypto.randomUUID();
+    const senderId = user.data.id;
+    const repliedId = this.replied?.id;
+
+    const replied = this.replied && {
+      id: this.replied.id,
+      text: this.replied.text,
+      fullname: this.replied.fullname,
+    };
+
+    const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
 
     try {
       const text = this.text;
-    } finally {
+
+      this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
+
+      const result = await api(postMessage, { text, chatId, repliedId, senderId });
+
+      this.setMessage(id, { ...result, isLoading: false });
+
+      chats.setLastMessage(result);
+
+      return result;
+    } catch (e) {
+      this.setMessage(id, { isError: true });
     }
   };
 
@@ -97,46 +120,6 @@ class ChatStore {
       this.setMessage(id, { isLoading: false });
     }
   };
-
-  // createUpdateMessage = async (chatId: number): Promise<Message | void> => {
-  //   if (user.data) {
-  //     const id = this.edited?.id || crypto.randomUUID();
-
-  //     try {
-  //       const text = this.text;
-  //       const senderId = user.data.id;
-  //       const repliedId = this.replied?.id;
-
-  //       const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
-
-  //       const replied = this.replied && {
-  //         id: this.replied.id,
-  //         text: this.replied.text,
-  //         fullname: this.replied.fullname,
-  //       };
-
-  //       if (this.edited) {
-  //
-
-  //
-  //       } else {
-  //         this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
-
-  //         const result = await api(postMessage, { text, chatId, repliedId, senderId });
-
-  //         this.setMessage(id, { ...result, isLoading: false });
-
-  //         chats.setLastMessage(result);
-
-  //         return result;
-  //       }
-  //     } catch {
-  //       this.setMessage(id, { isError: true });
-  //     } finally {
-  //       this.setMessage(id, { isLoading: false });
-  //     }
-  //   }
-  // };
 
   fetchData = async (chatId: string): Promise<void> => {
     try {
