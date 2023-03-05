@@ -9,7 +9,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Box, InputBase, IconButton, ClickAwayListener } from '@mui/material';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
-import user from 'src/store/user';
 import Store from 'src/store/chat';
 
 import FooterExtra from '../FooterExtra';
@@ -24,25 +23,15 @@ interface Props {
 
 // TODO memo this component
 const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
-  const { socket } = user;
   const { replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
 
-  const handleCreateUpdateMessage = async (): Promise<void> => {
-    if (!store.text) return;
-
-    try {
-      const result = !edited ? await store.createMessage(chatId) : await store.updateMessage();
-
-      if (result) {
-        const event = !edited ? 'sendMessage' : 'updateMessage';
-        socket.emit(event, { ...result, receiverId });
-      }
-    } finally {
-      store.setText('');
-      store.setEdited(undefined);
-      store.setRepliedMessage(undefined);
+  const handleCreateUpdateMessage = (): void => {
+    if (edited) {
+      store.updateMessage(receiverId);
+    } else {
+      store.createMessage(chatId, receiverId);
     }
   };
 

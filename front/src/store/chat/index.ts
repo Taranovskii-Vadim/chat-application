@@ -64,7 +64,7 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  createMessage = async (chatId: number): Promise<Message | void> => {
+  createMessage = async (chatId: number, receiverId: number): Promise<void> => {
     if (!user.data) return;
 
     const id = crypto.randomUUID();
@@ -90,13 +90,16 @@ class ChatStore {
 
       chats.setLastMessage(result);
 
-      return result;
+      user.socket.emit('sendMessage', { ...result, receiverId });
     } catch (e) {
       this.setMessage(id, { isError: true });
+    } finally {
+      this.setText('');
+      this.setRepliedMessage(undefined);
     }
   };
 
-  updateMessage = async (): Promise<(Message & { isLastMessage: boolean }) | void> => {
+  updateMessage = async (receiverId: number): Promise<void> => {
     if (!this.edited) return;
 
     const id = this.edited.id;
@@ -113,10 +116,12 @@ class ChatStore {
         chats.setLastMessage(data);
       }
 
-      return { ...data, isLastMessage };
+      user.socket.emit('updateMessage', { ...data, isLastMessage, receiverId });
     } catch (e) {
       this.setMessage(id, { isError: true });
     } finally {
+      this.setText('');
+      this.setEdited(undefined);
       this.setMessage(id, { isLoading: false });
     }
   };
