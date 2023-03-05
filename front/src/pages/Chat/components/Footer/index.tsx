@@ -33,15 +33,24 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
     if (!store.text) return;
 
     try {
+      if (!store.edited) {
+      } else {
+        const result = await store.updateMessage();
+        if (result) {
+          const { data, isLastMessage } = result;
+          socket.emit('updateMessage', { ...data, isLastMessage, receiverId });
+        }
+      }
+
       // TODO check is edited here and call method needed
-      const message = await store.createUpdateMessage(chatId);
+      // const message = await store.createUpdateMessage(chatId);
 
       // TODO we dont need it when we add handle update message
-      if (!message) return;
+      // if (!message) return;
 
-      const event = !store.edited ? 'sendMessage' : 'updateMessage';
+      // const event = !store.edited ? 'sendMessage' : 'updateMessage';
 
-      socket.emit(event, { ...message, receiverId });
+      // socket.emit(event, { ...message, receiverId });
     } finally {
       store.setText('');
       store.setEdited(undefined);

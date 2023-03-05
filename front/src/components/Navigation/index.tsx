@@ -26,7 +26,7 @@ const Navigation = (): JSX.Element => {
       store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
 
-    socket.on('receiveLastMessage', (value: Message) => {
+    socket.on('setLastMessage', (value: Message) => {
       store.setLastMessage(value);
     });
   }, []);

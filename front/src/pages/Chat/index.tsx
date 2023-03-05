@@ -8,7 +8,7 @@ import bg from 'src/assets/bg.jpg';
 import user from 'src/store/user';
 import Store from 'src/store/chat';
 import chats from 'src/store/chats';
-import { Edited, Message } from 'src/store/chat/types';
+import { Message } from 'src/store/chat/types';
 
 import Loader from 'src/components/ui/Loader';
 
@@ -30,7 +30,7 @@ const Chat = (): JSX.Element | null => {
     });
 
     socket.on('changeMessage', ({ id, ...others }: Message) => {
-      store.updateMessage(id, { ...others, isEdited: true });
+      store.setMessage(id, { ...others, isEdited: true });
     });
   }, [id]);
 

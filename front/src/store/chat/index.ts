@@ -33,7 +33,7 @@ class ChatStore {
       setText: action,
       pushMessage: action,
       setIsLoading: action,
-      updateMessage: action,
+      setMessage: action,
       setRepliedMessage: action,
     });
   }
@@ -46,7 +46,7 @@ class ChatStore {
     this.text = value;
   };
 
-  updateMessage = (id: Message['id'], value: Partial<Message>): void => {
+  setMessage = (id: Message['id'], value: Partial<Message>): void => {
     const idx = this.messages.findIndex((item) => item.id === id);
 
     this.messages[idx] = { ...this.messages[idx], ...value };
@@ -64,47 +64,79 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  // TODO split this function
-  createUpdateMessage = async (chatId: number): Promise<Message | void> => {
-    if (user.data) {
-      const id = this.edited?.id || crypto.randomUUID();
+  createMessage = async (chatId: number): Promise<void> => {
+    const fakeId = crypto.randomUUID();
 
-      try {
-        const text = this.text;
-        const senderId = user.data.id;
-        const repliedId = this.replied?.id;
-
-        const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
-
-        const replied = this.replied && {
-          id: this.replied.id,
-          text: this.replied.text,
-          fullname: this.replied.fullname,
-        };
-
-        if (this.edited) {
-          this.updateMessage(this.edited.id, { text, isEdited: true, isLoading: true });
-          const result = await api(putMessage, { id, text });
-
-          return result;
-        } else {
-          this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
-
-          const result = await api(postMessage, { text, chatId, repliedId, senderId });
-
-          this.updateMessage(id, { ...result, isLoading: false });
-
-          chats.setLastMessage(result);
-
-          return result;
-        }
-      } catch {
-        this.updateMessage(id, { isError: true });
-      } finally {
-        this.updateMessage(id, { isLoading: false });
-      }
+    try {
+      const text = this.text;
+    } finally {
     }
   };
+
+  updateMessage = async (): Promise<{ data: Message; isLastMessage: boolean } | void> => {
+    if (!this.edited) return;
+
+    const id = this.edited.id;
+
+    try {
+      const text = this.text;
+
+      this.setMessage(id, { text, isEdited: true, isLoading: true });
+
+      const data = await api(putMessage, { id, text });
+      const isLastMessage = this.messages.findIndex((item) => item.id === data.id) === this.messages.length - 1;
+
+      if (isLastMessage) {
+        chats.setLastMessage(data);
+      }
+
+      return { data, isLastMessage };
+    } catch (e) {
+      this.setMessage(id, { isError: true });
+    } finally {
+      this.setMessage(id, { isLoading: false });
+    }
+  };
+
+  // createUpdateMessage = async (chatId: number): Promise<Message | void> => {
+  //   if (user.data) {
+  //     const id = this.edited?.id || crypto.randomUUID();
+
+  //     try {
+  //       const text = this.text;
+  //       const senderId = user.data.id;
+  //       const repliedId = this.replied?.id;
+
+  //       const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
+
+  //       const replied = this.replied && {
+  //         id: this.replied.id,
+  //         text: this.replied.text,
+  //         fullname: this.replied.fullname,
+  //       };
+
+  //       if (this.edited) {
+  //
+
+  //
+  //       } else {
+  //         this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
+
+  //         const result = await api(postMessage, { text, chatId, repliedId, senderId });
+
+  //         this.setMessage(id, { ...result, isLoading: false });
+
+  //         chats.setLastMessage(result);
+
+  //         return result;
+  //       }
+  //     } catch {
+  //       this.setMessage(id, { isError: true });
+  //     } finally {
+  //       this.setMessage(id, { isLoading: false });
+  //     }
+  //   }
+  // };
 
   fetchData = async (chatId: string): Promise<void> => {
     try {

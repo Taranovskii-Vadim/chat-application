@@ -19,16 +19,19 @@ io.on("connection", (socket) => {
 
     if (user) {
       io.to(user.socketId).emit("receiveMessage", others);
-      io.to(user.socketId).emit("receiveLastMessage", others);
+      io.to(user.socketId).emit("setLastMessage", others);
     }
   });
 
   socket.on("updateMessage", (data) => {
-    const { receiverId, ...others } = data;
+    const { receiverId, isLastMessage, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);
 
     if (user) {
       io.to(user.socketId).emit("changeMessage", others);
+      if (isLastMessage) {
+        io.to(user.socketId).emit("setLastMessage", others);
+      }
     }
   });
 
