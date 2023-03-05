@@ -36,11 +36,16 @@ export class MessagesController {
   // TODO if we need id handle it with @Param not in body. Because we can pipe it
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Put(':id')
+  @Put(':action/:id')
   async updateMessage(
-    @Param() { id }: { id: string },
+    @Param() { id, action }: { id: string; action: 'update' | 'pin' },
     @Body() body: UpdatePayloadDTO,
   ): Promise<Message | null> {
-    return this.messagesService.updateMessage(+id, body);
+    if (action === 'update') {
+      return this.messagesService.updateMessage(+id, body);
+    } else {
+      // TODO here we must create pin method in service
+      return this.messagesService.updateMessage(+id, body);
+    }
   }
 }
