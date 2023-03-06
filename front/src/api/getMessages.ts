@@ -13,7 +13,6 @@ class GetMessages implements Route {
   getData(data: CommonMessageDTO[]): Message[] {
     return data.map(({ createdAt, updatedAt, chat, replied, sender, ...common }) => ({
       ...common,
-      isPinned: chat.pinnedMessage?.id === common.id,
       chatId: chat.id,
       createdAt: formatDate(createdAt),
       // TODO maybe create method in front, or add map in back with help of typeorm

@@ -11,13 +11,9 @@ class GetChats implements Route {
   }
 
   getData(data: CommonChatDTO[]): Chat[] {
-    return data.map(({ createdAt, updatedAt, lastMessage, pinnedMessage, ...others }) => ({
+    return data.map(({ createdAt, updatedAt, lastMessage, ...others }) => ({
       ...others,
       isOnline: false,
-      pinnedMessage: pinnedMessage && {
-        id: pinnedMessage.id,
-        text: pinnedMessage.text,
-      },
       lastMessage: lastMessage && {
         id: lastMessage.id,
         text: lastMessage.text,

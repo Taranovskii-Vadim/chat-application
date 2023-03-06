@@ -23,7 +23,6 @@ export class ChatsService {
     const dbResult = await this.table.find({
       relations: {
         lastMessage: { sender: true, chat: true },
-        pinnedMessage: true,
       },
     });
 

@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import copy from 'copy-to-clipboard';
 import ReplyIcon from '@mui/icons-material/Reply';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import ShortcutOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';

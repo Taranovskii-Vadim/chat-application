@@ -17,8 +17,6 @@ import { InsertPayloadDTO } from './message.dto';
 
 type Query = { id: string };
 
-type PinQuery = Query & { chatId: string };
-
 @Controller('/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}

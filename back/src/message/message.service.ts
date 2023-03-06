@@ -18,7 +18,7 @@ export class MessagesService {
     const result = await this.table.find({
       where: { chat: { id } },
       relations: {
-        chat: { pinnedMessage: true },
+        chat: true,
         sender: true,
         replied: { sender: true },
       },

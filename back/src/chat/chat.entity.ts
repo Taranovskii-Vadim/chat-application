@@ -11,10 +11,6 @@ export class Chat extends Base {
   @Column({ name: 'unread_count', default: 0 })
   unReadCount: number;
 
-  @JoinColumn({ name: 'pinned_message_id_fkey' })
-  @OneToOne(() => Message, { nullable: true })
-  pinnedMessage: Message;
-
   @JoinColumn({ name: 'last_message_id_fkey' })
   @OneToOne(() => Message, { nullable: true })
   lastMessage: Message;
