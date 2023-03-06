@@ -13,7 +13,11 @@ import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
+import { InsertPayloadDTO } from './message.dto';
+
+type Query = { id: string };
+
+type PinQuery = Query & { chatId: string };
 
 @Controller('/messages')
 export class MessagesController {
@@ -33,19 +37,10 @@ export class MessagesController {
     return this.messagesService.createMessage(body);
   }
 
-  // TODO if we need id handle it with @Param not in body. Because we can pipe it
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Put(':action/:id')
-  async updateMessage(
-    @Param() { id, action }: { id: string; action: 'update' | 'pin' },
-    @Body() body: UpdatePayloadDTO,
-  ): Promise<Message | null> {
-    if (action === 'update') {
-      return this.messagesService.updateMessage(+id, body);
-    } else {
-      // TODO here we must create pin method in service
-      return this.messagesService.updateMessage(+id, body);
-    }
+  @Put(':id')
+  async updateMessage(@Param() query: Query, @Body() body: any) {
+    return this.messagesService.updateMessage(+query.id, body);
   }
 }

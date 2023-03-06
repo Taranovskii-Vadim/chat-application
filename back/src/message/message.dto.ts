@@ -18,4 +18,4 @@ export class InsertPayloadDTO extends PayloadDTO {
   senderId: number;
 }
 
-export class UpdatePayloadDTO extends PayloadDTO {}
+// export class UpdateDTO extends PayloadDTO {}

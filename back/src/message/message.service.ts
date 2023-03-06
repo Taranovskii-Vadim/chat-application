@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChatsService } from 'src/chat/chat.service';
 
 import { Message } from './message.entity';
-import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
+import { InsertPayloadDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -17,7 +17,11 @@ export class MessagesService {
   async getMessages(id: number): Promise<Message[]> {
     const result = await this.table.find({
       where: { chat: { id } },
-      relations: { chat: true, sender: true, replied: { sender: true } },
+      relations: {
+        chat: { pinnedMessage: true },
+        sender: true,
+        replied: { sender: true },
+      },
       order: { createdAt: 'asc' },
     });
 
@@ -56,10 +60,7 @@ export class MessagesService {
   }
 
   // TODO here we update only text. What about replied???
-  async updateMessage(
-    id: number,
-    data: UpdatePayloadDTO,
-  ): Promise<Message | null> {
+  async updateMessage(id: number, data: any): Promise<Message | null> {
     await this.table.save({ id, ...data });
 
     return await this.table.findOne({

@@ -1,6 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
+import pinMessage from 'src/api/pinMessage';
 import putMessage from 'src/api/putMessage';
 import getMessages from 'src/api/getMessages';
 import postMessage from 'src/api/postMessage';
@@ -36,6 +37,7 @@ class ChatStore {
       setIsLoading: action,
       setMessage: action,
       setEdited: action,
+      pinMessage: action,
       setRepliedMessage: action,
     });
   }
@@ -66,12 +68,21 @@ class ChatStore {
     this.messages.push(message);
   };
 
-  pinMessage = async (id: number, isPinned: boolean): Promise<void> => {
+  pinMessage = async (id: number, chatId: number, isPinned: boolean): Promise<void> => {
     try {
       this.setMessage(id, { isLoading: true });
-      const data = await api(putMessage, { isPinned }, { action: 'pin', id });
 
-      this.setMessage(id, { ...data, isLoading: false });
+      await api(pinMessage, undefined, { id, chatId });
+
+      this.messages.forEach((item) => {
+        item.isPinned = false;
+        if (item.id === id) {
+          item.isPinned = true;
+          item.isLoading = false;
+        }
+      });
+
+      // this.setMessage(id, { isPinned, isLoading: false });
     } catch (e) {
       this.setMessage(id, { isError: true });
     }
@@ -123,7 +134,7 @@ class ChatStore {
 
       this.setMessage(id, { text, isEdited: true, isLoading: true });
 
-      const data = await api(putMessage, { text, isEdited: true }, { action: 'update', id });
+      const data = await api(putMessage, { text, isEdited: true }, id);
       const isLastMessage = this.messages.findIndex((item) => item.id === data.id) === this.messages.length - 1;
 
       if (isLastMessage) {

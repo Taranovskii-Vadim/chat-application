@@ -51,7 +51,7 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
 
   const handlePin = (): void => {
     // TODO maybe store messages with uuid in db. It helps to use only string type, not string|number
-    store.pinMessage(id as number, !isPinned);
+    store.pinMessage(id as number, message.chatId, !isPinned);
     handleClose();
   };
 

@@ -2,6 +2,7 @@ import {
   Get,
   Put,
   Body,
+  Param,
   Request,
   UseGuards,
   Controller,
@@ -15,6 +16,8 @@ import { Req } from 'src/types';
 import { ChatsService } from './chat.service';
 import { GetChatDTO } from './types';
 
+type PinQuery = { id: string; messageId: string };
+
 @Controller('/chats')
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
@@ -24,6 +27,16 @@ export class ChatsController {
   @Get()
   async getChats(@Request() req: Req): Promise<GetChatDTO[]> {
     return this.chatsService.getChats(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Put(':id/pin/:messageId')
+  async pinMessage(@Param() query: PinQuery) {
+    return this.chatsService.updateChat({
+      id: +query.id,
+      pinnedMessage: { id: +query.messageId },
+    });
   }
 
   @UseGuards(JwtAuthGuard)

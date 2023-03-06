@@ -7,7 +7,6 @@ import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
 import { GetChatDTO } from './types';
-import { UpdatePayloadDTO } from './chat.dto';
 
 // TODO maybe later develop group chats
 
@@ -22,7 +21,10 @@ export class ChatsService {
     // TODO got no idea how to query userId in members
 
     const dbResult = await this.table.find({
-      relations: { lastMessage: { sender: true, chat: true } },
+      relations: {
+        lastMessage: { sender: true, chat: true },
+        pinnedMessage: true,
+      },
     });
 
     const chats = dbResult.filter(({ members }) => members.includes(userId));
