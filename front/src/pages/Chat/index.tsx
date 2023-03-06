@@ -41,19 +41,9 @@ const Chat = (): JSX.Element | null => {
 
   if (!currentChat) return null;
 
-  const { pinnedMessage } = currentChat;
-
   return (
     <>
       <Header title={currentChat.title} />
-      {pinnedMessage ? (
-        <Flexbox sx={{ padding: '8px 16px' }}>
-          <Typography>{pinnedMessage.text}</Typography>
-          <IconButton size="small" onClick={() => store.pinMessage(pinnedMessage.id as number, currentChat.id, false)}>
-            <CloseIcon />
-          </IconButton>
-        </Flexbox>
-      ) : null}
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         {!store.isLoading ? (
           <>

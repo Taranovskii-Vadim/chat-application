@@ -1,17 +1,16 @@
 import { memo } from 'react';
 import { Box, Typography } from '@mui/material';
-import PushPinIcon from '@mui/icons-material/PushPin';
 
 import Flexbox from 'src/components/Flexbox';
 
 import { Message as MessageType } from 'src/store/chat/types';
 
-interface Props extends Pick<MessageType, 'replied' | 'isEdited' | 'createdAt' | 'text' | 'isPinned'> {
+interface Props extends Pick<MessageType, 'replied' | 'isEdited' | 'createdAt' | 'text'> {
   isAuthor: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const Message = ({ isAuthor, isEdited, isPinned, replied, createdAt, text, onClick }: Props): JSX.Element => {
+const Message = ({ isAuthor, isEdited, replied, createdAt, text, onClick }: Props): JSX.Element => {
   const color = isAuthor ? '#37a123' : '#2AABEE';
 
   return (
@@ -27,7 +26,6 @@ const Message = ({ isAuthor, isEdited, isPinned, replied, createdAt, text, onCli
       ) : null}
       <Typography>{text}</Typography>
       <Flexbox sx={{ justifyContent: 'flex-end' }}>
-        {isPinned ? <PushPinIcon sx={{ fontSize: 12, mr: 1 }} /> : null}
         {isEdited ? <Typography sx={{ fontSize: '12px', color, mr: 1 }}>Изменено</Typography> : null}
         <Typography sx={{ textAlign: 'right', fontSize: '12px' }}>{createdAt}</Typography>
       </Flexbox>

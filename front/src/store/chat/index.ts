@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
-import pinMessage from 'src/api/pinMessage';
 import putMessage from 'src/api/putMessage';
 import getMessages from 'src/api/getMessages';
 import postMessage from 'src/api/postMessage';
@@ -37,7 +36,6 @@ class ChatStore {
       setIsLoading: action,
       setMessage: action,
       setEdited: action,
-      pinMessage: action,
       setRepliedMessage: action,
     });
   }
@@ -66,26 +64,6 @@ class ChatStore {
 
   pushMessage = (message: Message): void => {
     this.messages.push(message);
-  };
-
-  pinMessage = async (id: number, chatId: number, isPinned: boolean): Promise<void> => {
-    try {
-      this.setMessage(id, { isLoading: true });
-
-      await api(pinMessage, undefined, { id, chatId });
-
-      this.messages.forEach((item) => {
-        item.isPinned = false;
-        if (item.id === id) {
-          item.isPinned = true;
-          item.isLoading = false;
-        }
-      });
-
-      // this.setMessage(id, { isPinned, isLoading: false });
-    } catch (e) {
-      this.setMessage(id, { isError: true });
-    }
   };
 
   createMessage = async (chatId: number, receiverId: number): Promise<void> => {

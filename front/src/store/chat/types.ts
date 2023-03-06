@@ -18,7 +18,6 @@ export type Message = Common & {
   sender: Sender;
   replied?: Replied;
   isError?: boolean;
-  isPinned?: boolean;
   isEdited?: boolean;
   isLoading?: boolean;
 };

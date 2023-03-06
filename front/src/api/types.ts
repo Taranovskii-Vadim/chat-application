@@ -38,5 +38,5 @@ export interface CommonMessageDTO extends MetaDTO {
   isEdited?: boolean;
   sender: CommonUserDTO;
   replied?: CommonMessageDTO;
-  chat: { id: number; members: number[]; unReadCount: number; pinnedMessage?: CommonMessageDTO } & MetaDTO;
+  chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
 }
