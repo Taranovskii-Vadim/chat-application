@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import Box from '@mui/material/Box';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+import { Typography, Box, IconButton } from '@mui/material';
 
 import bg from 'src/assets/bg.jpg';
 
@@ -15,6 +16,7 @@ import Loader from 'src/components/ui/Loader';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MessageWrapper from './components/MessageWrapper';
+import Flexbox from 'src/components/Flexbox';
 
 const store = new Store();
 
@@ -39,9 +41,19 @@ const Chat = (): JSX.Element | null => {
 
   if (!currentChat) return null;
 
+  const { pinnedMessage } = currentChat;
+
   return (
     <>
       <Header title={currentChat.title} />
+      {pinnedMessage ? (
+        <Flexbox sx={{ padding: '8px 16px' }}>
+          <Typography>{pinnedMessage.text}</Typography>
+          <IconButton size="small" onClick={() => store.pinMessage(pinnedMessage.id as number, currentChat.id, false)}>
+            <CloseIcon />
+          </IconButton>
+        </Flexbox>
+      ) : null}
       <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
         {!store.isLoading ? (
           <>

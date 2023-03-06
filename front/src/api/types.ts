@@ -22,6 +22,7 @@ export interface CommonChatDTO extends MetaDTO {
   companionId: number;
   unReadCount: number;
   lastMessage?: CommonMessageDTO;
+  pinnedMessage?: CommonMessageDTO;
 }
 
 export interface CommonUserDTO extends MetaDTO {

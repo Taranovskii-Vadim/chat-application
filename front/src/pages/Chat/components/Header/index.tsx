@@ -13,7 +13,14 @@ interface Props {
 }
 
 const Header = ({ title }: Props): JSX.Element => (
-  <Flexbox sx={{ height: '38px', padding: '8px 16px', borderLeft: `1px solid ${grey['300']}` }}>
+  <Flexbox
+    sx={{
+      height: '38px',
+      padding: '8px 16px',
+      borderLeft: `1px solid ${grey['300']}`,
+      borderBottom: `1px solid ${grey['300']}`,
+    }}
+  >
     <Typography variant="h6">{title}</Typography>
     <Box>
       <IconButton size="small" sx={{ mr: 1 }}>

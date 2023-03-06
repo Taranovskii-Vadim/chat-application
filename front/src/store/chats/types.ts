@@ -8,6 +8,7 @@ export type Chat = CommonChat & {
 
   unReadCount: number;
   lastMessage?: Message;
+  pinnedMessage?: { id: Message['id']; text: Message['text'] };
 };
 
 export type UpdateChatPLD = Pick<Chat, 'id' | 'unReadCount'>;
