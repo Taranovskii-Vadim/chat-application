@@ -15,6 +15,7 @@ class GetMessages implements Route {
       ...common,
       chatId: chat.id,
       createdAt: formatDate(createdAt),
+      isEdited: createdAt !== updatedAt,
       // TODO maybe create method in front, or add map in back with help of typeorm
       sender: { id: sender.id, fullname: `${sender.lastname} ${sender.name}` },
       replied: replied && {

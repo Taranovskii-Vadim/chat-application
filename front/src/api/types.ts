@@ -26,8 +26,6 @@ export interface CommonUserDTO extends MetaDTO {
 export interface CommonMessageDTO extends MetaDTO {
   id: number;
   text: string;
-  // TODO maybe we dont need isEdited
-  isEdited?: boolean;
   sender: CommonUserDTO;
   replied?: CommonMessageDTO;
   chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
