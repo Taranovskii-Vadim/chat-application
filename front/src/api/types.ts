@@ -16,14 +16,6 @@ export interface MetaDTO {
   createdAt: string;
 }
 
-export interface CommonChatDTO extends MetaDTO {
-  id: number;
-  title: string;
-  companionId: number;
-  unReadCount: number;
-  lastMessage?: CommonMessageDTO;
-}
-
 export interface CommonUserDTO extends MetaDTO {
   id: number;
   name: string;
@@ -34,6 +26,7 @@ export interface CommonUserDTO extends MetaDTO {
 export interface CommonMessageDTO extends MetaDTO {
   id: number;
   text: string;
+  // TODO maybe we dont need isEdited
   isEdited?: boolean;
   sender: CommonUserDTO;
   replied?: CommonMessageDTO;

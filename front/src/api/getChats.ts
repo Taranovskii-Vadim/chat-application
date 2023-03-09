@@ -1,7 +1,15 @@
 import { formatDate } from 'src/utils';
 import { Chat } from 'src/store/chats/types';
 
-import { CommonChatDTO, Method, Route } from './types';
+import { MetaDTO, CommonMessageDTO, Method, Route } from './types';
+
+interface ResponseDTO extends MetaDTO {
+  id: number;
+  title: string;
+  companionId: number;
+  unReadCount: number;
+  lastMessage?: Omit<CommonMessageDTO, 'replied'>;
+}
 
 class GetChats implements Route {
   method: Method = 'GET';
@@ -10,21 +18,15 @@ class GetChats implements Route {
     return '/chats';
   }
 
-  getData(data: CommonChatDTO[]): Chat[] {
+  getData(data: ResponseDTO[]): Chat[] {
     return data.map(({ createdAt, updatedAt, lastMessage, ...others }) => ({
       ...others,
       isOnline: false,
       lastMessage: lastMessage && {
         id: lastMessage.id,
         text: lastMessage.text,
-        chatId: lastMessage.chat.id,
         createdAt: formatDate(lastMessage.createdAt),
         sender: { id: lastMessage.sender.id, fullname: `${lastMessage.sender.lastname} ${lastMessage.sender.name}` },
-        replied: lastMessage.replied && {
-          id: lastMessage.replied.id,
-          text: lastMessage.replied.text,
-          fullname: `${lastMessage.replied.sender.lastname} ${lastMessage.replied.sender.name}`,
-        },
       },
     }));
   }
