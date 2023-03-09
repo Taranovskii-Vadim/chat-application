@@ -11,9 +11,9 @@ import {
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Req } from 'src/types';
+import { GetChatDTO } from './chat.dto';
 
 import { ChatsService } from './chat.service';
-import { GetChatDTO } from './types';
 
 @Controller('/chats')
 export class ChatsController {

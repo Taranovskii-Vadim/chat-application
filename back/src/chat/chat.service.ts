@@ -6,7 +6,7 @@ import { ReqUser } from 'src/types';
 import { UsersService } from 'src/user/user.service';
 
 import { Chat } from './chat.entity';
-import { GetChatDTO } from './types';
+import { GetChatDTO } from './chat.dto';
 
 // TODO maybe later develop group chats
 
@@ -18,15 +18,15 @@ export class ChatsService {
   ) {}
 
   async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
-    // TODO got no idea how to query userId in members
+    // TODO maybe can use typeorm where
 
-    const dbResult = await this.table.find({
+    const response = await this.table.find({
       relations: {
         lastMessage: { sender: true },
       },
     });
 
-    const chats = dbResult.filter(({ members }) => members.includes(userId));
+    const chats = response.filter(({ members }) => members.includes(userId));
 
     const promises = chats.map(async ({ members, ...other }) => {
       const companionId = members.filter((id) => id !== userId)[0];
