@@ -9,6 +9,7 @@ interface ResponseDTO extends MetaDTO {
   companionId: number;
   unReadCount: number;
   lastMessage?: Omit<CommonMessageDTO, 'replied'>;
+  pinnedMessage?: Omit<CommonMessageDTO, 'replied'>;
 }
 
 class GetChats implements Route {

@@ -6,11 +6,11 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Req } from 'src/types';
-import { GetChatDTO } from './chat.dto';
+import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
+import { GetChatDTO } from './chat.dto';
 import { ChatsService } from './chat.service';
 
 @Controller('/chats')

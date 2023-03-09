@@ -15,6 +15,9 @@ export class GetChatDTO {
   @IsObject()
   lastMessage?: Message;
 
+  @IsObject()
+  pinnedMessage?: Message;
+
   @IsNumber()
   unReadCount: number;
 }
