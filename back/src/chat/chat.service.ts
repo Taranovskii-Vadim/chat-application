@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { ReqUser } from 'src/types';
 import { UsersService } from 'src/user/user.service';
+import { MessagesService } from 'src/message/message.service';
 
 import { Chat } from './chat.entity';
 import { GetChatDTO } from './chat.dto';
@@ -14,6 +15,7 @@ import { GetChatDTO } from './chat.dto';
 export class ChatsService {
   constructor(
     private usersService: UsersService,
+    private messagesService: MessagesService,
     @InjectRepository(Chat) private readonly table: Repository<Chat>,
   ) {}
 
@@ -32,14 +34,14 @@ export class ChatsService {
       const companionId = members.filter((id) => id !== userId)[0];
 
       const title = await this.usersService.getFullname(companionId);
+      const unReadCount = await this.messagesService.getUnReadCount(
+        other.id,
+        companionId,
+      );
 
-      return { title, companionId, ...other };
+      return { title, companionId, unReadCount, ...other };
     });
 
     return Promise.all(promises);
-  }
-
-  async updateChat(data: any): Promise<void> {
-    await this.table.save(data);
   }
 }

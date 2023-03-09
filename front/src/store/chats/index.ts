@@ -45,7 +45,7 @@ class ChatsStore implements ListStore<Chat> {
 
       const payload: UpdateChatPLD = { id, unReadCount: 0 };
 
-      await api(putChat, payload);
+      // await api(putChat, payload);
     }
   };
 

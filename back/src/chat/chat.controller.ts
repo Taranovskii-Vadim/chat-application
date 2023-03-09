@@ -1,7 +1,5 @@
 import {
   Get,
-  Put,
-  Body,
   Request,
   UseGuards,
   Controller,
@@ -24,11 +22,5 @@ export class ChatsController {
   @Get()
   async getChats(@Request() req: Req): Promise<GetChatDTO[]> {
     return this.chatsService.getChats(req.user.id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put()
-  async updateChat(@Body() body: any): Promise<void> {
-    return this.chatsService.updateChat(body);
   }
 }

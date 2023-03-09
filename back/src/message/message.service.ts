@@ -10,7 +10,7 @@ import { InsertPayloadDTO } from './message.dto';
 @Injectable()
 export class MessagesService {
   constructor(
-    private chatsService: ChatsService,
+    // private chatsService: ChatsService,
     @InjectRepository(Message) private readonly table: Repository<Message>,
   ) {}
 
@@ -30,6 +30,18 @@ export class MessagesService {
     return result;
   }
 
+  getUnReadCount = async (id: number, companionId: number): Promise<number> => {
+    const result = await this.table.count({
+      where: {
+        status: 'unread',
+        chat: { id },
+        sender: { id: companionId },
+      },
+    });
+
+    return result;
+  };
+
   async createMessage(body: InsertPayloadDTO): Promise<Message | null> {
     const { text, ...ids } = body;
 
@@ -48,10 +60,10 @@ export class MessagesService {
 
     const id = data.generatedMaps[0].id;
 
-    this.chatsService.updateChat({
-      id: ids.chatId,
-      lastMessage: { id },
-    });
+    // this.chatsService.updateChat({
+    //   id: ids.chatId,
+    //   lastMessage: { id },
+    // });
 
     return await this.table.findOne({
       where: { id },

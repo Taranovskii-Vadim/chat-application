@@ -14,4 +14,7 @@ export class GetChatDTO {
 
   @IsObject()
   lastMessage?: Message;
+
+  @IsNumber()
+  unReadCount: number;
 }
