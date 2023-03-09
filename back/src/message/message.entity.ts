@@ -4,8 +4,6 @@ import { Base } from 'src/utils';
 import { Chat } from 'src/chat/chat.entity';
 import { User } from 'src/user/user.entity';
 
-// TODO get better understanding how to use relations
-
 @Entity()
 export class Message extends Base {
   @JoinColumn({ name: 'chat_id_fkey' })
@@ -18,6 +16,12 @@ export class Message extends Base {
 
   @Column()
   text: string;
+
+  @Column({ default: false })
+  isHidden: boolean;
+
+  @Column({ default: 'unread' })
+  status: string;
 
   @JoinColumn({ name: 'replied_id_fkey' })
   @ManyToOne(() => Message, { nullable: true })
