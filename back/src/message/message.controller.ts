@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Controller,
+  ParseIntPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
@@ -24,8 +25,10 @@ export class MessagesController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':chatId')
-  async getMessages(@Param('chatId') chatId: string): Promise<Message[]> {
-    return this.messagesService.getMessages(+chatId);
+  async getMessages(
+    @Param('chatId', ParseIntPipe) chatId: number,
+  ): Promise<Message[]> {
+    return this.messagesService.getMessages(chatId);
   }
 
   @UseGuards(JwtAuthGuard)

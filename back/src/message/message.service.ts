@@ -25,8 +25,6 @@ export class MessagesService {
       order: { createdAt: 'asc' },
     });
 
-    // TODO we created prepareDTO function, but from other side we dont need we can answer everything and front can take what he wants
-    // TODO but we send user password in sender
     return result;
   }
 
