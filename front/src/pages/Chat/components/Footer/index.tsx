@@ -17,23 +17,14 @@ import Flexbox from 'src/components/Flexbox';
 
 interface Props {
   store: Store;
-  chatId: number;
-  receiverId: number;
+  onSubmit: () => void;
 }
 
 // TODO memo this component
-const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
+const Footer = ({ store, onSubmit }: Props): JSX.Element => {
   const { replied, edited } = store;
 
   const [isPicker, setIsPicker] = useState(false);
-
-  const handleCreateUpdateMessage = (): void => {
-    if (edited) {
-      store.updateMessage(receiverId);
-    } else {
-      store.createMessage(chatId, receiverId);
-    }
-  };
 
   const handleEmojiClick = (emojiObject: any): void => {
     // TODO we set emoji only in the end of the string, even if the cursor stands in the begining or in the middle
@@ -84,7 +75,7 @@ const Footer = ({ chatId, store, receiverId }: Props): JSX.Element => {
         <IconButton size="small" sx={{ mr: 1 }} onClick={() => setIsPicker((prev) => !prev)}>
           <EmojiEmotionsOutlinedIcon />
         </IconButton>
-        <IconButton size="small" color="primary" onClick={handleCreateUpdateMessage}>
+        <IconButton size="small" color="primary" onClick={onSubmit}>
           <SendIcon />
         </IconButton>
       </Flexbox>

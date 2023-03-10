@@ -16,8 +16,6 @@ import { Message } from './message.entity';
 import { MessagesService } from './message.service';
 import { InsertPayloadDTO } from './message.dto';
 
-type Query = { id: string };
-
 @Controller('/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
@@ -41,7 +39,10 @@ export class MessagesController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Put(':id')
-  async updateMessage(@Param() query: Query, @Body() body: any) {
-    return this.messagesService.updateMessage(+query.id, body);
+  async updateMessage(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+  ) {
+    return this.messagesService.updateMessage(id, body);
   }
 }

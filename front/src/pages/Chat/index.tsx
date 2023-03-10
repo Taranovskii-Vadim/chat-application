@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-import CloseIcon from '@mui/icons-material/Close';
-import { Typography, Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
 
 import bg from 'src/assets/bg.jpg';
 
@@ -16,19 +15,30 @@ import Loader from 'src/components/ui/Loader';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MessageWrapper from './components/MessageWrapper';
-import Flexbox from 'src/components/Flexbox';
 
 const store = new Store();
 
 const Chat = (): JSX.Element | null => {
   const { socket } = user;
   const { id } = useParams();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleScrollToLastMessage = (): void => {
+    setTimeout(() => {
+      if (ref.current) {
+        ref.current.scroll({ top: ref.current.scrollHeight, behavior: 'smooth' });
+      }
+    }, 0);
+  };
 
   useEffect(() => {
     store.fetchData(id as string);
 
     socket.on('receiveMessage', (value: Message) => {
       store.pushMessage(value);
+      // TODO we can call it here but bad practise in my opinion
+      // Better create fab button when we click it we will scroll to bottom
+      // handleScrollToLastMessage();
     });
 
     socket.on('changeMessage', ({ id, ...others }: Message) => {
@@ -41,13 +51,25 @@ const Chat = (): JSX.Element | null => {
 
   if (!currentChat) return null;
 
+  const handleCreateUpdateMessage = (): void => {
+    if (store.edited) {
+      store.updateMessage(currentChat.companionId);
+    } else {
+      store.createMessage(+id, currentChat.companionId);
+
+      handleScrollToLastMessage();
+    }
+  };
+
   return (
     <>
       <Header title={currentChat.title} />
-      <Box sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'auto', p: 1 }}>
+      <Box
+        ref={ref}
+        sx={{ flex: 1, backgroundImage: `url(${bg})`, backgroundSize: 'cover', overflowY: 'scroll', p: 1 }}
+      >
         {!store.isLoading ? (
           <>
-            {/* TODO we must show something if array is empty */}
             {store.messages.map((item) => (
               <MessageWrapper key={item.id} store={store} {...item} />
             ))}
@@ -56,7 +78,7 @@ const Chat = (): JSX.Element | null => {
           <Loader height="100%" />
         )}
       </Box>
-      <Footer receiverId={currentChat.companionId} chatId={+id} store={store} />
+      <Footer store={store} onSubmit={handleCreateUpdateMessage} />
     </>
   );
 };
