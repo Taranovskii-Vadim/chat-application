@@ -12,6 +12,7 @@ import { MessagesModule } from './message/message.module';
 
 // TODO refactor folder structure, define where storage typeORM data
 // TODO refactor code below
+// TODO change put req to patch
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
