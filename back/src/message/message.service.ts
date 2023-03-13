@@ -2,15 +2,12 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ChatsService } from 'src/chat/chat.service';
-
 import { Message } from './message.entity';
 import { InsertPayloadDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
   constructor(
-    // private chatsService: ChatsService,
     @InjectRepository(Message) private readonly table: Repository<Message>,
   ) {}
 
@@ -27,6 +24,16 @@ export class MessagesService {
 
     return result;
   }
+
+  getChatLastMessage = async (id: number): Promise<Message | null> => {
+    const result = await this.table.findOne({
+      where: { chat: { id } },
+      relations: { sender: true },
+      order: { createdAt: 'desc' },
+    });
+
+    return result;
+  };
 
   getUnReadCount = async (id: number, companionId: number): Promise<number> => {
     const result = await this.table.count({

@@ -12,12 +12,12 @@ export class GetChatDTO {
   @IsNumber()
   companionId: number;
 
-  @IsObject()
-  lastMessage?: Message;
-
-  @IsObject()
-  pinnedMessage?: Message;
-
   @IsNumber()
   unReadCount: number;
+
+  @IsObject()
+  lastMessage: Message | null;
+
+  @IsObject()
+  pinnedMessage: Message | null;
 }

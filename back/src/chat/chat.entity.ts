@@ -11,8 +11,4 @@ export class Chat extends Base {
   @JoinColumn({ name: 'pinned_message_id_fkey' })
   @OneToOne(() => Message, { nullable: true })
   pinnedMessage: Message;
-
-  @JoinColumn({ name: 'last_message_id_fkey' })
-  @OneToOne(() => Message, { nullable: true })
-  lastMessage: Message;
 }

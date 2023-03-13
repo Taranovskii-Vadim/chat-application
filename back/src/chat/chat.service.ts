@@ -23,10 +23,7 @@ export class ChatsService {
     // TODO maybe can use typeorm where
 
     const response = await this.table.find({
-      relations: {
-        lastMessage: { sender: true },
-        pinnedMessage: true,
-      },
+      relations: { pinnedMessage: true },
     });
 
     const chats = response.filter(({ members }) => members.includes(userId));
@@ -40,7 +37,11 @@ export class ChatsService {
         companionId,
       );
 
-      return { title, companionId, unReadCount, ...other };
+      const lastMessage = await this.messagesService.getChatLastMessage(
+        other.id,
+      );
+
+      return { title, companionId, unReadCount, lastMessage, ...other };
     });
 
     return Promise.all(promises);
