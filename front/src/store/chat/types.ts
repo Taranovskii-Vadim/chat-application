@@ -16,6 +16,7 @@ export type Replied = Edited & { fullname: string };
 
 export type Message = Common & {
   sender: Sender;
+  status: 'read' | 'unread';
   replied?: Replied;
   isError?: boolean;
   isEdited?: boolean;

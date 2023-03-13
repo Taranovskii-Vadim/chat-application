@@ -11,9 +11,10 @@ class GetMessages implements Route {
   }
 
   getData(data: CommonMessageDTO[]): Message[] {
-    return data.map(({ createdAt, updatedAt, chat, replied, sender, text, id }) => ({
+    return data.map(({ createdAt, updatedAt, chat, replied, status, sender, text, id }) => ({
       id,
       text,
+      status,
       chatId: chat.id,
       createdAt: formatDate(createdAt),
       isEdited: createdAt !== updatedAt,

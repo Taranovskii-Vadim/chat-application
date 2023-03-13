@@ -85,7 +85,16 @@ class ChatStore {
     try {
       const text = this.text;
 
-      this.pushMessage({ id, text, chatId, sender, replied, createdAt: formatDate(new Date()), isLoading: true });
+      this.pushMessage({
+        id,
+        text,
+        chatId,
+        sender,
+        replied,
+        isLoading: true,
+        status: 'unread',
+        createdAt: formatDate(new Date()),
+      });
 
       const result = await api(postMessage, { text, chatId, repliedId, senderId });
 

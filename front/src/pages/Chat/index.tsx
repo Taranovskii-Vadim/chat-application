@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import bg from 'src/assets/bg.jpg';
 
@@ -70,9 +70,21 @@ const Chat = (): JSX.Element | null => {
       >
         {!store.isLoading ? (
           <>
-            {store.messages.map((item) => (
-              <MessageWrapper key={item.id} store={store} {...item} />
-            ))}
+            {store.messages.map((item, idx) => {
+              const next = store.messages[idx + 1];
+              const isLabel = item.status === 'read' && next && next.status === 'unread';
+
+              return (
+                <Fragment key={item.id}>
+                  <MessageWrapper store={store} {...item} />
+                  {isLabel ? (
+                    <Typography color="primary" sx={{ textAlign: 'center', mb: 1 }}>
+                      Непрочитанные сообщения
+                    </Typography>
+                  ) : null}
+                </Fragment>
+              );
+            })}
           </>
         ) : (
           <Loader height="100%" />

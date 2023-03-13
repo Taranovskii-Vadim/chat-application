@@ -1,9 +1,9 @@
 import {
   Get,
-  Put,
   Post,
   Body,
   Param,
+  Patch,
   UseGuards,
   Controller,
   ParseIntPipe,
@@ -22,27 +22,22 @@ export class MessagesController {
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Get(':chatId')
-  async getMessages(
-    @Param('chatId', ParseIntPipe) chatId: number,
-  ): Promise<Message[]> {
-    return this.messagesService.getMessages(chatId);
+  @Get(':id')
+  async findAll(@Param('id', ParseIntPipe) id: number): Promise<Message[]> {
+    return this.messagesService.getMessages(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  async createMessage(@Body() body: InsertPayloadDTO): Promise<Message | null> {
+  async create(@Body() body: InsertPayloadDTO): Promise<Message | null> {
     return this.messagesService.createMessage(body);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Put(':id')
-  async updateMessage(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: any,
-  ) {
+  @Patch(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() body: any) {
     return this.messagesService.updateMessage(id, body);
   }
 }
