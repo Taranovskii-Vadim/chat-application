@@ -52,6 +52,10 @@ class ChatsStore implements ListStore<Chat> {
   setLastMessage = (value: Message): void => {
     this.data.map((item) => {
       if (item.id === value.chatId) {
+        if (+location.pathname.split('/')[1] !== item.id) {
+          item.unReadCount = item.unReadCount + 1;
+        }
+
         item.lastMessage = value;
       }
 

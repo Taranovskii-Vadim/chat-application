@@ -36,6 +36,7 @@ const Chat = (): JSX.Element | null => {
       store.fetchData(+id);
 
       socket.on('receiveMessage', (value: Message) => {
+        // TODO bug we set messages in chat B but we send it for chat A
         store.pushMessage(value);
         // TODO we can call it here but bad practise in my opinion
         // Better create fab button when we click it we will scroll to bottom
