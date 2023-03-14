@@ -11,7 +11,15 @@ export class MessagesService {
     @InjectRepository(Message) private readonly table: Repository<Message>,
   ) {}
 
-  async getMessages(id: number): Promise<Message[]> {
+  async getMessages(id: number, userId: number): Promise<Message[]> {
+    await this.table
+      .createQueryBuilder()
+      .update(Message)
+      .set({ status: 'read' })
+      .where('chat_id_fkey = :id', { id })
+      .andWhere('user_id_fkey != :userId', { userId })
+      .execute();
+
     const result = await this.table.find({
       where: { chat: { id } },
       relations: {

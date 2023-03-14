@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { EventHandler, Fragment, SyntheticEvent, UIEvent, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
@@ -32,18 +32,20 @@ const Chat = (): JSX.Element | null => {
   };
 
   useEffect(() => {
-    store.fetchData(id as string);
+    if (id) {
+      store.fetchData(+id);
 
-    socket.on('receiveMessage', (value: Message) => {
-      store.pushMessage(value);
-      // TODO we can call it here but bad practise in my opinion
-      // Better create fab button when we click it we will scroll to bottom
-      // handleScrollToLastMessage();
-    });
+      socket.on('receiveMessage', (value: Message) => {
+        store.pushMessage(value);
+        // TODO we can call it here but bad practise in my opinion
+        // Better create fab button when we click it we will scroll to bottom
+        // handleScrollToLastMessage();
+      });
 
-    socket.on('changeMessage', ({ id, ...others }: Message) => {
-      store.setMessage(id, { ...others, isEdited: true });
-    });
+      socket.on('changeMessage', ({ id, ...others }: Message) => {
+        store.setMessage(id, { ...others, isEdited: true });
+      });
+    }
   }, [id]);
 
   // TODO prev we had getChat request. Now we take chat from chats array sync
@@ -70,21 +72,9 @@ const Chat = (): JSX.Element | null => {
       >
         {!store.isLoading ? (
           <>
-            {store.messages.map((item, idx) => {
-              const next = store.messages[idx + 1];
-              const isLabel = item.status === 'read' && next && next.status === 'unread';
-
-              return (
-                <Fragment key={item.id}>
-                  <MessageWrapper store={store} {...item} />
-                  {isLabel ? (
-                    <Typography color="primary" sx={{ textAlign: 'center', mb: 1 }}>
-                      Непрочитанные сообщения
-                    </Typography>
-                  ) : null}
-                </Fragment>
-              );
-            })}
+            {store.messages.map((item, idx) => (
+              <MessageWrapper key={item.id} store={store} {...item} />
+            ))}
           </>
         ) : (
           <Loader height="100%" />

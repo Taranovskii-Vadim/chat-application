@@ -92,7 +92,6 @@ class ChatStore {
         sender,
         replied,
         isLoading: true,
-        status: 'unread',
         createdAt: formatDate(new Date()),
       });
 
@@ -138,9 +137,11 @@ class ChatStore {
     }
   };
 
-  fetchData = async (chatId: string): Promise<void> => {
+  fetchData = async (chatId: number): Promise<void> => {
     try {
       this.setIsLoading(true);
+
+      chats.resetUnReadCount(+chatId);
 
       const messages = await api(getMessages, undefined, chatId);
 

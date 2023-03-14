@@ -4,6 +4,7 @@ import {
   Body,
   Param,
   Patch,
+  Request,
   UseGuards,
   Controller,
   ParseIntPipe,
@@ -11,6 +12,8 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
+
+import { Req } from 'src/types';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
@@ -23,8 +26,11 @@ export class MessagesController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  async findAll(@Param('id', ParseIntPipe) id: number): Promise<Message[]> {
-    return this.messagesService.getMessages(id);
+  async findAll(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req: Req,
+  ): Promise<Message[]> {
+    return this.messagesService.getMessages(id, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
