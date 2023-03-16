@@ -20,6 +20,7 @@ export class ChatsService {
   ) {}
 
   async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
+    // TODO we can create interceptor which can transform our data before send it to client
     // TODO maybe can use typeorm where
 
     const response = await this.table.find({

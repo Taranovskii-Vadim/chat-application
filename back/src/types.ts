@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request as ExpressRequest } from 'express';
 
 export type ReqUser = {
   id: number;
@@ -7,7 +7,7 @@ export type ReqUser = {
   lastname: string;
 };
 
-export type Req = { user: ReqUser } & Request;
+export type Request = { user: ReqUser } & ExpressRequest;
 
 export type Meta = {
   createdAt: Date;

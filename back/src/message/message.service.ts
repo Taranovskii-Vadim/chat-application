@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Message } from './message.entity';
 import { InsertPayloadDTO } from './message.dto';
@@ -73,11 +73,6 @@ export class MessagesService {
 
     const id = data.generatedMaps[0].id;
 
-    // this.chatsService.updateChat({
-    //   id: ids.chatId,
-    //   lastMessage: { id },
-    // });
-
     return await this.table.findOne({
       where: { id },
       relations: { chat: true, sender: true, replied: { sender: true } },
@@ -85,12 +80,16 @@ export class MessagesService {
   }
 
   // TODO here we update only text. What about replied???
-  async updateMessage(id: number, data: any): Promise<Message | null> {
+  async updateMessage(id: number, data: any): Promise<Message> {
     await this.table.save({ id, ...data });
 
-    return await this.table.findOne({
+    const result = await this.table.findOne({
       where: { id },
       relations: { chat: true, sender: true, replied: { sender: true } },
     });
+
+    if (!result) throw new NotFoundException();
+
+    return result;
   }
 }

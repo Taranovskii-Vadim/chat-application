@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 
-import { Req } from 'src/types';
+import { ReqUser } from 'src/types';
+import { User } from 'src/decorators';
 
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -14,13 +15,13 @@ export class JwtAuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/signIn')
-  login(@Request() req: Req): JwtResult {
-    return this.jwtAuthService.login(req.user);
+  login(@User() data: ReqUser): JwtResult {
+    return this.jwtAuthService.login(data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req: Req): Req['user'] {
-    return req.user;
+  getProfile(@User() data: ReqUser): ReqUser {
+    return data;
   }
 }
