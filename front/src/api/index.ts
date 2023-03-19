@@ -15,7 +15,7 @@ axiosInsatnce.interceptors.response.use(
   (error) => {
     const { response } = error;
 
-    if (response.data.statusCode) {
+    if (response.data.statusCode === 401) {
       auth.logout();
     }
 

@@ -1,4 +1,4 @@
-export type Method = 'GET' | 'POST' | 'PUT';
+export type Method = 'GET' | 'POST' | 'PATCH';
 
 export type Payload = object | string | number;
 
@@ -26,6 +26,7 @@ export interface CommonUserDTO extends MetaDTO {
 export interface CommonMessageDTO extends MetaDTO {
   id: number;
   text: string;
+  isEdited: boolean;
   isHidden: boolean;
   sender: CommonUserDTO;
   status: 'read' | 'unread';

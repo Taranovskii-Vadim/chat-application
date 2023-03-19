@@ -18,6 +18,9 @@ export class Message extends Base {
   text: string;
 
   @Column({ default: false })
+  isEdited: boolean;
+
+  @Column({ default: false })
   isHidden: boolean;
 
   @Column({ default: 'unread' })

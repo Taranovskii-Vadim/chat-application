@@ -3,7 +3,7 @@ import { Message } from 'src/store/chat/types';
 import { CommonMessageDTO, Method, Route } from './types';
 
 class PutMessage implements Route {
-  method: Method = 'PUT';
+  method: Method = 'PATCH';
 
   getUrl(id: string): string {
     return `/messages/${id}`;
