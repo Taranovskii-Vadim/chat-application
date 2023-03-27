@@ -1,16 +1,5 @@
-import { observer } from 'mobx-react-lite';
-
-import auth from 'src/store/auth';
-
-import Pages from './pages';
-import Login from './components/Login';
-
 const App = (): JSX.Element => {
-  if (!auth.isLogged) {
-    return <Login />;
-  }
-
-  return <Pages />;
+  return <h1>hello new ui</h1>;
 };
 
-export default observer(App);
+export default App;
