@@ -1,24 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface State {
-  isLogged: boolean;
-}
+type Payload = { login: string; password: string };
 
-const initialState: State = {
-  isLogged: false,
-};
+type ResponseDTO = { access_token: string };
 
-const state = createSlice({
-  name: "counter",
-  initialState,
-  reducers: {
-    login: (state) => {
-      state.isLogged = true;
-    },
-  },
+export const authApi = createApi({
+  reducerPath: "authApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/auth",
+  }),
+  endpoints: (build) => ({
+    login: build.mutation<ResponseDTO, Payload>({
+      query: (body) => ({
+        url: "signIn",
+        method: "POST",
+        body,
+      }),
+      transformResponse: (response: ResponseDTO) => {
+        return response;
+      },
+    }),
+  }),
 });
 
-export const { login } = state.actions;
-
-export default state.reducer;
+export const { useLoginMutation } = authApi;

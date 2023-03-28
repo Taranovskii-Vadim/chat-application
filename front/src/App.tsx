@@ -1,13 +1,21 @@
-import { useSelector } from "react-redux";
-
-import { RootState } from "./store";
+import { useLoginMutation } from "./store/auth";
 
 import Login from "./components/Login";
 
 const App = (): JSX.Element => {
-  const isLogged = useSelector((state: RootState) => state.auth.isLogged);
+  const [login, { data }] = useLoginMutation();
 
-  return isLogged ? <div>application</div> : <Login />;
+  if (!data) {
+    return (
+      <Login
+        onSubmit={() => {
+          login({ login: "admin", password: "admin" });
+        }}
+      />
+    );
+  }
+
+  return <div>application</div>;
 };
 
 export default App;
