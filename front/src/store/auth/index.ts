@@ -1,26 +1,33 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { action, makeObservable, observable } from 'mobx';
 
-type Payload = { login: string; password: string };
+import { api } from 'src/api';
+import postLogin from 'src/api/postLogin';
 
-type ResponseDTO = { access_token: string };
+import { Payload, Store } from './types';
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "/api/auth",
-  }),
-  endpoints: (build) => ({
-    login: build.mutation<ResponseDTO, Payload>({
-      query: (body) => ({
-        url: "signIn",
-        method: "POST",
-        body,
-      }),
-      transformResponse: (response: ResponseDTO) => {
-        return response;
-      },
-    }),
-  }),
-});
+class Auth implements Store {
+  isLogged = !!localStorage.getItem('token');
 
-export const { useLoginMutation } = authApi;
+  constructor() {
+    makeObservable(this, {
+      isLogged: observable,
+
+      login: action,
+      logout: action,
+    });
+  }
+
+  logout = (): void => {
+    window.location.href = '/';
+    localStorage.clear();
+    this.isLogged = false;
+  };
+
+  login = async (payload: Payload): Promise<void> => {
+    const result = await api(postLogin, payload);
+
+    this.isLogged = !!result;
+  };
+}
+
+export default new Auth();

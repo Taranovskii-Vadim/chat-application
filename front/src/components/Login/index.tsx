@@ -1,18 +1,16 @@
 import { FormEvent } from "react";
 
+import auth from "src/store/auth";
+
 import Input from "../Input";
 import Button from "../Button";
 
-interface Props {
-  onSubmit: () => void;
-}
-
-const Login = ({ onSubmit }: Props): JSX.Element => (
+const Login = (): JSX.Element => (
   <form
     className="absolute space-y-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 text-center"
     onSubmit={(e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      onSubmit();
+      auth.login({ login: "admin", password: "admin" });
     }}
   >
     <Input />
