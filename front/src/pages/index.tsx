@@ -1,8 +1,15 @@
+import { useEffect } from 'react';
+
+import user from 'src/store/user';
+
 import Chat from 'src/components/Chat';
 import Input from 'src/components/ui/Input';
 
 const Pages = (): JSX.Element => {
-  // here we must fetch user profile and chats
+  useEffect(() => {
+    user.fetchData();
+  }, []);
+
   return (
     <div className="flex h-screen max-h-screen">
       <div className="w-1/4 border-r">

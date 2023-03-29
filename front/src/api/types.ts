@@ -13,17 +13,17 @@ export type Route<D = unknown> = {
   getData: (responseDTO: any) => D;
 };
 
-// export interface MetaDTO {
-//   updatedAt: string;
-//   createdAt: string;
-// }
+export type MetaDTO = {
+  updatedAt: string;
+  createdAt: string;
+};
 
-// export interface CommonUserDTO extends MetaDTO {
-//   id: number;
-//   name: string;
-//   login: string;
-//   lastname: string;
-// }
+export type CommonUserDTO = MetaDTO & {
+  id: number;
+  name: string;
+  login: string;
+  lastname: string;
+};
 
 // export interface CommonMessageDTO extends MetaDTO {
 //   id: number;

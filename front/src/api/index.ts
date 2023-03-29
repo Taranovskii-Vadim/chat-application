@@ -25,7 +25,7 @@ axiosInsatnce.interceptors.response.use(
   },
 );
 
-export const api = async <D>(r: Route<D>, p: Payload): Promise<D> => {
+export const api = async <D>(r: Route<D>, p?: Payload): Promise<D> => {
   let config: AxiosRequestConfig = { method: r.method, url: r.getUrl() };
 
   if (p) {
