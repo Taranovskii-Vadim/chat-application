@@ -1,16 +1,17 @@
+import Chat from 'src/components/Chat';
 import Input from 'src/components/ui/Input';
 
 const Pages = (): JSX.Element => {
   // here we must fetch user profile and chats
   return (
     <div className="flex h-screen max-h-screen">
-      <div className="w-1/4">
+      <div className="w-1/4 border-r">
         <form className="py-2 px-4 h-1/10">
           <Input placeholder="Добавить чат" />
         </form>
         <ul className="overflow-y-auto max-h-9/10">
-          <li>first</li>
-          <li>second</li>
+          <Chat />
+          <Chat />
         </ul>
       </div>
       <div className="w-3/4">
