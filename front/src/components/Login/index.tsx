@@ -1,16 +1,16 @@
-import { FormEvent } from "react";
+import { FormEvent } from 'react';
 
-import auth from "src/store/auth";
+import auth from 'src/store/auth';
 
-import Input from "../Input";
-import Button from "../Button";
+import Input from '../ui/Input';
+import Button from '../ui/Button';
 
 const Login = (): JSX.Element => (
   <form
     className="absolute space-y-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 text-center"
     onSubmit={(e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      auth.login({ login: "admin", password: "admin" });
+      auth.login({ login: 'admin', password: 'admin' });
     }}
   >
     <Input />
