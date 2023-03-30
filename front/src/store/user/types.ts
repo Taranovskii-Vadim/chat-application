@@ -6,6 +6,8 @@ export type Profile = {
 export type Chat = {
   id: number;
   title: string;
+  avatar: string;
+  unReadCount: number;
 };
 
 export interface Store {

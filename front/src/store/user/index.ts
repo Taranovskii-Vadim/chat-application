@@ -30,8 +30,8 @@ class User implements Store {
   fetchData = async (): Promise<void> => {
     try {
       this.setIsLoading(true);
-      const chats = await api(getChats);
       const result = await api(getProfile);
+      const chats = await api(getChats);
 
       this.data = result;
       this.chats = chats;

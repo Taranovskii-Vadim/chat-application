@@ -1,8 +1,8 @@
-import { Chip, Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from "@mui/material";
 
-import { Message } from 'src/store/chat/types';
+import { Message } from "src/store/chat/types";
 
-import Flexbox from 'src/components/Flexbox';
+import Flexbox from "src/components/Flexbox";
 
 interface Props {
   title: string;
@@ -13,19 +13,25 @@ interface Props {
 }
 
 const COMMON = {
-  width: '80%',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
+  width: "80%",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
 };
 
-const LinkBody = ({ title, unReadCount, isEqual, currentUserId, lastMessage }: Props): JSX.Element => {
-  const colorSx = { color: isEqual ? 'common.white' : 'inherit' };
+const LinkBody = ({
+  title,
+  unReadCount,
+  isEqual,
+  currentUserId,
+  lastMessage,
+}: Props): JSX.Element => {
+  const colorSx = { color: isEqual ? "common.white" : "inherit" };
   const sx = { ...COMMON, ...colorSx };
 
   return (
     <Grid item xs={9}>
-      <Flexbox sx={{ flexWrap: 'wrap' }}>
+      <Flexbox sx={{ flexWrap: "wrap" }}>
         <Typography variant="h6" sx={sx}>
           {title}
         </Typography>
@@ -35,11 +41,15 @@ const LinkBody = ({ title, unReadCount, isEqual, currentUserId, lastMessage }: P
               {lastMessage.createdAt}
             </Typography>
             <Typography variant="subtitle1" sx={sx}>
-              {`${lastMessage.sender.id === currentUserId ? 'You:' : ''} ${lastMessage.text}`}
+              {`${lastMessage.sender.id === currentUserId ? "You:" : ""} ${
+                lastMessage.text
+              }`}
             </Typography>
           </>
         ) : null}
-        {unReadCount ? <Chip color="primary" size="small" label={unReadCount} /> : null}
+        {unReadCount ? (
+          <Chip color="primary" size="small" label={unReadCount} />
+        ) : null}
       </Flexbox>
     </Grid>
   );
