@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import user from 'src/store/user';
 
@@ -10,6 +11,10 @@ const Pages = (): JSX.Element => {
     user.fetchData();
   }, []);
 
+  if (user.isLoading) {
+    return <div>loading...</div>;
+  }
+
   return (
     <div className="flex h-screen max-h-screen">
       <div className="w-1/4 border-r">
@@ -17,8 +22,9 @@ const Pages = (): JSX.Element => {
           <Input placeholder="Добавить чат" />
         </form>
         <ul className="overflow-y-auto max-h-9/10">
-          <Chat />
-          <Chat />
+          {user.chats.map((item) => {
+            return <Chat key={item.id} title={item.title} />;
+          })}
         </ul>
       </div>
       <div className="w-3/4">
@@ -611,4 +617,4 @@ const Pages = (): JSX.Element => {
   );
 };
 
-export default Pages;
+export default observer(Pages);
