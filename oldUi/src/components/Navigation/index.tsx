@@ -1,32 +1,34 @@
-import { observer } from 'mobx-react-lite';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Grid, GridProps } from '@mui/material';
+import { observer } from "mobx-react-lite";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Grid, GridProps } from "@mui/material";
 
-import user from 'src/store/user';
-import store from 'src/store/chats';
-import { Message } from 'src/store/chat/types';
-import { OnlineUser } from 'src/store/chats/types';
+import user from "src/store/user";
+import store from "src/store/chats";
+import { Message } from "src/store/chat/types";
+import { OnlineUser } from "src/store/chats/types";
 
-import Loader from '../ui/Loader';
+import Loader from "../ui/Loader";
 
-import LinkBody from './components/LinkBody';
-import UserAvatar from './components/UserAvatar';
+import LinkBody from "./components/LinkBody";
+import UserAvatar from "./components/UserAvatar";
 
 const Navigation = (): JSX.Element => {
   const { socket, data } = user;
 
   const navigate = useNavigate();
-  const [activeId, setActiveId] = useState(parseInt(location.pathname.split('/')[1], 10));
+  const [activeId, setActiveId] = useState(
+    parseInt(location.pathname.split("/")[1], 10)
+  );
 
   useEffect(() => {
     store.fetchData();
 
-    socket.on('getUsers', (users: OnlineUser[]) => {
+    socket.on("getUsers", (users: OnlineUser[]) => {
       store.setIsOnline(users.filter(({ id }) => id !== data?.id));
     });
 
-    socket.on('setLastMessage', (value: Message) => {
+    socket.on("setLastMessage", (value: Message) => {
       store.setLastMessage(value);
     });
   }, []);
@@ -48,11 +50,11 @@ const Navigation = (): JSX.Element => {
       {store.data.map(({ id, title, isOnline, unReadCount, lastMessage }) => {
         const isEqual = activeId === id;
 
-        const sx: GridProps['sx'] = {
+        const sx: GridProps["sx"] = {
           p: 1,
-          cursor: 'pointer',
-          alignItems: 'center',
-          backgroundColor: isEqual ? 'primary.main' : 'transparent',
+          cursor: "pointer",
+          alignItems: "center",
+          backgroundColor: isEqual ? "primary.main" : "transparent",
         };
 
         return (
