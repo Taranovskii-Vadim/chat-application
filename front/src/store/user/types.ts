@@ -1,3 +1,5 @@
+import { Message } from '../types';
+
 export type Profile = {
   id: number;
   fullname: string;
@@ -8,6 +10,7 @@ export type Chat = {
   title: string;
   avatar: string;
   unReadCount: number;
+  lastMessage?: Message;
 };
 
 export interface Store {
