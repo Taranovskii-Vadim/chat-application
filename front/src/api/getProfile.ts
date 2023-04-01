@@ -1,5 +1,6 @@
-import { Profile } from 'src/store/user/types';
+import { User } from 'src/store/types';
 
+import { mapUserDTO } from './helpers';
 import { CommonUserDTO, Method, Route } from './types';
 
 class GetProfile implements Route {
@@ -9,8 +10,8 @@ class GetProfile implements Route {
     return '/user/profile';
   }
 
-  getData({ id, name, lastname }: CommonUserDTO): Profile {
-    return { id, fullname: `${lastname} ${name}` };
+  getData(response: CommonUserDTO): User {
+    return mapUserDTO(response);
   }
 }
 

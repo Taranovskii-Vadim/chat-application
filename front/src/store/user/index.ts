@@ -4,16 +4,17 @@ import { api } from 'src/api';
 import getChats from 'src/api/getChats';
 import getProfile from 'src/api/getProfile';
 
-import { Chat, Profile, Store } from './types';
+import { User } from '../types';
+import { Chat, Store } from './types';
 
-class User implements Store {
+class UserStore implements Store {
   isLoading = true;
 
   socket = undefined;
 
   chats: Chat[] = [];
 
-  data: Profile | undefined = undefined;
+  data: User | undefined = undefined;
 
   constructor() {
     makeObservable(this, {
@@ -43,4 +44,4 @@ class User implements Store {
   };
 }
 
-export default new User();
+export default new UserStore();

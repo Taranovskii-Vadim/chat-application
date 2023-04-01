@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import user from 'src/store/user';
 import { Chat as ChatType } from 'src/store/user/types';
 
 interface Props {
@@ -40,7 +41,7 @@ const Chats = ({ data }: Props): JSX.Element => {
               <div className="flex justify-between items-center">
                 {lastMessage ? (
                   <p className={`${count ? 'w-5/6' : ''} overflow-hidden whitespace-nowrap text-ellipsis text-sm`}>
-                    {lastMessage.text}
+                    {user.data?.id === lastMessage.sender.id ? `You: ${lastMessage.text}` : lastMessage.text}
                   </p>
                 ) : null}
                 {count ? (

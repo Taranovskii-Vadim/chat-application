@@ -1,3 +1,5 @@
-import { Base, CommonChat } from '../types';
+import { Base, CommonChat, CommonMessage } from '../types';
 
-export interface Store extends Base<CommonChat> {}
+export interface Store extends Base<CommonChat> {
+  messages: CommonMessage[];
+}
