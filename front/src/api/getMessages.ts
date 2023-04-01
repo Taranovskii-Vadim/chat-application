@@ -11,7 +11,6 @@ interface CommonMessageDTO extends MetaDTO {
   isHidden: boolean;
   sender: CommonUserDTO;
   status: 'read' | 'unread';
-  // replied?: Omit<CommonMessageDTO, 'chat'>;
   chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
 }
 

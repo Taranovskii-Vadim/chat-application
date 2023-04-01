@@ -21,10 +21,9 @@ const Conversation = (): JSX.Element => {
 
   return (
     <div className="w-3/4">
-      <div className="h-1/10 border-b flex justify-between items-center px-4">
-        <p>{store.data.title}</p>
-      </div>
-      <div className="max-h-9/10 px-4 py-2 overflow-y-auto">{JSON.stringify(store.messages)}</div>
+      <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
+      <div className="max-h-8/10 px-4 py-2 overflow-y-auto">{JSON.stringify(store.messages)}</div>
+      <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
     </div>
   );
 };
