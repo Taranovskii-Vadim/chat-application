@@ -13,7 +13,7 @@ const Conversation = (): JSX.Element => {
     if (id) {
       store.fetchData(id);
     }
-  }, []);
+  }, [id]);
 
   if (store.isLoading || !store.data) {
     return <div>loading...</div>;
@@ -21,8 +21,10 @@ const Conversation = (): JSX.Element => {
 
   return (
     <div className="w-3/4">
-      <div className="h-1/10 border-b">{store.data.title}</div>
-      <div className="max-h-9/10">conversation № {id}</div>
+      <div className="h-1/10 border-b flex justify-between items-center px-4">
+        <p>{store.data.title}</p>
+      </div>
+      <div className="max-h-9/10 px-4 py-2">conversation № {id}</div>
     </div>
   );
 };
