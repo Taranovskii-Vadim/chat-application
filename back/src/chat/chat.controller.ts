@@ -1,7 +1,9 @@
 import {
   Get,
+  Param,
   UseGuards,
   Controller,
+  ParseIntPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
@@ -21,5 +23,13 @@ export class ChatsController {
   @Get()
   async getChats(@User('id') id: number): Promise<GetChatDTO[]> {
     return this.chatsService.getChats(id);
+  }
+
+  @Get(':id')
+  async getChat(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+  ): Promise<GetChatDTO> {
+    return this.chatsService.getChat(id, userId);
   }
 }

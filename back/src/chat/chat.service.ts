@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ReqUser } from 'src/types';
@@ -46,5 +46,35 @@ export class ChatsService {
     });
 
     return Promise.all(promises);
+  }
+
+  async getChat(id: number, userId: number): Promise<GetChatDTO> {
+    const response = await this.table.findOne({
+      where: { id },
+      relations: { pinnedMessage: true },
+    });
+
+    if (!response) throw new NotFoundException();
+
+    const companionId = response.members.filter((id) => id !== userId)[0];
+
+    const title = await this.usersService.getFullname(companionId);
+    const unReadCount = await this.messagesService.getUnReadCount(
+      id,
+      companionId,
+    );
+
+    const lastMessage = await this.messagesService.getChatLastMessage(id);
+
+    return {
+      id,
+      title,
+      companionId,
+      unReadCount,
+      lastMessage,
+      pinnedMessage: response.pinnedMessage,
+      createdAt: response.createdAt,
+      updatedAt: response.updatedAt,
+    };
   }
 }

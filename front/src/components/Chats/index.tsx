@@ -27,6 +27,7 @@ const Chats = ({ data }: Props): JSX.Element => {
 
         return (
           <li
+            key={id}
             className={`${prefix} flex items-center px-4 py-3 cursor-pointer hover:bg-sky-500 ease-in duration-100 hover:text-white`}
             onClick={() => handleMoveToConversation(id)}
           >

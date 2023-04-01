@@ -1,23 +1,18 @@
-import { Message } from '../types';
+import { Base, CommonChat, Message } from '../types';
 
 export type Profile = {
   id: number;
   fullname: string;
 };
 
-export type Chat = {
-  id: number;
-  title: string;
+export type Chat = CommonChat & {
   avatar: string;
   unReadCount: number;
   lastMessage?: Message;
 };
 
-export interface Store {
-  socket: unknown;
-  isLoading: boolean;
-  data: Profile | undefined;
+export interface Store extends Base<Profile> {
   chats: Chat[];
+  socket: unknown;
   fetchData: () => Promise<void>;
-  setIsLoading: (value: boolean) => void;
 }

@@ -8,7 +8,7 @@ export type Payload = Record<string, string>;
 export type Route<D = unknown> = {
   method: Method;
 
-  getUrl: () => string;
+  getUrl: (q?: string) => string;
 
   getData: (responseDTO: any) => D;
 };
@@ -23,6 +23,22 @@ export type CommonUserDTO = MetaDTO & {
   name: string;
   login: string;
   lastname: string;
+};
+
+type LastMessageDTO = MetaDTO & {
+  id: number;
+  isEdited: boolean;
+  isHidden: boolean;
+  status: string;
+  text: string;
+  sender: CommonUserDTO;
+};
+
+export type CommonChatDTO = MetaDTO & {
+  id: number;
+  title: string;
+  unReadCount: number;
+  lastMessage: LastMessageDTO;
 };
 
 // export interface CommonMessageDTO extends MetaDTO {
