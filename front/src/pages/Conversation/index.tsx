@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import ConversationStore from 'src/store/conversation';
 
+import Icon from 'src/components/ui/Icon';
 import Input from 'src/components/ui/Input';
-import Button from 'src/components/ui/Button';
+import IconButton from 'src/components/ui/IconButton';
 
 const store = new ConversationStore();
 
@@ -26,9 +27,14 @@ const Conversation = (): JSX.Element => {
     <div className="w-3/4">
       <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
       <div className="max-h-8/10 px-4 py-2 overflow-y-auto">{JSON.stringify(store.messages)}</div>
-      <div className="h-1/10 border-b flex justify-between items-center px-4 space-x-2">
+      <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
+        <IconButton>
+          <Icon type="clip" />
+        </IconButton>
         <Input placeholder="Написать сообщение..." />
-        <Button label="Отправить" />
+        <IconButton>
+          <Icon type="send" />
+        </IconButton>
       </div>
     </div>
   );
