@@ -5,8 +5,8 @@ type Props = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButt
   label: string;
 };
 
-const Button = ({ label }: Props): JSX.Element => (
-  <button className="bg-sky-500 hover:bg-sky-600 rounded-md text-white py-1.5 px-4 ease-in duration-200">
+const Button = ({ label, className }: Props): JSX.Element => (
+  <button className={`bg-sky-500 hover:bg-sky-600 rounded-md text-white py-1.5 px-4 ease-in duration-200 ${className}`}>
     {label}
   </button>
 );
