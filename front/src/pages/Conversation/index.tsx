@@ -6,6 +6,7 @@ import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
 
 import Icon from 'src/components/ui/Icon';
+import Loader from 'src/components/ui/Loader';
 import IconButton from 'src/components/ui/IconButton';
 
 import Field from './components/Field';
@@ -40,7 +41,9 @@ const Conversation = (): JSX.Element => {
           const isAuthor = user.data?.id === item.sender.id;
 
           return (
-            <li key={item.id} className={`flex ${isAuthor ? 'justify-end' : 'justify-start'} mb-2`}>
+            <li key={item.id} className={`flex ${isAuthor ? 'justify-end' : 'justify-start'} mb-2 items-center`}>
+              {item.isLoading ? <Loader className="mr-1" /> : null}
+              {item.error ? <Icon type="error" className="mr-1 text-red-600" /> : null}
               <div className={`${isAuthor ? 'bg-emerald-500' : 'bg-sky-500'} py-2 px-3 rounded-lg text-sm`}>
                 <p>{item.text}</p>
                 <small className="flex justify-end">

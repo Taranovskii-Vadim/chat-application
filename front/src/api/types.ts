@@ -1,6 +1,6 @@
 export type Method = 'GET' | 'POST' | 'PATCH';
 
-export type Payload = Record<string, string>;
+export type Payload = Record<string, string | number>;
 
 export type Route<D = unknown> = {
   method: Method;
@@ -22,18 +22,19 @@ export type CommonUserDTO = MetaDTO & {
   lastname: string;
 };
 
-type LastMessageDTO = MetaDTO & {
+export interface CommonMessageDTO extends MetaDTO {
   id: number;
+  text: string;
   isEdited: boolean;
   isHidden: boolean;
-  status: string;
-  text: string;
   sender: CommonUserDTO;
-};
+  status: 'read' | 'unread';
+  chat: { id: number; members: number[]; unReadCount: number } & MetaDTO;
+}
 
 export type CommonChatDTO = MetaDTO & {
   id: number;
   title: string;
   unReadCount: number;
-  lastMessage: LastMessageDTO;
+  lastMessage: CommonMessageDTO;
 };

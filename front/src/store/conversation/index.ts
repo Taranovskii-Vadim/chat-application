@@ -1,6 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
+import { formatDate } from 'src/utils';
 import getChat from 'src/api/getChat';
 import getMessages from 'src/api/getMessages';
 
@@ -8,6 +9,7 @@ import user from '../user';
 import { CommonChat } from '../types';
 
 import { Store, Message } from './types';
+import postMessage from 'src/api/postMessage';
 
 class ConversationStore implements Store {
   isLoading = true;
@@ -45,21 +47,21 @@ class ConversationStore implements Store {
 
   createMessage = async (): Promise<void> => {
     // WARN we create temp id and createdAt in front just for show message before get api response
-    const tempId = 2;
+    const tempId = Date.now();
+    const createdAt = formatDate(new Date());
 
     try {
       if (!user.data) throw new Error('Not found user data');
-
-      const createdAt = '';
+      if (!this.data) throw new Error('Not found chat data');
 
       const text = this.currentText;
       const sender: Message['sender'] = { id: user.data.id, fullname: user.data.fullname };
 
       this.messages.push({ id: tempId, createdAt, text, sender, isLoading: true, error: '' });
 
-      // here we must call post req and receive actual id and createdAt data
+      const result = await api(postMessage, { text, senderId: user.data.id, chatId: this.data.id });
 
-      // this.setMessage(tempId, {});
+      this.setMessage(tempId, result);
     } catch (e) {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {

@@ -1,6 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { Message } from './message.entity';
 import { InsertPayloadDTO } from './message.dto';
@@ -55,13 +59,13 @@ export class MessagesService {
     return result;
   };
 
-  async createMessage(body: InsertPayloadDTO): Promise<Message | null> {
+  async createMessage(body: InsertPayloadDTO): Promise<Message> {
     const { text, ...ids } = body;
 
     const payload = {
       chat: { id: ids.chatId },
       sender: { id: ids.senderId },
-      replied: { id: ids.repliedId },
+      // replied: { id: ids.repliedId },
     };
 
     const data = await this.table
@@ -73,10 +77,14 @@ export class MessagesService {
 
     const id = data.generatedMaps[0].id;
 
-    return await this.table.findOne({
+    const result = await this.table.findOne({
       where: { id },
       relations: { chat: true, sender: true, replied: { sender: true } },
     });
+
+    if (!result) throw new InternalServerErrorException();
+
+    return result;
   }
 
   // TODO here we update only text. What about replied???

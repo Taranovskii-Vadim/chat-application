@@ -33,7 +33,7 @@ export class MessagesController {
   }
 
   @Post()
-  async create(@Body() body: InsertPayloadDTO): Promise<Message | null> {
+  async create(@Body() body: InsertPayloadDTO): Promise<Message> {
     return this.messagesService.createMessage(body);
   }
 
