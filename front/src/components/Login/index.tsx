@@ -15,7 +15,7 @@ const Login = (): JSX.Element => (
   >
     <Input />
     <Input type="password" />
-    <Button type="submit" label="Войти" />
+    <Button className="w-3/4" type="submit" label="Войти" />
   </form>
 );
 
