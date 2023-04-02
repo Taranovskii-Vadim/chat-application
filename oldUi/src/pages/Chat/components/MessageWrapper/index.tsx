@@ -1,36 +1,47 @@
-import { useState, useCallback } from 'react';
-import copy from 'copy-to-clipboard';
-import ReplyIcon from '@mui/icons-material/Reply';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import ShortcutOutlinedIcon from '@mui/icons-material/ShortcutOutlined';
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import { useState, useCallback } from "react";
+import copy from "copy-to-clipboard";
+import ReplyIcon from "@mui/icons-material/Reply";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import ShortcutOutlinedIcon from "@mui/icons-material/ShortcutOutlined";
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 
-import user from 'src/store/user';
-import Store from 'src/store/chat';
-import { Message as MessageType } from 'src/store/chat/types';
+import user from "src/store/user";
+import Store from "src/store/chat";
+import { Message as MessageType } from "src/store/chat/types";
 
-import Flexbox from 'src/components/Flexbox';
-import Loader from 'src/components/ui/Loader';
+import Flexbox from "src/components/Flexbox";
+import Loader from "src/components/ui/Loader";
 
-import Message from '../Message';
+import Message from "../Message";
 
 interface Props extends MessageType {
   store: Store;
 }
 
-const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...message }: Props): JSX.Element => {
+const MessageWrapper = ({
+  store,
+  id,
+  sender,
+  text,
+  isError,
+  isLoading,
+  ...message
+}: Props): JSX.Element => {
   const { data } = user;
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null);
 
   const isAuthor = sender.id === data?.id;
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>): void => {
-    setAnchorEl(event.currentTarget);
-  }, []);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>): void => {
+      setAnchorEl(event.currentTarget);
+    },
+    []
+  );
 
   const handleClose = (): void => {
     setAnchorEl(null);
@@ -54,16 +65,25 @@ const MessageWrapper = ({ store, id, sender, text, isError, isLoading, ...messag
 
   return (
     <>
-      <Flexbox sx={{ justifyContent: isAuthor ? 'flex-end' : 'flex-start', mb: 1 }}>
+      <Flexbox
+        sx={{ justifyContent: isAuthor ? "flex-end" : "flex-start", mb: 1 }}
+      >
         {isLoading ? <Loader size={20} /> : null}
-        {isError ? <ErrorOutlineOutlinedIcon color="error" fontSize="small" /> : null}
-        <Message isAuthor={isAuthor} text={text} onClick={handleClick} {...message} />
+        {isError ? (
+          <ErrorOutlineOutlinedIcon color="error" fontSize="small" />
+        ) : null}
+        <Message
+          isAuthor={isAuthor}
+          text={text}
+          onClick={handleClick}
+          {...message}
+        />
       </Flexbox>
       <Menu
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
-        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "center", horizontal: "center" }}
       >
         <MenuItem onClick={handleReply}>
           <ListItemIcon>
