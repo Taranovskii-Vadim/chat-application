@@ -8,7 +8,7 @@ import getMessages from 'src/api/getMessages';
 import user from '../user';
 import { CommonChat } from '../types';
 
-import { Store, Message } from './types';
+import { Store, Message, CreateMessageDTO } from './types';
 import postMessage from 'src/api/postMessage';
 
 class ConversationStore implements Store {
@@ -55,11 +55,14 @@ class ConversationStore implements Store {
       if (!this.data) throw new Error('Not found chat data');
 
       const text = this.currentText;
+
       const sender: Message['sender'] = { id: user.data.id, fullname: user.data.fullname };
 
       this.messages.push({ id: tempId, createdAt, text, sender, isLoading: true, error: '' });
 
-      const result = await api(postMessage, { text, senderId: user.data.id, chatId: this.data.id });
+      const payload: CreateMessageDTO = { text, senderId: sender.id, chatId: this.data.id };
+
+      const result = await api(postMessage, payload);
 
       this.setMessage(tempId, result);
     } catch (e) {
