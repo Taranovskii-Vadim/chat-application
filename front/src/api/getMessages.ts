@@ -1,5 +1,5 @@
 import { formatDate } from 'src/utils';
-import { CommonMessage } from 'src/store/types';
+import { Message } from 'src/store/conversation/types';
 
 import { mapUserDTO } from './helpers';
 import { Method, Route, MetaDTO, CommonUserDTO } from './types';
@@ -21,12 +21,14 @@ class GetMessages implements Route {
     return `/messages/${id}`;
   }
 
-  getData(data: CommonMessageDTO[]): CommonMessage[] {
+  getData(data: CommonMessageDTO[]): Message[] {
     return data.map(({ createdAt, isEdited, chat, sender, text, id }) => ({
       id,
       text,
       // isEdited,
       // chatId: chat.id,
+      error: '',
+      isLoading: false,
       sender: mapUserDTO(sender),
       createdAt: formatDate(createdAt),
       // TODO maybe create method in front, or add map in back with help of typeorm

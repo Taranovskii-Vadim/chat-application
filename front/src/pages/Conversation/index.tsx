@@ -6,8 +6,9 @@ import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
 
 import Icon from 'src/components/ui/Icon';
-import Input from 'src/components/ui/Input';
 import IconButton from 'src/components/ui/IconButton';
+
+import Field from './components/Field';
 
 const store = new ConversationStore();
 
@@ -56,8 +57,8 @@ const Conversation = (): JSX.Element => {
         <IconButton>
           <Icon type="clip" />
         </IconButton>
-        <Input placeholder="Написать сообщение..." />
-        <IconButton>
+        <Field store={store} />
+        <IconButton onClick={store.createMessage}>
           <Icon type="send" />
         </IconButton>
       </div>

@@ -1,11 +1,14 @@
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
 
-interface Props {
+type Props = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   children: ReactNode;
-}
+};
 
-const IconButton = ({ children }: Props): JSX.Element => (
-  <button className="text-sky-500 hover:text-sky-600 ease-in duration-200 hover:bg-sky-100 rounded-full p-1.5">
+const IconButton = ({ children, ...props }: Props): JSX.Element => (
+  <button
+    className="text-sky-500 hover:text-sky-600 ease-in duration-200 hover:bg-sky-100 rounded-full p-1.5"
+    {...props}
+  >
     {children}
   </button>
 );
