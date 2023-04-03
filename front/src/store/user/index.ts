@@ -1,3 +1,4 @@
+import { io, Socket } from 'socket.io-client';
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
@@ -10,11 +11,11 @@ import { Chat, Store } from './types';
 class UserStore implements Store {
   isLoading = true;
 
-  socket = undefined;
-
   chats: Chat[] = [];
 
   data: User | undefined = undefined;
+
+  socket: Socket<any, any> | undefined = undefined;
 
   constructor() {
     makeObservable(this, {
@@ -34,8 +35,12 @@ class UserStore implements Store {
       const result = await api(getProfile);
       const chats = await api(getChats);
 
+      const connection = io('http://localhost:8080');
+      connection.emit('addNewUser', result.id);
+
       this.data = result;
       this.chats = chats;
+      this.socket = connection;
     } catch (e) {
       console.error(e);
     } finally {

@@ -65,7 +65,6 @@ export class MessagesService {
     const payload = {
       chat: { id: ids.chatId },
       sender: { id: ids.senderId },
-      // replied: { id: ids.repliedId },
     };
 
     const data = await this.table

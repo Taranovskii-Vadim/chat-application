@@ -5,6 +5,8 @@ export type Message = CommonMessage & {
   isLoading: boolean;
 };
 
+export type Chat = CommonChat & { receiverId: number };
+
 export type CreateMessageDTO = Pick<Message, 'text'> & { senderId: Message['sender']['id']; chatId: number };
 
 export interface Store extends Base<CommonChat> {

@@ -6,9 +6,8 @@ import getChat from 'src/api/getChat';
 import getMessages from 'src/api/getMessages';
 
 import user from '../user';
-import { CommonChat } from '../types';
 
-import { Store, Message, CreateMessageDTO } from './types';
+import { Store, Message, CreateMessageDTO, Chat } from './types';
 import postMessage from 'src/api/postMessage';
 
 class ConversationStore implements Store {
@@ -18,7 +17,7 @@ class ConversationStore implements Store {
 
   messages: Message[] = [];
 
-  data: CommonChat | undefined = undefined;
+  data: Chat | undefined = undefined;
 
   constructor() {
     makeObservable(this, {
@@ -39,6 +38,10 @@ class ConversationStore implements Store {
     this.currentText = value;
   };
 
+  pushMessage = (value: Message): void => {
+    this.messages.push(value);
+  };
+
   setMessage = (id: Message['id'], value: Partial<Message>): void => {
     const idx = this.messages.findIndex((item) => item.id === id);
 
@@ -46,25 +49,28 @@ class ConversationStore implements Store {
   };
 
   createMessage = async (): Promise<void> => {
+    if (!this.currentText) return;
     // WARN we create temp id and createdAt in front just for show message before get api response
     const tempId = Date.now();
     const createdAt = formatDate(new Date());
 
     try {
-      if (!user.data) throw new Error('Not found user data');
       if (!this.data) throw new Error('Not found chat data');
+      if (!user.data || !user.socket) throw new Error('Not found user data');
 
       const text = this.currentText;
 
       const sender: Message['sender'] = { id: user.data.id, fullname: user.data.fullname };
 
-      this.messages.push({ id: tempId, createdAt, text, sender, isLoading: true, error: '' });
+      this.pushMessage({ id: tempId, createdAt, text, sender, isLoading: true, error: '' });
 
       const payload: CreateMessageDTO = { text, senderId: sender.id, chatId: this.data.id };
 
       const result = await api(postMessage, payload);
 
       this.setMessage(tempId, result);
+
+      user.socket.emit('sendMessage', { ...result, receiverId: this.data.receiverId });
     } catch (e) {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {

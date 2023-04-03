@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
+import { Message } from 'src/store/conversation/types';
 
 import Icon from 'src/components/ui/Icon';
 import Loader from 'src/components/ui/Loader';
@@ -16,6 +17,15 @@ const store = new ConversationStore();
 const Conversation = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const lastLi = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (user.socket) {
+      user.socket.on('receiveMessage', (value: Message) => {
+        // TODO bug we set messages in chat B but we send it for chat A
+        store.pushMessage(value);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (id) {

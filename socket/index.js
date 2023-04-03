@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
 
     if (user) {
       io.to(user.socketId).emit("receiveMessage", others);
-      io.to(user.socketId).emit("setLastMessage", others);
+      // io.to(user.socketId).emit("setLastMessage", others);
     }
   });
 
