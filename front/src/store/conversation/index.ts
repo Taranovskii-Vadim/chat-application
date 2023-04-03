@@ -4,11 +4,12 @@ import { api } from 'src/api';
 import { formatDate } from 'src/utils';
 import getChat from 'src/api/getChat';
 import getMessages from 'src/api/getMessages';
+import postMessage from 'src/api/postMessage';
+import patchMessage from 'src/api/patchMessage';
 
 import user from '../user';
 
-import { Store, Message, CreateMessageDTO, Chat } from './types';
-import postMessage from 'src/api/postMessage';
+import { Store, Message, CreateMessageDTO, Chat, UpdateMessageDTO } from './types';
 
 class ConversationStore implements Store {
   isLoading = true;
@@ -17,14 +18,18 @@ class ConversationStore implements Store {
 
   messages: Message[] = [];
 
-  data: Chat | undefined = undefined;
+  data: U<Chat> = undefined;
+
+  editedId: Message['id'] = 0;
 
   constructor() {
     makeObservable(this, {
-      isLoading: observable,
+      editedId: observable,
       messages: observable,
+      isLoading: observable,
       currentText: observable,
 
+      setEdited: action,
       setIsLoading: action,
       setCurrentText: action,
     });
@@ -36,6 +41,11 @@ class ConversationStore implements Store {
 
   setCurrentText = (value: string): void => {
     this.currentText = value;
+  };
+
+  setEdited = (value: Message['id'], text: string): void => {
+    this.editedId = value;
+    this.setCurrentText(text);
   };
 
   pushMessage = (value: Message): void => {
@@ -62,7 +72,7 @@ class ConversationStore implements Store {
 
       const sender: Message['sender'] = { id: user.data.id, fullname: user.data.fullname };
 
-      this.pushMessage({ id: tempId, createdAt, text, sender, isLoading: true, error: '' });
+      this.pushMessage({ id: tempId, createdAt, text, sender, isEdited: false, isLoading: true, error: '' });
 
       const payload: CreateMessageDTO = { text, senderId: sender.id, chatId: this.data.id };
 
@@ -75,6 +85,32 @@ class ConversationStore implements Store {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {
       this.setCurrentText('');
+    }
+  };
+
+  updateMessage = async (): Promise<void> => {
+    const id = this.editedId;
+
+    try {
+      const payload: UpdateMessageDTO = { text: this.currentText };
+
+      this.setMessage(id, { ...payload, isEdited: true, isLoading: true });
+
+      // WARN here we can recive updated message from api and set it to store just like in create
+      await api(patchMessage, payload, id.toString());
+    } catch (e) {
+      this.setMessage(id, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
+    } finally {
+      this.setMessage(id, { isLoading: false });
+      this.setEdited(0, '');
+    }
+  };
+
+  submitMessage = (): void => {
+    if (this.editedId) {
+      this.updateMessage();
+    } else {
+      this.createMessage();
     }
   };
 

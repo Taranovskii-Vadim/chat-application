@@ -16,7 +16,7 @@ export type CommonMessage = {
 };
 
 export interface Base<Data> {
-  data: Data | undefined;
+  data: U<Data>;
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
 }

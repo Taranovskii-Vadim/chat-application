@@ -54,10 +54,13 @@ const Conversation = (): JSX.Element => {
             <li key={item.id} className={`flex ${isAuthor ? 'justify-end' : 'justify-start'} mb-2 items-center`}>
               {item.isLoading ? <Loader className="mr-1" /> : null}
               {item.error ? <Icon type="error" className="mr-1 text-red-600" /> : null}
-              <div className={`${isAuthor ? 'bg-emerald-500' : 'bg-sky-500'} py-2 px-3 rounded-lg text-sm`}>
+              <div
+                onClick={isAuthor ? () => store.setEdited(item.id, item.text) : undefined}
+                className={`${isAuthor ? 'bg-emerald-500 cursor-pointer' : 'bg-sky-500'} py-2 px-3 rounded-lg text-sm`}
+              >
                 <p>{item.text}</p>
                 <small className="flex justify-end">
-                  {/* <span className="mr-1">Изменено</span> */}
+                  {item.isEdited ? <span className="mr-1">Изменено</span> : null}
                   <span>{item.createdAt}</span>
                 </small>
               </div>
@@ -71,7 +74,7 @@ const Conversation = (): JSX.Element => {
           <Icon type="clip" />
         </IconButton>
         <Field store={store} />
-        <IconButton onClick={store.createMessage}>
+        <IconButton onClick={store.submitMessage}>
           <Icon type="send" />
         </IconButton>
       </div>

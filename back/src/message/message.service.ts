@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { Message } from './message.entity';
-import { InsertPayloadDTO } from './message.dto';
+import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -86,9 +86,9 @@ export class MessagesService {
     return result;
   }
 
-  // TODO here we update only text. What about replied???
-  async updateMessage(id: number, data: any): Promise<Message> {
-    await this.table.save({ id, ...data });
+  // WARN in our app we update only text yet.
+  async updateMessage(id: number, data: UpdatePayloadDTO): Promise<Message> {
+    await this.table.save({ id, isEdited: true, ...data });
 
     const result = await this.table.findOne({
       where: { id },

@@ -1,9 +1,11 @@
 import { IsString, IsNumber } from 'class-validator';
 
-export class InsertPayloadDTO {
+export class UpdatePayloadDTO {
   @IsString()
   text: string;
+}
 
+export class InsertPayloadDTO extends UpdatePayloadDTO {
   @IsNumber()
   chatId: number;
 

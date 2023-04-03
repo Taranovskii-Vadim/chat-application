@@ -1,19 +1,19 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from "mobx";
 
-import { api } from 'src/api';
-import putMessage from 'src/api/putMessage';
-import getMessages from 'src/api/getMessages';
-import postMessage from 'src/api/postMessage';
+import { api } from "src/api";
+import putMessage from "src/api/putMessage";
+import getMessages from "src/api/getMessages";
+import postMessage from "src/api/postMessage";
 
-import { formatDate } from 'src/utils';
+import { formatDate } from "src/utils";
 
-import user from '../user';
-import chats from '../chats';
+import user from "../user";
+import chats from "../chats";
 
-import { Edited, Message, Replied } from './types';
+import { Edited, Message, Replied } from "./types";
 
 class ChatStore {
-  text = '';
+  text = "";
 
   isLoading = true;
 
@@ -48,7 +48,7 @@ class ChatStore {
     this.text = value;
   };
 
-  setMessage = (id: Message['id'], value: Partial<Message>): void => {
+  setMessage = (id: Message["id"], value: Partial<Message>): void => {
     const idx = this.messages.findIndex((item) => item.id === id);
 
     this.messages[idx] = { ...this.messages[idx], ...value };
@@ -80,7 +80,10 @@ class ChatStore {
       fullname: this.replied.fullname,
     };
 
-    const sender: Message['sender'] = { id: senderId, fullname: user.data.fullname };
+    const sender: Message["sender"] = {
+      id: senderId,
+      fullname: user.data.fullname,
+    };
 
     try {
       const text = this.text;
@@ -95,17 +98,22 @@ class ChatStore {
         createdAt: formatDate(new Date()),
       });
 
-      const result = await api(postMessage, { text, chatId, repliedId, senderId });
+      const result = await api(postMessage, {
+        text,
+        chatId,
+        repliedId,
+        senderId,
+      });
 
       this.setMessage(id, { ...result, isLoading: false });
 
       chats.setLastMessage(result);
 
-      user.socket.emit('sendMessage', { ...result, receiverId });
+      user.socket.emit("sendMessage", { ...result, receiverId });
     } catch (e) {
       this.setMessage(id, { isError: true });
     } finally {
-      this.setText('');
+      this.setText("");
       this.setRepliedMessage(undefined);
     }
   };
@@ -121,17 +129,19 @@ class ChatStore {
       this.setMessage(id, { text, isEdited: true, isLoading: true });
 
       const data = await api(putMessage, { text, isEdited: true }, id);
-      const isLastMessage = this.messages.findIndex((item) => item.id === data.id) === this.messages.length - 1;
+      const isLastMessage =
+        this.messages.findIndex((item) => item.id === data.id) ===
+        this.messages.length - 1;
 
       if (isLastMessage) {
         chats.setLastMessage(data);
       }
 
-      user.socket.emit('updateMessage', { ...data, isLastMessage, receiverId });
+      user.socket.emit("updateMessage", { ...data, isLastMessage, receiverId });
     } catch (e) {
       this.setMessage(id, { isError: true });
     } finally {
-      this.setText('');
+      this.setText("");
       this.setEdited(undefined);
       this.setMessage(id, { isLoading: false });
     }

@@ -9,9 +9,10 @@ export const mapUserDTO = ({ id, name, lastname }: CommonUserDTO): User => ({
   fullname: `${lastname} ${name}`,
 });
 
-export const mapMessageDTO = ({ createdAt, sender, text, id }: CommonMessageDTO): Message => ({
+export const mapMessageDTO = ({ createdAt, sender, text, id, isEdited }: CommonMessageDTO): Message => ({
   id,
   text,
+  isEdited,
   error: '',
   isLoading: false,
   sender: mapUserDTO(sender),

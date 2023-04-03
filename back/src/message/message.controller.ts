@@ -16,7 +16,7 @@ import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO } from './message.dto';
+import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
 
 @Controller('/messages')
 @UseGuards(JwtAuthGuard)
@@ -38,7 +38,10 @@ export class MessagesController {
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() body: any) {
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdatePayloadDTO,
+  ) {
     return this.messagesService.updateMessage(id, body);
   }
 }
