@@ -96,7 +96,7 @@ class ConversationStore implements Store {
 
       this.setMessage(id, { ...payload, isEdited: true, isLoading: true });
 
-      // WARN here we can recive updated message from api and set it to store just like in create
+      // WARN here we can receive updated message from api and set it to store just like in create
       await api(patchMessage, payload, id.toString());
     } catch (e) {
       this.setMessage(id, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 
@@ -7,16 +7,15 @@ import ConversationStore from 'src/store/conversation';
 import { Message } from 'src/store/conversation/types';
 
 import Icon from 'src/components/ui/Icon';
-import Loader from 'src/components/ui/Loader';
 import IconButton from 'src/components/ui/IconButton';
 
 import Field from './components/Field';
+import Messages from './components/Messages';
 
 const store = new ConversationStore();
 
 const Conversation = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const lastLi = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     if (user.socket) {
@@ -33,12 +32,6 @@ const Conversation = (): JSX.Element => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (lastLi.current) {
-      lastLi.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [store.isLoading]);
-
   if (store.isLoading || !store.data) {
     return <div>loading...</div>;
   }
@@ -46,29 +39,7 @@ const Conversation = (): JSX.Element => {
   return (
     <div className="w-3/4">
       <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
-      <ul className="h-8/10 px-4 py-2 overflow-y-auto">
-        {store.messages.map((item) => {
-          const isAuthor = user.data?.id === item.sender.id;
-
-          return (
-            <li key={item.id} className={`flex ${isAuthor ? 'justify-end' : 'justify-start'} mb-2 items-center`}>
-              {item.isLoading ? <Loader className="mr-1" /> : null}
-              {item.error ? <Icon type="error" className="mr-1 text-red-600" /> : null}
-              <div
-                onClick={isAuthor ? () => store.setEdited(item.id, item.text) : undefined}
-                className={`${isAuthor ? 'bg-emerald-500 cursor-pointer' : 'bg-sky-500'} py-2 px-3 rounded-lg text-sm`}
-              >
-                <p>{item.text}</p>
-                <small className="flex justify-end">
-                  {item.isEdited ? <span className="mr-1">Изменено</span> : null}
-                  <span>{item.createdAt}</span>
-                </small>
-              </div>
-            </li>
-          );
-        })}
-        <li ref={lastLi}></li>
-      </ul>
+      <Messages store={store} />
       <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
         <IconButton>
           <Icon type="clip" />
