@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import ConversationStore from 'src/store/conversation';
@@ -10,6 +10,7 @@ interface Props {
 }
 
 const Messages = ({ store }: Props): JSX.Element => {
+  const [openId, setOpenId] = useState(0);
   const lastLi = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -18,10 +19,14 @@ const Messages = ({ store }: Props): JSX.Element => {
     }
   }, []);
 
+  const handleOpenMenu = (value: number): void => {
+    setOpenId((prev) => (prev === value ? 0 : value));
+  };
+
   return (
     <ul className="h-8/10 px-4 py-2 overflow-y-auto">
       {store.messages.map((item) => (
-        <Message key={item.id} message={item} store={store} />
+        <Message key={item.id} message={item} store={store} openId={openId} setOpenId={handleOpenMenu} />
       ))}
       <li ref={lastLi}></li>
     </ul>

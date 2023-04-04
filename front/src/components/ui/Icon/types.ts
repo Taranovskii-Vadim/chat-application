@@ -1,1 +1,1 @@
-export type IconType = 'clip' | 'send' | 'error';
+export type IconType = 'clip' | 'send' | 'error' | 'edit' | 'reply';
