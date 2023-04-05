@@ -20,7 +20,7 @@ const Message = ({ store, openId, message, setOpenId }: Props): JSX.Element => {
   const handleSetOpenId = (): void => setOpenId(message.id);
 
   const handleEdit = (): void => {
-    store.setEdited(message.id, message.text);
+    store.setEdited({ id: message.id, text: message.text });
     handleSetOpenId();
   };
 
@@ -32,7 +32,7 @@ const Message = ({ store, openId, message, setOpenId }: Props): JSX.Element => {
         onClick={handleSetOpenId}
         className={`${
           isAuthor ? 'bg-emerald-500' : 'bg-sky-500'
-        } cursor-pointer py-2 px-3 rounded-lg text-sm hover:scale-105 ease-in duration-100`}
+        } cursor-pointer py-2 px-3 max-w-3xl rounded-lg text-sm`}
       >
         <p>{message.text}</p>
         <small className="flex justify-end">

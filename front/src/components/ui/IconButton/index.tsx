@@ -4,9 +4,9 @@ type Props = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButt
   children: ReactNode;
 };
 
-const IconButton = ({ children, ...props }: Props): JSX.Element => (
+const IconButton = ({ children, className, ...props }: Props): JSX.Element => (
   <button
-    className="text-sky-500 hover:text-sky-600 ease-in duration-200 hover:bg-sky-100 rounded-full p-1.5"
+    className={`text-sky-500 hover:text-sky-600 ease-in duration-200 hover:bg-sky-100 rounded-full p-1.5 ${className}`}
     {...props}
   >
     {children}

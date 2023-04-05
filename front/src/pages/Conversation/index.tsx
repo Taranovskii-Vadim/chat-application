@@ -40,13 +40,26 @@ const Conversation = (): JSX.Element => {
     <div className="w-3/4">
       <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
       <Messages store={store} />
+      {store.edited.id ? (
+        // TODO sep component
+        <div className="h-1/10 pl-4 pr-2 flex items-center border-t">
+          <Icon type="edit" className="text-sky-500" />
+          <div className="ml-3">
+            <h6 className="font-semibold text-sky-500 text-sm">Редактирование</h6>
+            <p className="text-sm">{store.edited.text}</p>
+          </div>
+          <IconButton className="ml-auto" onClick={() => store.resetEdited()}>
+            <Icon type="close" />
+          </IconButton>
+        </div>
+      ) : null}
       <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
         <IconButton>
           <Icon type="clip" />
         </IconButton>
         <Field store={store} />
         <IconButton onClick={store.submitMessage}>
-          <Icon type="send" />
+          <Icon type={store.edited.id ? 'check' : 'send'} />
         </IconButton>
       </div>
     </div>

@@ -9,7 +9,7 @@ import patchMessage from 'src/api/patchMessage';
 
 import user from '../user';
 
-import { Store, Message, CreateMessageDTO, Chat, UpdateMessageDTO } from './types';
+import { Store, Message, CreateMessageDTO, Chat, UpdateMessageDTO, Edited } from './types';
 
 class ConversationStore implements Store {
   isLoading = true;
@@ -20,16 +20,18 @@ class ConversationStore implements Store {
 
   data: U<Chat> = undefined;
 
-  editedId: Message['id'] = 0;
+  edited: Edited = { id: 0, text: '' };
 
   constructor() {
     makeObservable(this, {
-      editedId: observable,
+      edited: observable,
       messages: observable,
       isLoading: observable,
       currentText: observable,
 
       setEdited: action,
+      setMessage: action,
+      pushMessage: action,
       setIsLoading: action,
       setCurrentText: action,
     });
@@ -43,9 +45,13 @@ class ConversationStore implements Store {
     this.currentText = value;
   };
 
-  setEdited = (value: Message['id'], text: string): void => {
-    this.editedId = value;
-    this.setCurrentText(text);
+  setEdited = (value: Edited): void => {
+    this.edited = value;
+    this.setCurrentText(value.text);
+  };
+
+  resetEdited = (): void => {
+    this.setEdited({ id: 0, text: '' });
   };
 
   pushMessage = (value: Message): void => {
@@ -89,7 +95,7 @@ class ConversationStore implements Store {
   };
 
   updateMessage = async (): Promise<void> => {
-    const id = this.editedId;
+    const id = this.edited.id;
 
     try {
       const payload: UpdateMessageDTO = { text: this.currentText };
@@ -102,12 +108,12 @@ class ConversationStore implements Store {
       this.setMessage(id, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {
       this.setMessage(id, { isLoading: false });
-      this.setEdited(0, '');
+      this.resetEdited();
     }
   };
 
   submitMessage = (): void => {
-    if (this.editedId) {
+    if (this.edited.id) {
       this.updateMessage();
     } else {
       this.createMessage();

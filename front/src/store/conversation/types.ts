@@ -12,15 +12,18 @@ export type UpdateMessageDTO = Pick<Message, 'text'>;
 
 export type CreateMessageDTO = UpdateMessageDTO & { senderId: Message['sender']['id']; chatId: number };
 
+export type Edited = { id: Message['id']; text: Message['text'] };
+
 export interface Store extends Base<CommonChat> {
+  edited: Edited;
   currentText: string;
   messages: Message[];
-  editedId: Message['id'];
 
+  resetEdited: () => void;
   submitMessage: () => void;
   updateMessage: () => Promise<void>;
   createMessage: () => Promise<void>;
+  setEdited: (value: Edited) => void;
   setCurrentText: (value: string) => void;
-  setEdited: (value: Message['id'], text: string) => void;
   setMessage: (id: number, value: Partial<Message>) => void;
 }
