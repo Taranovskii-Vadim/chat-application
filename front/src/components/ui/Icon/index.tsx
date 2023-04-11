@@ -1,4 +1,3 @@
-import { IconType } from './types';
 import { PATHS } from './constants';
 
 interface Props {

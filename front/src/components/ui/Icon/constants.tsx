@@ -1,5 +1,3 @@
-import { IconType } from './types';
-
 export const PATHS: Record<IconType, JSX.Element> = {
   clip: (
     <path
