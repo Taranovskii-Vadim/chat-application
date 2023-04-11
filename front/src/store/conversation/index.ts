@@ -98,12 +98,17 @@ class ConversationStore implements Store {
     const id = this.edited.id;
 
     try {
+      if (!this.data) throw new Error('Not found chat data');
+      if (!user.socket) throw new Error('Not found user data');
+
       const payload: UpdateMessageDTO = { text: this.currentText };
 
       this.setMessage(id, { ...payload, isEdited: true, isLoading: true });
 
       // WARN here we can receive updated message from api and set it to store just like in create
       await api(patchMessage, payload, id.toString());
+
+      user.socket.emit('updateMessage', { ...payload, id, receiverId: this.data.receiverId });
     } catch (e) {
       this.setMessage(id, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {

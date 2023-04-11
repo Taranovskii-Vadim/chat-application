@@ -24,6 +24,10 @@ const Conversation = (): JSX.Element => {
         // TODO bug we set messages in chat B but we send it for chat A
         store.pushMessage(value);
       });
+
+      user.socket.on('changeMessage', ({ id, text }: Pick<Message, 'id' | 'text'>) => {
+        store.setMessage(id, { text, isEdited: true });
+      });
     }
   }, []);
 

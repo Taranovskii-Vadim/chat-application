@@ -24,14 +24,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateMessage", (data) => {
-    const { receiverId, isLastMessage, ...others } = data;
+    const { receiverId, ...others } = data;
     const user = activeUsers.find((user) => user.id === receiverId);
 
     if (user) {
       io.to(user.socketId).emit("changeMessage", others);
-      if (isLastMessage) {
-        io.to(user.socketId).emit("setLastMessage", others);
-      }
+      // if (isLastMessage) {
+      //   io.to(user.socketId).emit("setLastMessage", others);
+      // }
     }
   });
 
