@@ -10,7 +10,11 @@ export type Chat = CommonChat & { receiverId: number };
 
 export type UpdateMessageDTO = Pick<Message, 'text'>;
 
-export type CreateMessageDTO = UpdateMessageDTO & { senderId: Message['sender']['id']; chatId: number };
+export type CreateMessageDTO = UpdateMessageDTO & {
+  chatId: number;
+  repliedId?: Message['id'];
+  senderId: Message['sender']['id'];
+};
 
 export type Extra = {
   title: string;

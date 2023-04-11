@@ -11,4 +11,7 @@ export class InsertPayloadDTO extends UpdatePayloadDTO {
 
   @IsNumber()
   senderId: number;
+
+  @IsNumber()
+  repliedId: number;
 }

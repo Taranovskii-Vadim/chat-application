@@ -82,6 +82,10 @@ class ConversationStore implements Store {
 
       const payload: CreateMessageDTO = { text, senderId: sender.id, chatId: this.data.id };
 
+      if (this.extra.type === 'reply') {
+        payload.repliedId = this.extra.id;
+      }
+
       const result = await api(postMessage, payload);
 
       this.setMessage(tempId, result);
@@ -90,7 +94,7 @@ class ConversationStore implements Store {
     } catch (e) {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {
-      this.setCurrentText('');
+      this.resetExtra();
     }
   };
 
