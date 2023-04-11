@@ -45,8 +45,13 @@ const Conversation = (): JSX.Element => {
     <div className="w-3/4">
       <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
       <Messages store={store} />
-      {store.edited.id ? (
-        <FooterExtra icon="edit" title="Редактирование" text={store.edited.text} onClose={store.resetEdited} />
+      {store.extra.type ? (
+        <FooterExtra
+          icon={store.extra.type}
+          text={store.extra.text}
+          onClose={store.resetExtra}
+          title={store.extra.title}
+        />
       ) : null}
       <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
         <IconButton>
@@ -54,7 +59,7 @@ const Conversation = (): JSX.Element => {
         </IconButton>
         <Field store={store} />
         <IconButton onClick={store.submitMessage}>
-          <Icon type={store.edited.id ? 'check' : 'send'} />
+          <Icon type={store.extra.type === 'edit' ? 'check' : 'send'} />
         </IconButton>
       </div>
     </div>

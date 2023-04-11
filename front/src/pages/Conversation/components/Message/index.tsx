@@ -20,7 +20,13 @@ const Message = ({ store, openId, message, setOpenId }: Props): JSX.Element => {
   const handleSetOpenId = (): void => setOpenId(message.id);
 
   const handleEdit = (): void => {
-    store.setEdited({ id: message.id, text: message.text });
+    store.setExtra({ type: 'edit', id: message.id, text: message.text, title: 'Редактирование' });
+    store.setCurrentText(message.text);
+    handleSetOpenId();
+  };
+
+  const handleReply = (): void => {
+    store.setExtra({ type: 'reply', id: message.id, title: message.sender.fullname, text: message.text });
     handleSetOpenId();
   };
 
@@ -47,7 +53,7 @@ const Message = ({ store, openId, message, setOpenId }: Props): JSX.Element => {
             <Icon type="edit" />
           </IconButton>
         ) : null}
-        <IconButton>
+        <IconButton onClick={handleReply}>
           <Icon type="reply" />
         </IconButton>
       </div>

@@ -24,7 +24,7 @@ const Messages = ({ store }: Props): JSX.Element => {
   };
 
   return (
-    <ul className={`${store.edited.id ? 'h-7/10' : 'h-8/10'} px-4 py-2 overflow-y-auto`}>
+    <ul className={`${store.extra.id ? 'h-7/10' : 'h-8/10'} px-4 py-2 overflow-y-auto`}>
       {store.messages.map((item) => (
         <Message key={item.id} message={item} store={store} openId={openId} setOpenId={handleOpenMenu} />
       ))}

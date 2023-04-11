@@ -9,7 +9,7 @@ import patchMessage from 'src/api/patchMessage';
 
 import user from '../user';
 
-import { Store, Message, CreateMessageDTO, Chat, UpdateMessageDTO, Edited } from './types';
+import { Store, Message, CreateMessageDTO, Chat, UpdateMessageDTO, Extra } from './types';
 
 class ConversationStore implements Store {
   isLoading = true;
@@ -20,16 +20,16 @@ class ConversationStore implements Store {
 
   data: U<Chat> = undefined;
 
-  edited: Edited = { id: 0, text: '' };
+  extra: Extra = { type: '', id: 0, text: '', title: '' };
 
   constructor() {
     makeObservable(this, {
-      edited: observable,
+      extra: observable,
       messages: observable,
       isLoading: observable,
       currentText: observable,
 
-      setEdited: action,
+      setExtra: action,
       setMessage: action,
       pushMessage: action,
       setIsLoading: action,
@@ -45,13 +45,13 @@ class ConversationStore implements Store {
     this.currentText = value;
   };
 
-  setEdited = (value: Edited): void => {
-    this.edited = value;
-    this.setCurrentText(value.text);
+  setExtra = (value: Extra): void => {
+    this.extra = value;
   };
 
-  resetEdited = (): void => {
-    this.setEdited({ id: 0, text: '' });
+  resetExtra = (): void => {
+    this.setExtra({ type: '', id: 0, text: '', title: '' });
+    this.setCurrentText('');
   };
 
   pushMessage = (value: Message): void => {
@@ -95,7 +95,7 @@ class ConversationStore implements Store {
   };
 
   updateMessage = async (): Promise<void> => {
-    const id = this.edited.id;
+    const id = this.extra.id;
 
     try {
       if (!this.data) throw new Error('Not found chat data');
@@ -113,12 +113,12 @@ class ConversationStore implements Store {
       this.setMessage(id, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {
       this.setMessage(id, { isLoading: false });
-      this.resetEdited();
+      this.resetExtra();
     }
   };
 
   submitMessage = (): void => {
-    if (this.edited.id) {
+    if (this.extra.type === 'edit') {
       this.updateMessage();
     } else {
       this.createMessage();
