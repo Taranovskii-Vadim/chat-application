@@ -1,11 +1,9 @@
 import path from 'path';
 import react from '@vitejs/plugin-react';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 import { VitePWA } from 'vite-plugin-pwa';
 import { ServerOptions, defineConfig } from 'vite';
 
 const server: ServerOptions = {
-  https: true,
   proxy: {
     '/api': {
       target: 'http://localhost:3000',
@@ -16,11 +14,9 @@ const server: ServerOptions = {
 export default defineConfig({
   plugins: [
     react(),
-    basicSsl(),
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
-      devOptions: { enabled: true },
       manifest: {
         name: 'chat application',
         short_name: 'chat',
