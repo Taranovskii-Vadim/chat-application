@@ -13,9 +13,9 @@ class UserStore implements Store {
 
   chats: Chat[] = [];
 
-  data: User | undefined = undefined;
+  data: U<User> = undefined;
 
-  socket: Socket<any, any> | undefined = undefined;
+  socket: U<Socket<any, any>> = undefined;
 
   constructor() {
     makeObservable(this, {

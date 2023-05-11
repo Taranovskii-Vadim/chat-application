@@ -1,8 +1,8 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { api } from 'src/api';
-import { formatDate } from 'src/utils';
 import getChat from 'src/api/getChat';
+import { formatDate } from 'src/utils';
 import getMessages from 'src/api/getMessages';
 import postMessage from 'src/api/postMessage';
 import patchMessage from 'src/api/patchMessage';

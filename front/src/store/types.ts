@@ -15,8 +15,8 @@ export type CommonMessage = {
   createdAt: string;
 };
 
-export interface Base<Data> {
+export type Base<Data> = {
   data: U<Data>;
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
-}
+};
