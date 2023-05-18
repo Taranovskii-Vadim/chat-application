@@ -6,8 +6,7 @@ import Pages from './pages';
 import Login from './components/Login';
 
 const App = (): JSX.Element => {
-  return <Login />;
-  //   return auth.isLogged ? <Pages /> : <Login />;
+  return auth.isLogged ? <Pages /> : <Login />;
 };
 
 export default observer(App);

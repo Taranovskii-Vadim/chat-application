@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { List, ListItem, Typography, Avatar, Box } from '@mui/material';
 
 import user from 'src/store/user';
-import { Chat as ChatType } from 'src/store/user/types';
+import { Chat } from 'src/store/user/types';
 
 interface Props {
-  data: ChatType[];
+  data: Chat[];
 }
 
 // TODO maybe create routes folder
@@ -21,38 +22,59 @@ const Chats = ({ data }: Props): JSX.Element => {
   };
 
   return (
-    <ul className="overflow-y-auto max-h-9/10">
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {data.map(({ id, title, avatar, unReadCount, lastMessage }) => {
+        const isEqual = current === id;
         const count = unReadCount >= 1000 ? '999+' : unReadCount;
-        const prefix = current === id ? 'bg-sky-500 text-white' : '';
 
         return (
-          <li
+          <ListItem
             key={id}
-            className={`${prefix} flex items-center px-4 py-3 cursor-pointer hover:bg-sky-500 ease-in duration-100 hover:text-white`}
             onClick={() => handleMoveToConversation(id)}
+            sx={{
+              cursor: 'pointer',
+              color: isEqual ? 'common.white' : '',
+              backgroundColor: isEqual ? 'primary.main' : '',
+              '&:hover': {
+                color: 'common.white',
+                backgroundColor: 'primary.main',
+              },
+            }}
           >
-            <img className="inline-block h-1/6 rounded-full w-1/6" src={avatar} />
-            <div className="ml-2 w-5/6">
-              <div className="flex justify-between items-center mb-1">
-                <p>{title}</p>
-                {lastMessage ? <p className="text-sm">{lastMessage.createdAt}</p> : null}
-              </div>
-              <div className="flex justify-between items-center">
+            <Avatar src={avatar} />
+            <Box sx={{ flex: 1, ml: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', md: 1 }}>
+                <Typography variant="h6">{title}</Typography>
+                {lastMessage ? <Typography variant="subtitle1">{lastMessage.createdAt}</Typography> : null}
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 {lastMessage ? (
-                  <p className={`${count ? 'w-5/6' : ''} overflow-hidden whitespace-nowrap text-ellipsis text-sm`}>
+                  <Typography
+                    sx={{ overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '210px', textOverflow: 'ellipsis' }}
+                  >
                     {user.data?.id === lastMessage.sender.id ? `You: ${lastMessage.text}` : lastMessage.text}
-                  </p>
+                  </Typography>
                 ) : null}
                 {count ? (
-                  <span className="bg-sky-500 rounded-3xl text-white text-center px-1 text-sm min-w-5">{count}</span>
+                  <Box
+                    sx={{
+                      width: '16px',
+                      height: '16px',
+                      backgroundColor: 'primary.main',
+                      textAlign: 'center',
+                      color: 'common.white',
+                      borderRadius: '50%',
+                    }}
+                  >
+                    <Typography variant="subtitle1">{count}</Typography>
+                  </Box>
                 ) : null}
-              </div>
-            </div>
-          </li>
+              </Box>
+            </Box>
+          </ListItem>
         );
       })}
-    </ul>
+    </List>
   );
 };
 
