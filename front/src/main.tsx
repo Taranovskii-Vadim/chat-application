@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
+// TODO rewrite to Material ui
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
     <App />
