@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from 'src/api';
 import postLogin from 'src/api/postLogin';
 
-import { Payload, Store } from './types';
+import { FormValues, Store } from './types';
 
 class Auth implements Store {
   isLogged = !!localStorage.getItem('token');
@@ -27,7 +27,7 @@ class Auth implements Store {
     this.setIsLogged(false);
   };
 
-  login = async (payload: Payload): Promise<void> => {
+  login = async (payload: FormValues): Promise<void> => {
     const result = await api(postLogin, payload);
 
     this.setIsLogged(!!result);

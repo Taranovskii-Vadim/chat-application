@@ -1,4 +1,4 @@
-export type Payload = {
+export type FormValues = {
   login: string;
   password: string;
 };
@@ -8,5 +8,5 @@ export interface Store {
 
   logout: () => void;
   setIsLogged: (value: boolean) => void;
-  login: (payload: Payload) => Promise<void>;
+  login: (payload: FormValues) => Promise<void>;
 }

@@ -1,31 +1,45 @@
-import { FormEvent, useRef } from 'react';
+import { TextField, Button, Box } from '@mui/material';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+
+import { FormValues } from 'src/store/auth/types';
 
 import auth from 'src/store/auth';
 
-import Input from '../ui/Input';
-import Button from '../ui/Button';
-
 const Login = (): JSX.Element => {
-  const loginRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const { control, handleSubmit } = useForm<FormValues>({ defaultValues: { password: '', login: '' } });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-
-    if (loginRef.current && passwordRef.current) {
-      auth.login({ login: loginRef.current.value, password: passwordRef.current.value });
-    }
+  const onSubmit: SubmitHandler<FormValues> = (data): void => {
+    auth.login(data);
   };
 
   return (
-    <form
-      className="absolute space-y-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 text-center"
-      onSubmit={handleSubmit}
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        display: 'flex',
+        position: 'absolute',
+        flexDirection: 'column',
+        top: '50%',
+        left: '50%',
+        width: '40%',
+        transform: 'translate(-50%,-50%)',
+      }}
     >
-      <Input ref={loginRef} />
-      <Input ref={passwordRef} type="password" />
-      <Button className="w-3/4" type="submit" label="Войти" />
-    </form>
+      <Controller
+        control={control}
+        name="login"
+        render={({ field }) => <TextField size="small" sx={{ mb: 3 }} {...field} />}
+      />
+      <Controller
+        control={control}
+        name="password"
+        render={({ field }) => <TextField type="password" size="small" sx={{ mb: 3 }} {...field} />}
+      />
+      <Button type="submit" variant="contained">
+        Войти
+      </Button>
+    </Box>
   );
 };
 
