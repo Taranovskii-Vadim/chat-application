@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 
@@ -6,7 +7,6 @@ import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
 import { Message } from 'src/store/conversation/types';
 
-import Icon from 'src/components/ui/Icon';
 import IconButton from 'src/components/ui/IconButton';
 
 import Field from './components/Field';
@@ -42,27 +42,33 @@ const Conversation = (): JSX.Element => {
   }
 
   return (
-    <div className="w-3/4">
-      <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
+    <Box sx={{ width: '75%' }}>
+      <Box sx={{ px: 2, height: '10%', display: 'flex', alignItems: 'center', borderBottom: '1px solid black' }}>
+        {store.data.title}
+      </Box>
       <Messages store={store} />
-      {store.extra.type ? (
-        <FooterExtra
-          icon={store.extra.type}
-          text={store.extra.text}
-          onClose={store.resetExtra}
-          title={store.extra.title}
-        />
-      ) : null}
-      <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
-        <IconButton>
-          <Icon type="clip" />
-        </IconButton>
-        <Field store={store} />
-        <IconButton onClick={store.submitMessage}>
-          <Icon type={store.extra.type === 'edit' ? 'check' : 'send'} />
-        </IconButton>
-      </div>
-    </div>
+    </Box>
+    // <div className="w-3/4">
+    //   <div className="h-1/10 border-b flex justify-between items-center px-4">{store.data.title}</div>
+    //   <Messages store={store} />
+    //   {store.extra.type ? (
+    //     <FooterExtra
+    //       icon={store.extra.type}
+    //       text={store.extra.text}
+    //       onClose={store.resetExtra}
+    //       title={store.extra.title}
+    //     />
+    //   ) : null}
+    //   <div className="h-1/10 border-b flex justify-between items-center px-2 space-x-2">
+    //     <IconButton>
+    //       <Icon type="clip" />
+    //     </IconButton>
+    //     <Field store={store} />
+    //     <IconButton onClick={store.submitMessage}>
+    //       <Icon type={store.extra.type === 'edit' ? 'check' : 'send'} />
+    //     </IconButton>
+    //   </div>
+    // </div>
   );
 };
 

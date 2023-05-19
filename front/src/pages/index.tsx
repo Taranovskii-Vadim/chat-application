@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { Box, TextField } from '@mui/material';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import user from 'src/store/user';
@@ -7,7 +8,6 @@ import user from 'src/store/user';
 import Chats from 'src/components/Chats';
 
 import Conversation from './Conversation';
-import { Box, TextField } from '@mui/material';
 
 const Pages = (): JSX.Element => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const Pages = (): JSX.Element => {
       <Routes>
         {/* TODO add lazy loading */}
         <Route path="/" element={<div>choose chat to start messaging</div>} />
-        {/* <Route path="/conversation/:id" element={<Conversation />} /> */}
+        <Route path="/conversation/:id" element={<Conversation />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Box>
