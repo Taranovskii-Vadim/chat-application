@@ -11,7 +11,7 @@ import { Message } from 'src/store/conversation/types';
 
 import Field from './components/Field';
 import Messages from './components/Messages';
-import BlockWrapper from './components/BlockWrapper';
+import BlockWrapper from '../../components/BlockWrapper';
 import FooterExtra from './components/FooterExtra';
 
 const store = new ConversationStore();

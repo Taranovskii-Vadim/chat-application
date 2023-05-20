@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 
 import ConversationStore from 'src/store/conversation';
 
-import BlockWrapper from '../BlockWrapper';
+import BlockWrapper from '../../../../components/BlockWrapper';
 
 interface Props {
   store: ConversationStore;

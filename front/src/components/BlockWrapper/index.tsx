@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Box } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 interface Props {
   children: ReactNode;
@@ -11,7 +12,13 @@ const BlockWrapper = ({ children, borderPosition }: Props): JSX.Element => {
 
   return (
     <Box
-      sx={{ px: 2, height: '50px', display: 'flex', alignItems: 'center', [`border${position}`]: '1px solid black' }}
+      sx={{
+        px: 2,
+        height: '50px',
+        display: 'flex',
+        alignItems: 'center',
+        [`border${position}`]: `1px solid ${grey['300']}`,
+      }}
     >
       {children}
     </Box>
