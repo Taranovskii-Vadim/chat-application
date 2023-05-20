@@ -24,7 +24,7 @@ const Pages = (): JSX.Element => {
     <Box sx={{ display: 'flex', height: '100vh', maxHeight: '100vh' }}>
       {/* TODO change bg color later */}
       <Box sx={{ width: '25%', borderRight: `1px solid ${grey['300']}` }}>
-        <BlockWrapper borderPosition="bottom">
+        <BlockWrapper border="bottom">
           <TextField size="small" placeholder="Добавить чат..." fullWidth />
         </BlockWrapper>
         <Chats data={user.chats} />

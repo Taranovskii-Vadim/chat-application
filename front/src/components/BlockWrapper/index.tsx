@@ -4,25 +4,18 @@ import { grey } from '@mui/material/colors';
 
 interface Props {
   children: ReactNode;
-  borderPosition: 'top' | 'bottom';
+  border?: 'top' | 'bottom';
 }
 
-const BlockWrapper = ({ children, borderPosition }: Props): JSX.Element => {
-  const position = borderPosition[0].toUpperCase() + borderPosition.slice(1);
+const BlockWrapper = ({ children, border }: Props): JSX.Element => {
+  let sx = { px: 2, height: '50px', display: 'flex', alignItems: 'center' };
 
-  return (
-    <Box
-      sx={{
-        px: 2,
-        height: '50px',
-        display: 'flex',
-        alignItems: 'center',
-        [`border${position}`]: `1px solid ${grey['300']}`,
-      }}
-    >
-      {children}
-    </Box>
-  );
+  if (border) {
+    const position = border && border[0].toUpperCase() + border.slice(1);
+    sx = { ...sx, [`border${position}`]: `1px solid ${grey['300']}` };
+  }
+
+  return <Box sx={sx}>{children}</Box>;
 };
 
 export default BlockWrapper;

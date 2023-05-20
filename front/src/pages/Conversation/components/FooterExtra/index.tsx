@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 
 import ConversationStore from 'src/store/conversation';
 
-import BlockWrapper from '../../../../components/BlockWrapper';
+import BlockWrapper from 'src/components/BlockWrapper';
 
 interface Props {
   store: ConversationStore;
@@ -18,7 +18,7 @@ const FooterExtra = ({ store }: Props): JSX.Element | null => {
   }
 
   return (
-    <BlockWrapper borderPosition="top">
+    <BlockWrapper border="top">
       {store.extra.type === 'edit' ? <ModeEditOutlineOutlinedIcon color="primary" /> : <ReplyIcon color="primary" />}
       <Box sx={{ ml: 2 }}>
         <Typography variant="h6" color="primary">
@@ -26,7 +26,7 @@ const FooterExtra = ({ store }: Props): JSX.Element | null => {
         </Typography>
         <Typography>{store.extra.text}</Typography>
       </Box>
-      <IconButton sx={{ ml: 'auto' }} onClick={store.resetExtra}>
+      <IconButton size="small" sx={{ ml: 'auto' }} onClick={store.resetExtra}>
         <CloseIcon />
       </IconButton>
     </BlockWrapper>

@@ -9,9 +9,10 @@ import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
 import { Message } from 'src/store/conversation/types';
 
+import BlockWrapper from 'src/components/BlockWrapper';
+
 import Field from './components/Field';
 import Messages from './components/Messages';
-import BlockWrapper from '../../components/BlockWrapper';
 import FooterExtra from './components/FooterExtra';
 
 const store = new ConversationStore();
@@ -44,10 +45,10 @@ const Conversation = (): JSX.Element => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%' }}>
-      <BlockWrapper borderPosition="bottom">{store.data.title}</BlockWrapper>
+      <BlockWrapper border="bottom">{store.data.title}</BlockWrapper>
       <Messages store={store} />
       <FooterExtra store={store} />
-      <BlockWrapper borderPosition="top">
+      <BlockWrapper>
         <AttachFileOutlinedIcon color="primary" sx={{ cursor: 'pointer' }} />
         <Field store={store} />
         <IconButton size="small" onClick={store.submitMessage}>
