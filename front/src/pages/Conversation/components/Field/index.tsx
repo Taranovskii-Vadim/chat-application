@@ -11,7 +11,7 @@ const Field = ({ store }: Props): JSX.Element => (
   <TextField
     fullWidth
     size="small"
-    sx={{ mx: 1 }}
+    sx={{ mx: 2 }}
     value={store.currentText}
     placeholder="Написать сообщение..."
     onChange={(e) => store.setCurrentText(e.target.value)}

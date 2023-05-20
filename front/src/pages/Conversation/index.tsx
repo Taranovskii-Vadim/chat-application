@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import CheckIcon from '@mui/icons-material/Check';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import CloseIcon from '@mui/icons-material/Close';
+import ReplyIcon from '@mui/icons-material/Reply';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 
 import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
@@ -12,7 +15,8 @@ import { Message } from 'src/store/conversation/types';
 
 import Field from './components/Field';
 import Messages from './components/Messages';
-// import FooterExtra from './components/FooterExtra';
+import BlockWrapper from './components/BlockWrapper';
+import FooterExtra from './components/FooterExtra';
 
 const store = new ConversationStore();
 
@@ -44,30 +48,35 @@ const Conversation = (): JSX.Element => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%' }}>
-      {/* TODO can move to sep wrapper component */}
-      <Box sx={{ px: 2, height: '50px', display: 'flex', alignItems: 'center', borderBottom: '1px solid black' }}>
-        {store.data.title}
-      </Box>
+      <BlockWrapper borderPosition="bottom">{store.data.title}</BlockWrapper>
       <Messages store={store} />
       {/* TODO we can delete store.extra.id to save perf, we can show footerextra as absolute position height:
       store.extra.id ? '70%' : '80%' */}
-      {/* {store.extra.type ? (
-        <FooterExtra
-          icon={store.extra.type}
-          text={store.extra.text}
-          onClose={store.resetExtra}
-          title={store.extra.title}
-        />
-      ) : null} */}
-      <Box sx={{ height: '50px', display: 'flex', alignItems: 'center', borderTop: '1px solid black' }}>
-        <IconButton>
-          <AttachFileOutlinedIcon color="primary" />
-        </IconButton>
+      {store.extra.type ? (
+        <BlockWrapper borderPosition="top">
+          {store.extra.type === 'edit' ? (
+            <ModeEditOutlineOutlinedIcon color="primary" />
+          ) : (
+            <ReplyIcon color="primary" />
+          )}
+          <Box sx={{ ml: 2 }}>
+            <Typography variant="h6" color="primary">
+              {store.extra.title}
+            </Typography>
+            <Typography>{store.extra.text}</Typography>
+          </Box>
+          <IconButton sx={{ ml: 'auto' }} onClick={store.resetExtra}>
+            <CloseIcon />
+          </IconButton>
+        </BlockWrapper>
+      ) : null}
+      <BlockWrapper borderPosition="top">
+        <AttachFileOutlinedIcon color="primary" sx={{ cursor: 'pointer' }} />
         <Field store={store} />
-        <IconButton onClick={store.submitMessage}>
+        <IconButton size="small" onClick={store.submitMessage}>
           {store.extra.type ? <CheckIcon color="primary" /> : <SendIcon color="primary" />}
         </IconButton>
-      </Box>
+      </BlockWrapper>
     </Box>
   );
 };
