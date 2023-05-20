@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import user from 'src/store/user';
@@ -35,17 +35,6 @@ const Pages = (): JSX.Element => {
       </Routes>
     </Box>
   );
-
-  // return (
-  //   <div className="flex h-screen max-h-screen">
-  //     <div className="w-1/4 border-r">
-  //       <form className="py-2 px-4 h-1/10 border-b">
-  //         <Input />
-  //       </form>
-  //       <Chats data={user.chats} />
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default observer(Pages);

@@ -1,24 +1,36 @@
-import { Box } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import CloseIcon from '@mui/icons-material/Close';
+import ReplyIcon from '@mui/icons-material/Reply';
+import { Box, IconButton, Typography } from '@mui/material';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+
+import ConversationStore from 'src/store/conversation';
+
+import BlockWrapper from '../BlockWrapper';
 
 interface Props {
-  title: string;
-  text: string;
-  icon: IconType;
-  onClose: () => void;
+  store: ConversationStore;
 }
 
-const FooterExtra = ({ icon, title, text, onClose }: Props): JSX.Element => (
-  <Box sx={{}}></Box>
-  // <div className="h-1/10 pl-4 pr-2 flex items-center border-t">
-  //   <Icon type={icon} className="text-sky-500" />
-  // <div className="ml-3">
-  //   <h6 className="font-semibold text-sky-500 text-sm">{title}</h6>
-  //   <p className="text-sm">{text}</p>
-  // </div>
-  // <IconButton className="ml-auto" onClick={onClose}>
-  //   <Icon type="close" />
-  // </IconButton>
-  // </div>
-);
+const FooterExtra = ({ store }: Props): JSX.Element | null => {
+  if (!store.extra.type) {
+    return null;
+  }
 
-export default FooterExtra;
+  return (
+    <BlockWrapper borderPosition="top">
+      {store.extra.type === 'edit' ? <ModeEditOutlineOutlinedIcon color="primary" /> : <ReplyIcon color="primary" />}
+      <Box sx={{ ml: 2 }}>
+        <Typography variant="h6" color="primary">
+          {store.extra.title}
+        </Typography>
+        <Typography>{store.extra.text}</Typography>
+      </Box>
+      <IconButton sx={{ ml: 'auto' }} onClick={store.resetExtra}>
+        <CloseIcon />
+      </IconButton>
+    </BlockWrapper>
+  );
+};
+
+export default observer(FooterExtra);
