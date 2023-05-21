@@ -24,6 +24,7 @@ const Conversation = (): JSX.Element => {
     if (user.socket) {
       user.socket.on('receiveMessage', (value: Message) => {
         // TODO bug we set messages in chat B but we send it for chat A
+        // TODO bug fix message text length
         store.pushMessage(value);
       });
 

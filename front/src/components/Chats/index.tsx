@@ -22,7 +22,7 @@ const Chats = ({ data }: Props): JSX.Element => {
   };
 
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List>
       {data.map(({ id, title, avatar, unReadCount, lastMessage }) => {
         const isEqual = current === id;
         const count = unReadCount >= 1000 ? '999+' : unReadCount;
@@ -49,9 +49,7 @@ const Chats = ({ data }: Props): JSX.Element => {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 {lastMessage ? (
-                  <Typography
-                    sx={{ overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '210px', textOverflow: 'ellipsis' }}
-                  >
+                  <Typography>
                     {user.data?.id === lastMessage.sender.id ? `You: ${lastMessage.text}` : lastMessage.text}
                   </Typography>
                 ) : null}
