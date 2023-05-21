@@ -7,9 +7,11 @@ import {
   UseGuards,
   Controller,
   ParseIntPipe,
+  ParseFilePipe,
   UploadedFile,
   UseInterceptors,
   ClassSerializerInterceptor,
+  FileTypeValidator,
 } from '@nestjs/common';
 
 import { User } from 'src/decorators';
@@ -43,7 +45,14 @@ export class MessagesController {
 
   @Post('/upload')
   @UseInterceptors(UploadImageInterceptor)
-  async upload(@UploadedFile() file: File): Promise<File> {
+  async upload(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: 'image/jpeg' })],
+      }),
+    )
+    file: File,
+  ): Promise<File> {
     return file;
   }
 
