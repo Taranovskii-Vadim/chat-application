@@ -20,7 +20,7 @@ import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO, UpdatePayloadDTO } from './message.dto';
+import { InsertPayloadDTO, UpdateDTO } from './message.dto';
 
 type File = Express.Multer.File;
 
@@ -43,9 +43,10 @@ export class MessagesController {
     return this.messagesService.createMessage(body);
   }
 
-  @Post('/upload')
+  @Post('/upload/:id')
   @UseInterceptors(UploadImageInterceptor)
   async upload(
+    @Param('id', ParseIntPipe) id: number,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: 'image/jpeg' })],
@@ -53,14 +54,13 @@ export class MessagesController {
     )
     file: File,
   ): Promise<File> {
+    this.messagesService.updateMessage(id, { filePath: file.path });
+
     return file;
   }
 
   @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: UpdatePayloadDTO,
-  ) {
-    return this.messagesService.updateMessage(id, body);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateDTO) {
+    return this.messagesService.updateMessage(id, { ...body, isEdited: true });
   }
 }

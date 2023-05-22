@@ -98,7 +98,7 @@ class ConversationStore implements Store {
       if (this.file) {
         const formData = new FormData();
         formData.append('file', this.file, this.file.name);
-        await api(postFile, formData);
+        await api(postFile, formData, result.id.toString());
       }
 
       this.setMessage(tempId, result);

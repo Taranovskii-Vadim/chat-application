@@ -1,11 +1,19 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsNumber, IsBoolean } from 'class-validator';
 
-export class UpdatePayloadDTO {
+class CommonDTO {
   @IsString()
   text: string;
 }
 
-export class InsertPayloadDTO extends UpdatePayloadDTO {
+export class UpdateDTO extends CommonDTO {
+  @IsString()
+  filePath: string;
+
+  @IsBoolean()
+  isEdited: boolean;
+}
+
+export class InsertPayloadDTO extends CommonDTO {
   @IsNumber()
   chatId: number;
 

@@ -26,6 +26,9 @@ export class Message extends Base {
   @Column({ default: 'unread' })
   status: string;
 
+  @Column({ name: 'file_path', nullable: true })
+  filePath: string;
+
   @JoinColumn({ name: 'replied_id_fkey' })
   @ManyToOne(() => Message, { nullable: true })
   replied: Message;
