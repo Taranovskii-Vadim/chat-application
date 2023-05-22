@@ -3,6 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { api } from 'src/api';
 import getChat from 'src/api/getChat';
 import { formatDate } from 'src/utils';
+import postFile from 'src/api/postFile';
 import getMessages from 'src/api/getMessages';
 import postMessage from 'src/api/postMessage';
 import patchMessage from 'src/api/patchMessage';
@@ -17,6 +18,8 @@ class ConversationStore implements Store {
   currentText: string = '';
 
   messages: Message[] = [];
+
+  file: U<File> = undefined;
 
   data: U<Chat> = undefined;
 
@@ -47,6 +50,10 @@ class ConversationStore implements Store {
 
   setExtra = (value: Extra): void => {
     this.extra = value;
+  };
+
+  setFile = (data: File): void => {
+    this.file = data;
   };
 
   resetExtra = (): void => {
@@ -87,6 +94,12 @@ class ConversationStore implements Store {
       }
 
       const result = await api(postMessage, payload);
+
+      if (this.file) {
+        const formData = new FormData();
+        formData.append('file', this.file, this.file.name);
+        await api(postFile, formData);
+      }
 
       this.setMessage(tempId, result);
 

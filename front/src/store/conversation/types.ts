@@ -25,10 +25,12 @@ export type Extra = {
 
 export interface Store extends Base<CommonChat> {
   extra: Extra;
+  file: U<File>;
   currentText: string;
   messages: Message[];
   resetExtra: () => void;
   submitMessage: () => void;
+  setFile: (data: File) => void;
   setExtra: (value: Extra) => void;
   updateMessage: () => Promise<void>;
   createMessage: () => Promise<void>;
