@@ -25,7 +25,8 @@ export type CommonUserDTO = MetaDTO & {
 export interface CommonMessageDTO extends MetaDTO {
   id: number;
   text: string;
-  filePath: string;
+  // filePath: string;
+  file: string | null;
   isEdited: boolean;
   isHidden: boolean;
   sender: CommonUserDTO;

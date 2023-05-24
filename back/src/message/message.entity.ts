@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { Expose } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { Base } from 'src/utils';
@@ -28,6 +30,18 @@ export class Message extends Base {
 
   @Column({ name: 'file_path', nullable: true })
   filePath: string;
+
+  @Expose()
+  get file(): string | null {
+    if (this.filePath) {
+      return (
+        'data:image/jpeg;base64,' +
+        readFileSync(this.filePath).toString('base64')
+      );
+    }
+
+    return null;
+  }
 
   @JoinColumn({ name: 'replied_id_fkey' })
   @ManyToOne(() => Message, { nullable: true })

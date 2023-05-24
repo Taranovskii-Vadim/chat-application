@@ -55,8 +55,8 @@ const Message = ({ message, store }: Props): JSX.Element => {
                 }}
                 {...bindTrigger(state)}
               >
+                {message.file ? <img src={message.file} style={{ width: '100%', borderRadius: '4px' }} /> : null}
                 <Typography>{message.text}</Typography>
-
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   {message.isEdited ? (
                     <Typography variant="subtitle1" component="p" sx={{ mr: 1 }}>
