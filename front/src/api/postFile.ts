@@ -7,7 +7,9 @@ class PostFile implements Route {
     return `/messages/upload/${id}`;
   }
 
-  getData() {}
+  getData(file: string): string {
+    return file;
+  }
 }
 
 export default new PostFile();

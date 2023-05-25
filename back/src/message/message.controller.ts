@@ -21,6 +21,7 @@ import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
 import { InsertPayloadDTO, UpdateDTO } from './message.dto';
+import { readFileSync } from 'fs';
 
 type File = Express.Multer.File;
 
@@ -53,10 +54,12 @@ export class MessagesController {
       }),
     )
     file: File,
-  ): Promise<File> {
+  ): Promise<string> {
     this.messagesService.updateMessage(id, { filePath: file.path });
 
-    return file;
+    return (
+      'data:image/jpeg;base64,' + readFileSync(file.path).toString('base64')
+    );
   }
 
   @Patch(':id')

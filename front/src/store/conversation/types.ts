@@ -4,7 +4,7 @@ export type Message = CommonMessage & {
   error: string;
   isEdited: boolean;
   isLoading: boolean;
-  file: string | null;
+  file?: string | null;
 };
 
 export type Chat = CommonChat & { receiverId: number };

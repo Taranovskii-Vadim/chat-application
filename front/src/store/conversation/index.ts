@@ -93,12 +93,12 @@ class ConversationStore implements Store {
         payload.repliedId = this.extra.id;
       }
 
-      const result = await api(postMessage, payload);
+      let result = await api(postMessage, payload);
 
       if (this.file) {
         const formData = new FormData();
         formData.append('file', this.file, this.file.name);
-        await api(postFile, formData, result.id.toString());
+        result = { ...result, file: await api(postFile, formData, result.id.toString()) };
       }
 
       this.setMessage(tempId, result);
