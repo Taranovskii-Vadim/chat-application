@@ -1,9 +1,8 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
-import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
 import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
@@ -14,6 +13,7 @@ import BlockWrapper from 'src/components/BlockWrapper';
 import Field from './components/Field';
 import Messages from './components/Messages';
 import FooterExtra from './components/FooterExtra';
+import Attachment from './components/Attachment';
 
 const store = new ConversationStore();
 
@@ -44,22 +44,13 @@ const Conversation = (): JSX.Element => {
     return <div>loading...</div>;
   }
 
-  const handleSetFile = (e: ChangeEvent<HTMLInputElement>): void => {
-    const files = e.target.files;
-
-    if (files) {
-      store.setFile(files[0]);
-    }
-  };
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%' }}>
       <BlockWrapper border="bottom">{store.data.title}</BlockWrapper>
       <Messages store={store} />
       <FooterExtra store={store} />
       <BlockWrapper>
-        {/* <AttachFileOutlinedIcon color="primary" sx={{ cursor: 'pointer' }} /> */}
-        <input type="file" onChange={handleSetFile} />
+        <Attachment store={store} />
         <Field store={store} />
         <IconButton size="small" onClick={store.submitMessage}>
           <SendIcon color="primary" />

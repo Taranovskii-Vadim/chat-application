@@ -27,12 +27,15 @@ class ConversationStore implements Store {
 
   constructor() {
     makeObservable(this, {
+      file: observable,
       extra: observable,
       messages: observable,
       isLoading: observable,
       currentText: observable,
 
+      setFile: action,
       setExtra: action,
+      resetFile: action,
       setMessage: action,
       pushMessage: action,
       setIsLoading: action,
@@ -56,6 +59,10 @@ class ConversationStore implements Store {
     this.file = data;
   };
 
+  resetFile = (): void => {
+    this.file = undefined;
+  };
+
   resetExtra = (): void => {
     this.setExtra({ type: '', id: 0, text: '', title: '' });
     this.setCurrentText('');
@@ -72,7 +79,7 @@ class ConversationStore implements Store {
   };
 
   createMessage = async (): Promise<void> => {
-    if (!this.currentText) return;
+    if (!this.currentText && !this.file) return;
     // WARN we create temp id and createdAt in front just for show message before get api response
     const tempId = Date.now();
     const createdAt = formatDate(new Date());
@@ -107,6 +114,7 @@ class ConversationStore implements Store {
     } catch (e) {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {
+      this.resetFile();
       this.resetExtra();
     }
   };

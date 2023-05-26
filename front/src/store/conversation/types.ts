@@ -32,6 +32,7 @@ export interface Store extends Base<CommonChat> {
   resetExtra: () => void;
   submitMessage: () => void;
   setFile: (data: File) => void;
+  resetFile: () => void;
   setExtra: (value: Extra) => void;
   updateMessage: () => Promise<void>;
   createMessage: () => Promise<void>;
