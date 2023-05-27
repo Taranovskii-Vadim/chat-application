@@ -38,6 +38,6 @@ export type CommonChatDTO = MetaDTO & {
   id: number;
   title: string;
   unReadCount: number;
-  companionId: number;
+  memberId: number;
   lastMessage: CommonMessageDTO;
 };

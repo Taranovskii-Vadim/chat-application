@@ -6,7 +6,7 @@ import { UsersModule } from 'src/user/user.module';
 import { ChatsController } from './chat.controller';
 import { MessagesModule } from 'src/message/message.module';
 
-import { Chat } from './chat.entity';
+import { Chat } from './entities/chat.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Chat]), UsersModule, MessagesModule],

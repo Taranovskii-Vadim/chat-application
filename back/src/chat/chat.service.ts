@@ -1,13 +1,12 @@
 import { Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { ReqUser } from 'src/types';
 import { UsersService } from 'src/user/user.service';
 import { MessagesService } from 'src/message/message.service';
 
-import { Chat } from './chat.entity';
-import { GetChatDTO } from './chat.dto';
+import { Chat } from './entities/chat.entity';
+import { ReceiveChatDTO } from './dto/receive-chat.dto';
 
 // TODO maybe later develop group chats
 
@@ -19,62 +18,34 @@ export class ChatsService {
     @InjectRepository(Chat) private readonly table: Repository<Chat>,
   ) {}
 
-  async getChats(userId: ReqUser['id']): Promise<GetChatDTO[]> {
+  private async prepare(userId: number, data: Chat): Promise<ReceiveChatDTO> {
+    const { id, members, ...other } = data;
+
+    const memberId = members.filter((id) => id !== userId)[0];
+    const title = await this.usersService.getFullname(memberId);
+    const lastMessage = await this.messagesService.getChatLastMessage(id);
+    const unReadCount = await this.messagesService.getUnReadCount(id, memberId);
+
+    return { id, title, lastMessage, unReadCount, memberId, ...other };
+  }
+
+  async getChats(userId: number): Promise<ReceiveChatDTO[]> {
     // TODO we can create interceptor which can transform our data before send it to client
     // TODO maybe can use typeorm where
 
-    const response = await this.table.find({
-      relations: { pinnedMessage: true },
-    });
-
+    const response = await this.table.find();
     const chats = response.filter(({ members }) => members.includes(userId));
 
-    const promises = chats.map(async ({ members, ...other }) => {
-      const companionId = members.filter((id) => id !== userId)[0];
+    const result = chats.map((item) => this.prepare(userId, item));
 
-      const title = await this.usersService.getFullname(companionId);
-      const unReadCount = await this.messagesService.getUnReadCount(
-        other.id,
-        companionId,
-      );
-
-      const lastMessage = await this.messagesService.getChatLastMessage(
-        other.id,
-      );
-
-      return { title, companionId, unReadCount, lastMessage, ...other };
-    });
-
-    return Promise.all(promises);
+    return Promise.all<ReceiveChatDTO>(result);
   }
 
-  async getChat(id: number, userId: number): Promise<GetChatDTO> {
-    const response = await this.table.findOne({
-      where: { id },
-      relations: { pinnedMessage: true },
-    });
+  async getChat(id: number, userId: number): Promise<ReceiveChatDTO> {
+    const response = await this.table.findOne({ where: { id } });
 
     if (!response) throw new NotFoundException();
 
-    const companionId = response.members.filter((id) => id !== userId)[0];
-
-    const title = await this.usersService.getFullname(companionId);
-    const unReadCount = await this.messagesService.getUnReadCount(
-      id,
-      companionId,
-    );
-
-    const lastMessage = await this.messagesService.getChatLastMessage(id);
-
-    return {
-      id,
-      title,
-      companionId,
-      unReadCount,
-      lastMessage,
-      pinnedMessage: response.pinnedMessage,
-      createdAt: response.createdAt,
-      updatedAt: response.updatedAt,
-    };
+    return this.prepare(userId, response);
   }
 }

@@ -8,11 +8,11 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 
-import { User } from 'src/decorators';
+import { User } from 'src/utils/decorators';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 
-import { GetChatDTO } from './chat.dto';
 import { ChatsService } from './chat.service';
+import { ReceiveChatDTO } from './dto/receive-chat.dto';
 
 @Controller('/chats')
 @UseGuards(JwtAuthGuard)
@@ -21,7 +21,7 @@ export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 
   @Get()
-  async getChats(@User('id') id: number): Promise<GetChatDTO[]> {
+  async getChats(@User('id') id: number): Promise<ReceiveChatDTO[]> {
     return this.chatsService.getChats(id);
   }
 
@@ -29,7 +29,7 @@ export class ChatsController {
   async getChat(
     @Param('id', ParseIntPipe) id: number,
     @User('id') userId: number,
-  ): Promise<GetChatDTO> {
+  ): Promise<ReceiveChatDTO> {
     return this.chatsService.getChat(id, userId);
   }
 }

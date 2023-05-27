@@ -1,7 +1,7 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 
 import { ReqUser } from 'src/types';
-import { User } from 'src/decorators';
+import { User } from 'src/utils/decorators';
 
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthService } from './jwt-auth.service';

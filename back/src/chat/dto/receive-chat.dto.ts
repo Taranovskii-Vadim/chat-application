@@ -2,7 +2,7 @@ import { IsNumber, IsString, IsObject, IsDate } from 'class-validator';
 
 import { Message } from 'src/message/message.entity';
 
-export class GetChatDTO {
+export class ReceiveChatDTO {
   @IsNumber()
   id: number;
 
@@ -16,14 +16,11 @@ export class GetChatDTO {
   updatedAt: Date;
 
   @IsNumber()
-  companionId: number;
+  memberId: number;
 
   @IsNumber()
   unReadCount: number;
 
   @IsObject()
   lastMessage: Message | null;
-
-  @IsObject()
-  pinnedMessage: Message | null;
 }

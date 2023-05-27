@@ -3,7 +3,7 @@ import { Expose } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { Base } from 'src/utils';
-import { Chat } from 'src/chat/chat.entity';
+import { Chat } from 'src/chat/entities/chat.entity';
 import { User } from 'src/user/user.entity';
 
 @Entity()

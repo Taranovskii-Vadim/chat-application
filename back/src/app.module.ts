@@ -2,18 +2,20 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { Chat } from './chat/chat.entity';
 import { User } from './user/user.entity';
 import { ChatsModule } from './chat/chat.module';
+import { Chat } from './chat/entities/chat.entity';
 import { Message } from './message/message.entity';
 import { JwtAuthModule } from './jwt-auth/jwt-auth.module';
 import { MessagesModule } from './message/message.module';
 // import { SessionAuth } from './session-auth/session-auth.module';
 
-// TODO refactor folder structure, define where storage typeORM data
-// TODO refactor code below
 @Module({
   imports: [
+    ChatsModule,
+    JwtAuthModule,
+    // SessionAuth,
+    MessagesModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,10 +31,6 @@ import { MessagesModule } from './message/message.module';
         synchronize: true,
       }),
     }),
-    MessagesModule,
-    ChatsModule,
-    JwtAuthModule,
-    // SessionAuth,
   ],
   controllers: [],
   providers: [],

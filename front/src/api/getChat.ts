@@ -9,8 +9,8 @@ class GetChat implements Route {
     return `/chats/${chatId}`;
   }
 
-  getData({ id, title, companionId }: CommonChatDTO): Chat {
-    return { id, title, receiverId: companionId };
+  getData({ id, title, memberId }: CommonChatDTO): Chat {
+    return { id, title, receiverId: memberId };
   }
 }
 

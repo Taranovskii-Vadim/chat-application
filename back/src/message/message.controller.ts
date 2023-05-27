@@ -14,9 +14,9 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 
-import { User } from 'src/decorators';
-import { UploadImageInterceptor } from 'src/interceptors';
+import { User } from 'src/utils/decorators';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
+import { UploadImageInterceptor } from 'src/utils/interceptors';
 
 import { Message } from './message.entity';
 import { MessagesService } from './message.service';
