@@ -6,8 +6,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { Message } from './message.entity';
-import { InsertPayloadDTO, UpdateDTO } from './message.dto';
+import { Message } from './entities/message.entity';
+import { UpdateDTO } from './dto/update-message.dto';
+import { CreateDTO } from './dto/create-message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -59,7 +60,7 @@ export class MessagesService {
     return result;
   };
 
-  async createMessage(body: InsertPayloadDTO): Promise<Message> {
+  async createMessage(body: CreateDTO): Promise<Message> {
     const { text, ...ids } = body;
 
     const payload = {

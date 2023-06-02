@@ -1,6 +1,6 @@
 import { IsNumber, IsString, IsObject, IsDate } from 'class-validator';
 
-import { Message } from 'src/message/message.entity';
+import { Message } from 'src/message/entities/message.entity';
 
 export class ReceiveChatDTO {
   @IsNumber()

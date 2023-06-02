@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { User } from './user/user.entity';
+import { User } from './user/entities/user.entity';
 import { ChatsModule } from './chat/chat.module';
 import { Chat } from './chat/entities/chat.entity';
-import { Message } from './message/message.entity';
+import { Message } from './message/entities/message.entity';
 import { JwtAuthModule } from './jwt-auth/jwt-auth.module';
 import { MessagesModule } from './message/message.module';
 // import { SessionAuth } from './session-auth/session-auth.module';

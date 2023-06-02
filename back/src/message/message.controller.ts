@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import {
   Get,
   Post,
@@ -18,10 +19,10 @@ import { User } from 'src/utils/decorators';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 import { UploadImageInterceptor } from 'src/utils/interceptors';
 
-import { Message } from './message.entity';
+import { Message } from './entities/message.entity';
 import { MessagesService } from './message.service';
-import { InsertPayloadDTO, UpdateDTO } from './message.dto';
-import { readFileSync } from 'fs';
+import { UpdateDTO } from './dto/update-message.dto';
+import { CreateDTO } from './dto/create-message.dto';
 
 type File = Express.Multer.File;
 
@@ -40,7 +41,7 @@ export class MessagesController {
   }
 
   @Post()
-  async create(@Body() body: InsertPayloadDTO): Promise<Message> {
+  async create(@Body() body: CreateDTO): Promise<Message> {
     return this.messagesService.createMessage(body);
   }
 
