@@ -9,7 +9,6 @@ interface Props {
   data: Chat[];
 }
 
-// TODO maybe create routes folder
 const BASE = '/conversation/';
 
 const Chats = ({ data }: Props): JSX.Element => {

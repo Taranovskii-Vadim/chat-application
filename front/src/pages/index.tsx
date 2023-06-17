@@ -22,7 +22,6 @@ const Pages = (): JSX.Element => {
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', maxHeight: '100vh' }}>
-      {/* TODO change bg color later */}
       <Box sx={{ width: '25%', borderRight: `1px solid ${grey['300']}` }}>
         <BlockWrapper border="bottom">
           <TextField size="small" placeholder="Добавить чат..." fullWidth />
@@ -31,6 +30,7 @@ const Pages = (): JSX.Element => {
       </Box>
       <Routes>
         {/* TODO add lazy loading */}
+        {/* TODO create start page*/}
         <Route path="/" element={<div>choose chat to start messaging</div>} />
         <Route path="/conversation/:id" element={<Conversation />} />
         <Route path="*" element={<Navigate to="/" replace />} />

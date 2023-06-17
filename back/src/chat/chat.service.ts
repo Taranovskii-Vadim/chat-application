@@ -8,7 +8,7 @@ import { MessagesService } from 'src/message/message.service';
 import { Chat } from './entities/chat.entity';
 import { ReceiveChatDTO } from './dto/receive-chat.dto';
 
-// TODO maybe later develop group chats
+
 
 @Injectable()
 export class ChatsService {

@@ -13,7 +13,6 @@ import { JwtAuthController } from './jwt-auth.controller';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      // TODO .env dont work
       secret: 'cat',
       signOptions: { expiresIn: '1h' },
     }),
