@@ -7,6 +7,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import user from 'src/store/user';
 
 import Chats from 'src/components/Chats';
+import Welcome from 'src/components/Welcome';
+import Loader from 'src/components/ui/Loader';
 import BlockWrapper from 'src/components/BlockWrapper';
 
 import Conversation from './Conversation';
@@ -17,7 +19,7 @@ const Pages = (): JSX.Element => {
   }, []);
 
   if (user.isLoading) {
-    return <div>loading...</div>;
+    return <Loader />;
   }
 
   return (
@@ -28,13 +30,14 @@ const Pages = (): JSX.Element => {
         </BlockWrapper>
         <Chats data={user.chats} />
       </Box>
-      <Routes>
-        {/* TODO add lazy loading */}
-        {/* TODO create start page*/}
-        <Route path="/" element={<div>choose chat to start messaging</div>} />
-        <Route path="/conversation/:id" element={<Conversation />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '75%' }}>
+        <Routes>
+          {/* TODO add lazy loading */}
+          <Route path="/" element={<Welcome />} />
+          <Route path="/conversation/:id" element={<Conversation />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Box>
     </Box>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
@@ -8,6 +8,7 @@ import user from 'src/store/user';
 import ConversationStore from 'src/store/conversation';
 import { Message } from 'src/store/conversation/types';
 
+import Loader from 'src/components/ui/Loader';
 import BlockWrapper from 'src/components/BlockWrapper';
 
 import Field from './components/Field';
@@ -41,11 +42,11 @@ const Conversation = (): JSX.Element => {
   }, [id]);
 
   if (store.isLoading || !store.data) {
-    return <div>loading...</div>;
+    return <Loader />;
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%' }}>
+    <>
       <BlockWrapper border="bottom">{store.data.title}</BlockWrapper>
       <Messages store={store} />
       <FooterExtra store={store} />
@@ -56,7 +57,7 @@ const Conversation = (): JSX.Element => {
           <SendIcon color="primary" />
         </IconButton>
       </BlockWrapper>
-    </Box>
+    </>
   );
 };
 
