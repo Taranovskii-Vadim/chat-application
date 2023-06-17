@@ -89,12 +89,13 @@ class ConversationStore implements Store {
       if (!user.data || !user.socket) throw new Error('Not found user data');
 
       const text = this.currentText;
+      const chatId = this.data.id;
 
       const sender: Message['sender'] = { id: user.data.id, fullname: user.data.fullname };
 
       this.pushMessage({ id: tempId, createdAt, text, sender, isEdited: false, isLoading: true, error: '' });
 
-      const payload: CreateMessageDTO = { text, senderId: sender.id, chatId: this.data.id };
+      const payload: CreateMessageDTO = { text, senderId: sender.id, chatId };
 
       if (this.extra.type === 'reply') {
         payload.repliedId = this.extra.id;
@@ -110,7 +111,7 @@ class ConversationStore implements Store {
 
       this.setMessage(tempId, result);
 
-      user.socket.emit('sendMessage', { ...result, receiverId: this.data.receiverId });
+      user.socket.emit('sendMessage', { ...result, chatId, receiverId: this.data.receiverId });
     } catch (e) {
       this.setMessage(tempId, { isLoading: false, error: e instanceof Error ? e.message : (e as string) });
     } finally {

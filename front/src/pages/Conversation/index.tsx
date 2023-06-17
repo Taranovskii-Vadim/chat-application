@@ -23,10 +23,12 @@ const Conversation = (): JSX.Element => {
 
   useEffect(() => {
     if (user.socket) {
-      user.socket.on('receiveMessage', (value: Message) => {
-        // TODO bug we set messages in chat B but we send it for chat A
-        // TODO bug fix message text length
-        store.pushMessage(value);
+      user.socket.on('receiveMessage', (value: { chatId: number } & Message): void => {
+        const { chatId, ...other } = value;
+
+        if (id && +id === chatId) {
+          store.pushMessage(other);
+        }
       });
 
       user.socket.on('changeMessage', ({ id, text }: Pick<Message, 'id' | 'text'>) => {
