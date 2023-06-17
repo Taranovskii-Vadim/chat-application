@@ -32,7 +32,6 @@ const Pages = (): JSX.Element => {
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '75%' }}>
         <Routes>
-          {/* TODO add lazy loading */}
           <Route path="/" element={<Welcome />} />
           <Route path="/conversation/:id" element={<Conversation />} />
           <Route path="*" element={<Navigate to="/" replace />} />
